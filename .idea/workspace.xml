@@ -887,7 +887,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1493451645159</updated>
-      <workItem from="1493451647884" duration="691000" />
+      <workItem from="1493451647884" duration="699000" />
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/master'">
       <created>1493452294582</created>
@@ -903,11 +903,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493452363432</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1493452369813</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1493452369813</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="691000" />
+    <option name="totallyTimeSpent" value="699000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="962" extended-state="0" />
