@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 动态用单独的Properties文件配置 具体数据库连接路径-->
+    <properties resource="Config/sqlConfig.properties">
+    </properties>
+    <!-- mybatis 全局设置 -->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+    <!-- 缩短Mapper类中对 例如com.Weicommity.Model.xxx的冗余 为 xxx-->
+    <typeAliases>
+        <package name="com.weiCommity.Model"/>
+    </typeAliases>
+
+    <!-- 连接用 模板-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/WeiCommity?useUnicode=true&amp;characterEncoding=utf8"/>
+                <property name="username" value="connect"/>
+                <property name="password" value="jerry245782679"/>
+            </dataSource>
+        </environment>
+        <environment id="production">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${production.driver}"/>
+                <property name="driver.encoding" value="UTF8"/>
+                <property name="url" value="${production.url}"/>
+                <property name="username" value="${production.username}"/>
+                <property name="password" value="${production.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!-- 对于Model中 类请求的Mapper -->
+    <mappers>
+        <mapper resource="Config/Mapper.xml"/>
+    </mappers>
+</configuration>
