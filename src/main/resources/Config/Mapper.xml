@@ -30,7 +30,7 @@
     </insert>
 
     <update id="update_LoginAll" parameterType="Login" flushCache="true">
-        UPDATE UserLogin set UPwd={#UPwd},UAName={#UAName},UTel=#{UTel},UMail=#{UMail} WHERE UUuid = #{UUuid}
+        UPDATE UserLogin set UPwd=#{UPwd},UAName=#{UAName},UTel=#{UTel},UMail=#{UMail} WHERE UUuid = #{UUuid}
     </update>
     <select id="selUserExtendByUUuid" parameterType="string" resultType="UserExtend">
         SELECT * FROM UserExtend WHERE UUuid = #{thisUUid}
@@ -47,6 +47,6 @@
         WHERE UWid = #{UWid}
     </update>
     <delete id="delete_ALineofTFWork" parameterType="string" flushCache="true">
-        DELETE FROM UserWork WHERE WHERE UWid = #{UWid}
+        DELETE FROM UserWork WHERE UWid = #{UWid}
     </delete>
 </mapper>
