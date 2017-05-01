@@ -19,10 +19,14 @@ import java.util.List;
  */
 @Service
 public class UserInfoManage {
+    final LoginDao loginDao;
+    final RegistDao registDao;
+
     @Autowired
-    LoginDao loginDao;
-    @Autowired
-    RegistDao registDao;
+    public UserInfoManage(LoginDao loginDao, RegistDao registDao) {
+        this.loginDao = loginDao;
+        this.registDao = registDao;
+    }
 
     public HttpJson getUserSercurityInfoByUUuid(String UUuid){
         HttpJson re = new HttpJson();

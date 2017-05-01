@@ -26,8 +26,13 @@ import java.util.List;
 @RequestMapping(value = "api/uinfoManage",produces = "application/json")
 public class UserInfoManageController {
 
+    private final UserInfoManage userInfoManage;
+
     @Autowired
-    UserInfoManage userInfoManage;
+    public UserInfoManageController(UserInfoManage userInfoManage) {
+        this.userInfoManage = userInfoManage;
+    }
+
     /**
      * @form get-sercurity-info
      * @input UserUUid

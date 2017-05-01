@@ -49,4 +49,8 @@
     <delete id="delete_ALineofTFWork" parameterType="string" flushCache="true">
         DELETE FROM UserWork WHERE UWid = #{UWid}
     </delete>
+
+    <select id="sel_CommityInfoByCName" parameterType="string" resultType="CommityInfo">
+        SELECT * FROM CommityInfo WHERE CName = #{CName}
+    </select>
 </mapper>

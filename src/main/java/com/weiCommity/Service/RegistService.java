@@ -6,10 +6,10 @@ import com.weiCommity.Model.Login;
 import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Model.UserTFWork;
 import com.weiCommity.Util.MD5.MD5String;
+import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.util.List;
@@ -88,11 +88,9 @@ public class RegistService {
         else{
             File oraginalPath = new File(userExtend.getUHeadImg());
             imgPath =  "UserSpace/"+userExtend.getUUuid() + "/" + oraginalPath.getName();
-            tarPath = ResourceUtils.getFile("classpath:/FileSpace/" + imgPath);
+            tarPath = new File(StaticVar.getToFilePath() + imgPath);  // 存的时候调用StaticVar 到FilePath路径并且最后带/
             FileUtils.writeByteArrayToFile(tarPath,imgStr.getBytes("ISO-8859-1"));
         }
-
-
 
         userExtend.setUHeadImg(imgPath);
         //调用Dao层存储

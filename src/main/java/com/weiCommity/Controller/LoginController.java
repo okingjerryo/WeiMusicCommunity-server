@@ -1,16 +1,13 @@
 package com.weiCommity.Controller;
 
-import com.weiCommity.Model.Login;
 import com.weiCommity.Service.LoginService;
 import com.weiCommity.Service.RegistService;
 import com.weiCommity.Util.HttpJson;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class LoginController {
     //Controller 也需要使用注入的方式
-    @Autowired
-    LoginService loginService;
+    private final LoginService loginService;
 
-   @Autowired
-   RegistService registService;
+    @Autowired
+    public LoginController(LoginService loginService, RegistService registService) {
+        this.loginService = loginService;
+    }
+
     //登录事件
     @RequestMapping(value = "/login",produces = "application/json;charset=Utf-8")
     public ResponseEntity<HttpJson> Login(@RequestBody String getJsonString) throws Exception {
