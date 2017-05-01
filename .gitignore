@@ -42,3 +42,27 @@ target/classes/Config/sqlConfig.properties
 target/classes/Config/mybities-config.xml
 
 target/classes/Config/mybities-config.xml
+
+.idea/dataSources.local.xml
+
+.idea/dataSources.xml
+
+.idea/dataSources/2114523e-0931-44a3-9e58-9849bda3da08.xml
+
+.idea/dataSources/2114523e-0931-44a3-9e58-9849bda3da08/_metadata_/metadata
+
+.idea/dataSources/2114523e-0931-44a3-9e58-9849bda3da08/_metadata_/metadata_i
+
+.idea/dataSources/2114523e-0931-44a3-9e58-9849bda3da08/_metadata_/metadata_i.len
+
+*.keystream
+
+*.len
+
+*.at
+
+.idea/dataSources/2114523e-0931-44a3-9e58-9849bda3da08/storage.xml
+
+.idea/sqldialects.xml
+
+target/classes/Config/mybities-config.xml
