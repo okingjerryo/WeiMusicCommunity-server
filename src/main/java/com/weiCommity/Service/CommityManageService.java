@@ -30,7 +30,7 @@ public class CommityManageService {
     //通过社团信息实体(名字)查询是否存在当前社团在数据库中 存在的话返回 Cid
     public String isCommmityIn(CommityInfo thisinfo) {
         String re;
-        re = commityManageDao.getInfoByCName(thisinfo.getCNAame());
+        re = commityManageDao.getCidByCName(thisinfo.getCName());
         return re;
     }
 
@@ -101,6 +101,18 @@ public class CommityManageService {
     public void delUserInCommity(CommityMember delMem) {
         commityManageDao.delCommityUser(delMem);
     }
+
+    //======= 社团信息的查看 注意这里面获取的信息全部是单一的，这是面向社团 不是面向用户的服务
+    //通过Cid 获取相关社团信息
+    public CommityInfo getCommityInfoByCid(String Cid) {
+        return commityManageDao.getCommityInfoByCid(Cid);
+    }
+
+    //通过CName 获取相关社团信息
+    public CommityInfo getCommityInfoByCName(String CName) {
+        return commityManageDao.getCommmityInfoByCName(CName);
+    }
+
 
 
 

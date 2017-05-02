@@ -25,7 +25,7 @@ public class CommityManageDao extends BaseDao {
 
 
     //通过社团名字获取社团的Cid
-    public String getInfoByCName(String CName) {
+    public String getCidByCName(String CName) {
         try {
             session = sqlSessionFactory.openSession();
             info = session.selectOne("org.test.Login.sel_CommityInfoByCName", CName);
@@ -143,5 +143,15 @@ public class CommityManageDao extends BaseDao {
             throw e;
         }
         session.close();
+    }
+
+    //通过Cid 返回当前社团信息
+    public CommityInfo getCommityInfoByCid(String Cid) {
+        return (CommityInfo) BaseDao.selOneFromSQL("org.test.Login.sel_CommityInfoByCid", Cid);
+    }
+
+    //通过CName 返回当前社团信息
+    public CommityInfo getCommmityInfoByCName(String CName) {
+        return (CommityInfo) BaseDao.selOneFromSQL("org.test.Login.sel_CommityInfoByCName", CName);
     }
 }

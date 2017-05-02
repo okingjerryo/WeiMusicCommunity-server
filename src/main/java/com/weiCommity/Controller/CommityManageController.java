@@ -156,7 +156,36 @@ public class CommityManageController {
         return new ResponseEntity<>(re, HttpStatus.ACCEPTED);
     }
 
-    //获取当前社团信息
+    //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）
+    public ResponseEntity<HttpJson> getCommityInfo(@RequestBody String jsonString) {
+        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson re = new HttpJson();
+        try {
+            if (inObj.getClassName().equals("CommityMember:CommityInfo-get"))
+                throw new JSONException("");
+
+            CommityInfo info = (CommityInfo) inObj.getClassObject();
+            CommityInfo reInfo;
+            if (info.getCid() != null)
+                reInfo = manageService.getCommityInfoByCid(info.getCid());
+            else if (info.getCName() != null)
+                reInfo = manageService.getCommityInfoByCName(info.getCName());
+            else
+                throw new JSONException("缺少必要信息");
+
+            re.setClassName("CommityInfo:thisCommityInfo");
+            re.setClassObject(reInfo);
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("请求不合法" + e.getMessage());
+            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出现异常，请稍后再试");
+            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
 
 
 }

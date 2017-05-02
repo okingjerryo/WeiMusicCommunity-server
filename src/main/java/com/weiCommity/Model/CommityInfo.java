@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Component
 public class CommityInfo {
     private String Cid;
-    private String CNAame;
+    private String CName;
     private LocalDate CCreateTime;
     private String Cintroduce;
     private String CTag;
@@ -38,12 +38,12 @@ public class CommityInfo {
         Cid = cid;
     }
 
-    public String getCNAame() {
-        return CNAame;
+    public String getCName() {
+        return CName;
     }
 
-    public void setCNAame(String CNAame) {
-        this.CNAame = CNAame;
+    public void setCName(String CNAame) {
+        this.CName = CNAame;
     }
 
     public LocalDate getCCreateTime() {

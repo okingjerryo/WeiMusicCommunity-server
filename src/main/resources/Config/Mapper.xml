@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.test.Login">
     <select id="selLoginWithAccName" parameterType="string" resultType="Login">
@@ -80,4 +80,14 @@
     <delete id="del_CommityMem" parameterType="CommityMember" flushCache="true">
         DELETE FROM CommityMember WHERE CId = #{CId} AND UUuid = #{UUuid}
     </delete>
+    <select id="sel_CommityInfoByCid" parameterType="string" resultType="CommityInfo">
+        SELECT *
+        FROM CommityInfo
+        WHERE CId = #{CId}
+    </select>
+    <select id="sel_CommityInfoByCName" parameterType="string" resultType="CommityInfo">
+        SELECT *
+        FROM CommityInfo
+        WHERE CName = #{CName}
+    </select>
 </mapper>
