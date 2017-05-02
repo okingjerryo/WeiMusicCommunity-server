@@ -5,6 +5,8 @@ import com.weiCommity.Model.CommityMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * PackageName com.weiCommity.Dao
  * CommityInfo
@@ -88,4 +90,58 @@ public class CommityManageDao extends BaseDao {
         session.close();
     }
 
+    //通过社团id获取全部的用户
+    public List<CommityMember> getAllCommityMember(String Cid) {
+        List<CommityMember> re;
+        try {
+            session = sqlSessionFactory.openSession();
+            re = session.selectList("org.test.Login.sel_CommityUserByCId", Cid);
+        } catch (Exception e) {
+            session.close();
+            throw e;
+        }
+        session.close();
+        return re;
+    }
+
+    //获得当前社团指定UUid 的用户
+    public CommityMember getOneCommityMember(String Cid, String UUuid) {
+        CommityMember thisMem = new CommityMember();
+        thisMem.setUUuid(UUuid);
+        thisMem.setCid(Cid);
+        CommityMember re;
+        try {
+            session = sqlSessionFactory.openSession();
+            re = session.selectOne("org.test.Login.sel_CommityOneUserByCM", thisMem);
+        } catch (Exception e) {
+            session.close();
+            throw e;
+        }
+        session.close();
+        return re;
+    }
+
+    //修改指定用户的权限
+    public void setCommmityMemberType(CommityMember member) {
+        try {
+            session = sqlSessionFactory.openSession();
+            session.selectOne("org.test.Login.update_CommityMemType", member);
+        } catch (Exception e) {
+            session.close();
+            throw e;
+        }
+        session.close();
+    }
+
+    //删除制定用户
+    public void delCommityUser(CommityMember member) {
+        try {
+            session = sqlSessionFactory.openSession();
+            session.selectOne("org.test.Login.del_CommityMem", member);
+        } catch (Exception e) {
+            session.close();
+            throw e;
+        }
+        session.close();
+    }
 }

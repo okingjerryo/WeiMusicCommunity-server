@@ -5,10 +5,12 @@ import com.weiCommity.Model.CommityInfo;
 import com.weiCommity.Model.CommityMember;
 import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -59,5 +61,49 @@ public class CommityManageService {
         //用户数量增加1
         commityManageDao.updateCommityMemCount(member.getCid(), MemCount + 1);
     }
+
+    //查看 用户查看当前社团的成员以及权限
+    public List<CommityMember> getAllUserInCommity(String Cid) {
+        return commityManageDao.getAllCommityMember(Cid);
+    }
+
+    public CommityMember getOneUserInCommity(String Cid, String UUuid) {
+        return commityManageDao.getOneCommityMember(Cid, UUuid);
+    }
+
+    //更新 制定社团成员的权限 并进行权限检查
+    public void setUserTypeIdentityByMUUuid(String UUuid, CommityMember editMem) throws JSONException {
+        try {
+
+            if (editMem.getUtype() < 3)
+                throw new IllegalAccessException("您不具有修改人员权限的权限");
+            //获取到当前用户的修改权限
+            CommityMember thisEditMemCM = commityManageDao.getOneCommityMember(editMem.getCid(), UUuid);
+            //获取要修改用户的原权限
+            CommityMember tarEditMemCM = commityManageDao.getOneCommityMember(editMem.getCid(), editMem.getUUuid());
+            //要修改的人员的自身权限要比自己小
+            if (!(thisEditMemCM.getUtype() > tarEditMemCM.getUtype()))
+                throw new IllegalAccessError("您自身的权限不足，无法修改目标权限");
+            //要修改的人员修改后权限要比自己小
+            if (!(thisEditMemCM.getUtype() > editMem.getUtype()))
+                throw new IllegalAccessException("您将修改的权限高于自身能修改的权限");
+
+            //通过dao修改权限
+            commityManageDao.setCommmityMemberType(editMem);
+            //不合法的修改权限抛出异常
+        } catch (IllegalAccessException e) {
+            throw new JSONException(e.getMessage());
+        }
+
+    }
+
+    //删除 制定UUid 的成员
+    public void delUserInCommity(CommityMember delMem) {
+        commityManageDao.delCommityUser(delMem);
+    }
+
+
+
+
 
 }

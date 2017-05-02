@@ -68,4 +68,16 @@
         UPDATE CommityInfo SET CMeMCount = #{CMeMCount}
         WHERE CId = #{CId}
     </update>
+    <select id="sel_CommityUserByCId" parameterType="string" resultType="CommityMember">
+        SELECT * FROM commitymemview WHERE CId = #{CId}
+    </select>
+    <select id="sel_CommityOneUserByCM" parameterType="CommityMember" resultType="CommityMember">
+        SELECT * FROM CommityMember WHERE CId = #{CId} AND UUuid = #{UUuid}
+    </select>
+    <update id="update_CommityMemType" parameterType="CommityMember" flushCache="true">
+        UPDATE CommityMember SET Utype = #{Utype} WHERE UUuid = #{UUuid}
+    </update>
+    <delete id="del_CommityMem" parameterType="CommityMember" flushCache="true">
+        DELETE FROM CommityMember WHERE CId = #{CId} AND UUuid = #{UUuid}
+    </delete>
 </mapper>
