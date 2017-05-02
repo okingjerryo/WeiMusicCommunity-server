@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 /**
+ * 社团信息实体，用于存常用需要的舒团信息
  * Created by uryuo on 17/5/1.
  */
 @Component
@@ -19,6 +20,15 @@ public class CommityInfo {
     private String CNMDemand;
     private int CMeMCount;
     private String CNotice;
+    private String CImgObj;
+
+    public String getCImgObj() {
+        return CImgObj;
+    }
+
+    public void setCImgObj(String CImgObj) {
+        this.CImgObj = CImgObj;
+    }
 
     public String getCid() {
         return Cid;
