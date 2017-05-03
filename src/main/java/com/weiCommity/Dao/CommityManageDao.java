@@ -17,6 +17,7 @@ import java.util.List;
 public class CommityManageDao extends BaseDao {
 
     private CommityInfo info;
+    private final String thisMapperNamespace = "org.test.Login.";
 
     @Autowired
     public CommityManageDao(CommityInfo info) {
@@ -153,5 +154,10 @@ public class CommityManageDao extends BaseDao {
     //通过CName 返回当前社团信息
     public CommityInfo getCommmityInfoByCName(String CName) {
         return (CommityInfo) BaseDao.selOneFromSQL("org.test.Login.sel_CommityInfoByCName", CName);
+    }
+
+    //发布通知
+    public void publishNotice(CommityInfo info) {
+        BaseDao.InEdDeOneIntoSql(thisMapperNamespace + "update_CommityNotice", info);
     }
 }

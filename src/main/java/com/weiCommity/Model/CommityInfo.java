@@ -21,6 +21,15 @@ public class CommityInfo {
     private int CMeMCount;
     private String CNotice;
     private String CImgObj;
+    private LocalDate CNoteCTime;
+
+    public LocalDate getCNoteCTime() {
+        return CNoteCTime;
+    }
+
+    public void setCNoteCTime(LocalDate CNoteCTime) {
+        this.CNoteCTime = CNoteCTime;
+    }
 
     public String getCImgObj() {
         return CImgObj;

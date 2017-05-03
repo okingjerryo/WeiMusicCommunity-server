@@ -182,11 +182,7 @@
       <artifactId>spring-test</artifactId>
       <version>4.3.7.RELEASE</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>4.3.7.RELEASE</version>
-    </dependency>
+
   </dependencies>
   <!-- spring data & plantform-->
   <dependencyManagement>
@@ -206,7 +202,6 @@
         <scope>import</scope>
       </dependency>
     </dependencies>
-
 
   </dependencyManagement>
 

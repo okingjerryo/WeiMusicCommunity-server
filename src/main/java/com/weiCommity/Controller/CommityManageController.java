@@ -128,6 +128,7 @@ public class CommityManageController {
     }
 
     //成员踢出 （暂时只有社长副社长有这个权限）
+    @RequestMapping(value = "delCommityUser")
     public ResponseEntity<HttpJson> kickUserOutOfCommity(@RequestBody String jsonString) {
         HttpJson inObj = new HttpJson(jsonString);
         HttpJson re = new HttpJson();
@@ -157,6 +158,7 @@ public class CommityManageController {
     }
 
     //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）
+    @RequestMapping(value = "commityInfo/get")
     public ResponseEntity<HttpJson> getCommityInfo(@RequestBody String jsonString) {
         HttpJson inObj = new HttpJson(jsonString);
         HttpJson re = new HttpJson();
@@ -187,5 +189,37 @@ public class CommityManageController {
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
 
+    //管理层修改公告 注意 要特别注入UUuid 类里面要提供 Cid 新的Notice
+    @RequestMapping(value = "notice/publish")
+    public ResponseEntity<HttpJson> publishCommityNotice(@RequestBody String jsonString) {
+        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson re = new HttpJson();
+        try {
+            if (inObj.getClassName().equals("CommityInfo:notice-publish"))
+                throw new JSONException("");
+
+
+            String opUUuid = inObj.getPara("UUuid");
+            CommityInfo sender = (CommityInfo) inObj.getClassObject(); //要发布的东西
+            CommityMember opMem = manageService.getOneUserInCommity(opUUuid, sender.getCid());
+            if (opMem.getUtype() < 2)
+                throw new JSONException("没有足够的权限");
+
+            //发布公告
+            manageService.publishCommityNotices(sender);
+
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("您的操作失败" + e.getMessage());
+            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出现异常，请稍后再试");
+            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
+
+    //管理员发布活动 在chuan'guo'la
 
 }

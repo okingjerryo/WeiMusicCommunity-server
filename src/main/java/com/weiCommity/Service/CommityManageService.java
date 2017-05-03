@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -104,18 +106,30 @@ public class CommityManageService {
 
     //======= 社团信息的查看 注意这里面获取的信息全部是单一的，这是面向社团 不是面向用户的服务
     //通过Cid 获取相关社团信息
-    public CommityInfo getCommityInfoByCid(String Cid) {
-        return commityManageDao.getCommityInfoByCid(Cid);
+    //要从磁盘获取图像。。。。
+    public CommityInfo getCommityInfoByCid(String Cid) throws IOException {
+        CommityInfo re = commityManageDao.getCommityInfoByCid(Cid);
+        //把社团的头像文件获取下来
+        File imgPath = new File(StaticVar.getToFilePath() + re.getCHeadImg());
+        String imgEncode = FileUtils.readFileToString(imgPath, StaticVar.getDecodeFileSet());
+        re.setCImgObj(imgEncode);
+        return re;
     }
 
     //通过CName 获取相关社团信息
-    public CommityInfo getCommityInfoByCName(String CName) {
-        return commityManageDao.getCommmityInfoByCName(CName);
+    public CommityInfo getCommityInfoByCName(String CName) throws IOException {
+
+        CommityInfo re = commityManageDao.getCommmityInfoByCName(CName);
+        File imgPath = new File(StaticVar.getToFilePath() + re.getCHeadImg());
+        String imgEncode = FileUtils.readFileToString(imgPath, StaticVar.getDecodeFileSet());
+        re.setCImgObj(imgEncode);
+        return re;
     }
 
-
-
-
-
-
+    //发布公告
+    public void publishCommityNotices(CommityInfo info) {
+        //设置发布时间为当前时间
+        info.setCNoteCTime(LocalDate.now());
+        commityManageDao.publishNotice(info);
+    }
 }

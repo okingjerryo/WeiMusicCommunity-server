@@ -85,9 +85,8 @@
         FROM CommityInfo
         WHERE CId = #{CId}
     </select>
-    <select id="sel_CommityInfoByCName" parameterType="string" resultType="CommityInfo">
-        SELECT *
-        FROM CommityInfo
-        WHERE CName = #{CName}
-    </select>
+    <update id="update_CommityNotice" parameterType="CommityInfo" flushCache="true">
+        UPDATE CommityInfo SET CNotice = #{CNotice},CNoteCTime = #{CNoteCTime}
+        WHERE CId = #{CId}
+    </update>
 </mapper>
