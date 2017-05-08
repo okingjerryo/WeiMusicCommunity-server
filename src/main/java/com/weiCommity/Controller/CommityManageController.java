@@ -1,5 +1,6 @@
 package com.weiCommity.Controller;
 
+import com.weiCommity.Model.CommityActive;
 import com.weiCommity.Model.CommityInfo;
 import com.weiCommity.Model.CommityMember;
 import com.weiCommity.Service.CommityManageService;
@@ -31,6 +32,39 @@ public class CommityManageController {
         this.manageService = manageService;
     }
 
+
+    //社团注册 获得当前社团名是否存在
+    @RequestMapping(value = "isNameExist")
+    public ResponseEntity<HttpJson> isCommityNameExist(@RequestBody String jsonString) {
+        HttpJson re = new HttpJson();
+        HttpJson inObj = new HttpJson(jsonString);
+        try {
+            if (!inObj.getClassName().equals("form:isCommityNameExist"))
+                throw new JSONException("");
+
+            String targetName = inObj.getPara("CName");
+            CommityInfo info = new CommityInfo();
+            info.setCName(targetName);
+            String reIn = manageService.isCommmityIn(info);
+            if (reIn == null)
+                reIn = "不存在";
+
+            re.setPara("Cid", reIn);
+            re.constractJsonString();
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("请求失败" + e.getMessage());
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出现异常 请稍后再试");
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
+
     //社团注册-基本
     //1.社团基本信息注入    2.人员表中当前用户入库 设置权限为（4.社长）
     //需要另外注入 创建社团的用户UUuid
@@ -38,17 +72,17 @@ public class CommityManageController {
     @RequestMapping(value = "regist/common")
     public ResponseEntity<HttpJson> registCommityCommon(@RequestBody String jsonString) {
         HttpJson re = new HttpJson();
-        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson inObj = new HttpJson(jsonString, CommityInfo.class);
         try {
             if (!inObj.getClassName().equals("CommityInfo:commityRegist-common"))
                 throw new JSONException("");
 
             CommityInfo registInfo = (CommityInfo) inObj.getClassObject();
 
-            //1.检查待注册社团名字是否存在
-            String checkCommityName = manageService.isCommmityIn(registInfo);
-            if (!checkCommityName.isEmpty())
-                throw new JSONException("您要注册的社团名已存在");
+//            //1.检查待注册社团名字是否存在
+//            String checkCommityName = manageService.isCommmityIn(registInfo);
+//            if (!checkCommityName.isEmpty())
+//                throw new JSONException("您要注册的社团名已存在");
 
             //2.将这个社团的信息注册到数据库中
             String CId = manageService.registCommon(registInfo);
@@ -67,13 +101,16 @@ public class CommityManageController {
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("注册请求失败" + e.getMessage());
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
 
         }
+        re.constractJsonString();
         return new ResponseEntity<>(re, HttpStatus.ACCEPTED);
     }
 
@@ -90,13 +127,16 @@ public class CommityManageController {
             List<CommityMember> send = manageService.getAllUserInCommity(inMem.getCid());
             re.setClassName("List<CommityMember>");
             re.setClassObject(send);
+            re.constractJsonString();
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("请求不合法");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
         return new ResponseEntity<>(re, HttpStatus.OK);
@@ -114,13 +154,16 @@ public class CommityManageController {
             String thisEditUser = inObj.getPara("thisUUid");
             CommityMember member = (CommityMember) inObj.getClassObject();
             manageService.setUserTypeIdentityByMUUuid(thisEditUser, member);
+            re.constractJsonString();
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("成员职位变更失败," + e.getMessage());
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
 
@@ -143,21 +186,23 @@ public class CommityManageController {
                 throw new JSONException("权限不足");
             //权限检查完毕后就可以删除了
             manageService.delUserInCommity(delMem);
-
+            re.constractJsonString();
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("您的操作失败," + e.getMessage());
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
 
         return new ResponseEntity<>(re, HttpStatus.ACCEPTED);
     }
 
-    //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）
+    //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）（这里已经有公告了）
     @RequestMapping(value = "commityInfo/get")
     public ResponseEntity<HttpJson> getCommityInfo(@RequestBody String jsonString) {
         HttpJson inObj = new HttpJson(jsonString);
@@ -177,19 +222,22 @@ public class CommityManageController {
 
             re.setClassName("CommityInfo:thisCommityInfo");
             re.setClassObject(reInfo);
+            re.constractJsonString();
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("请求不合法" + e.getMessage());
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
 
-    //管理层修改公告 注意 要特别注入UUuid 类里面要提供 Cid 新的Notice
+    //管理层发布公告 注意 要特别注入UUuid 类里面要提供 Cid 新的Notice
     @RequestMapping(value = "notice/publish")
     public ResponseEntity<HttpJson> publishCommityNotice(@RequestBody String jsonString) {
         HttpJson inObj = new HttpJson(jsonString);
@@ -207,19 +255,88 @@ public class CommityManageController {
 
             //发布公告
             manageService.publishCommityNotices(sender);
-
+            re.constractJsonString();
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("您的操作失败" + e.getMessage());
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
 
-    //管理员发布活动 在chuan'guo'la
+    //管理员发布活动 在默认情况下开始时间为现在 注意 有活动海报的存储
+    @RequestMapping(value = "activity/publish")
+    public ResponseEntity<HttpJson> addCommityActivity(@RequestBody String jsonString) {
+        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson re = new HttpJson();
+        try {
+            if (inObj.getClassName().equals("CommityActivity:active-publish"))
+                throw new JSONException("");
+
+            CommityActive active = (CommityActive) inObj.getClassObject(); //要发布的东西
+            CommityMember opMem = manageService.getOneUserInCommity(active.getCACreatUserId(), active.getCid());
+            if (opMem.getUtype() < 2)
+                throw new JSONException("没有足够的权限");
+
+            //发布活动
+            manageService.publishCommityActivity(active);
+            re.constractJsonString();
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("您的操作失败" + e.getMessage());
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
+
+    //管理员对公告和社团信息的修改
+    @RequestMapping(value = "comomityInfo/edit")
+    public ResponseEntity<HttpJson> editCommityInfo(@RequestBody String jsonString) {
+        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson re = new HttpJson();
+        try {
+            if (inObj.getClassName().equals("CommityInfo:-publish"))
+                throw new JSONException("");
+            //权限的检查
+            String thisOp = inObj.getPara("UUuid");
+            String lastPath = inObj.getPara("lastPath");
+            CommityInfo info = (CommityInfo) inObj.getClassObject(); //要发布的东西
+            CommityMember opMem = manageService.getOneUserInCommity(thisOp, info.getCid());
+            if (opMem.getUtype() < 2)
+                throw new JSONException("没有足够的权限");
+
+            //修改信息
+            manageService.editCommityInfo(info, lastPath);
+            re.constractJsonString();
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("您的操作失败" + e.getMessage());
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出现异常，请稍后再试");
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
+
+    //获得活动（可以根据时间）
+    //public ResponseEntity<HttpJson> getCommityActivity()
+    //修改一个活动
+
 
 }

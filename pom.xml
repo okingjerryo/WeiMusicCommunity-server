@@ -32,6 +32,18 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+      <!-- LocalDate 替代 -->
+      <dependency>
+          <groupId>joda-time</groupId>
+          <artifactId>joda-time</artifactId>
+          <version>2.9.9</version>
+      </dependency>
+      <!-- fastJson -->
+      <dependency>
+          <groupId>com.alibaba</groupId>
+          <artifactId>fastjson</artifactId>
+          <version>1.2.31</version>
+      </dependency>
     <!-- serverlet 支持 -->
     <dependency>
       <groupId>javax</groupId>

@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /**
  * 社团信息实体，用于存常用需要的舒团信息
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 public class CommityInfo {
     private String Cid;
     private String CName;
-    private LocalDate CCreateTime;
+    private DateTime CCreateTime;
     private String Cintroduce;
     private String CTag;
     private String CHeadImg;
@@ -21,13 +20,21 @@ public class CommityInfo {
     private int CMeMCount;
     private String CNotice;
     private String CImgObj;
-    private LocalDate CNoteCTime;
+    private DateTime CNoteCTime;
 
-    public LocalDate getCNoteCTime() {
+    public DateTime getCCreateTime() {
+        return CCreateTime;
+    }
+
+    public void setCCreateTime(DateTime CCreateTime) {
+        this.CCreateTime = CCreateTime;
+    }
+
+    public DateTime getCNoteCTime() {
         return CNoteCTime;
     }
 
-    public void setCNoteCTime(LocalDate CNoteCTime) {
+    public void setCNoteCTime(DateTime CNoteCTime) {
         this.CNoteCTime = CNoteCTime;
     }
 
@@ -55,13 +62,7 @@ public class CommityInfo {
         this.CName = CNAame;
     }
 
-    public LocalDate getCCreateTime() {
-        return CCreateTime;
-    }
 
-    public void setCCreateTime(LocalDate CCreateTime) {
-        this.CCreateTime = CCreateTime;
-    }
 
     public String getCintroduce() {
         return Cintroduce;

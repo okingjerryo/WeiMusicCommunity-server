@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
 
 /**
  * Created by uryuo on 17/4/19.
@@ -15,7 +14,8 @@ public class UserTFWork {
     private String WorkFC;
     private String WorkSC;
     private int isFreq;
-    private Timestamp delayTime;
+
+    private DateTime delayTime;
     private int status;
 
 
@@ -70,11 +70,11 @@ public class UserTFWork {
         this.isFreq = isFreq;
     }
 
-    public Timestamp getDelayTime() {
+    public DateTime getDelayTime() {
         return delayTime;
     }
 
-    public void setDelayTime(Timestamp delayTime) {
+    public void setDelayTime(DateTime delayTime) {
         this.delayTime = delayTime;
     }
 

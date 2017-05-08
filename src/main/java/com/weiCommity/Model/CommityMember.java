@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /**
  * 社团人员列表与权限实体（用的view中最大的字段数量作为内部的成员变量，实际中按需使用）
@@ -13,7 +12,8 @@ public class CommityMember {
     private String CMid;
     private String Cid;
     private String UUuid;
-    private LocalDate UJoinTime;
+
+    private DateTime UJoinTime;
     private int Utype = 0;
     //存view 里面的Type的名字 给客户端方便
     private String UTypeName;
@@ -68,11 +68,11 @@ public class CommityMember {
         this.UUuid = UUuid;
     }
 
-    public LocalDate getUJoinTime() {
+    public DateTime getUJoinTime() {
         return UJoinTime;
     }
 
-    public void setUJoinTime(LocalDate UJoinTime) {
+    public void setUJoinTime(DateTime UJoinTime) {
         this.UJoinTime = UJoinTime;
     }
 

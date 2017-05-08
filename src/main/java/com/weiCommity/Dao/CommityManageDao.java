@@ -1,5 +1,6 @@
 package com.weiCommity.Dao;
 
+import com.weiCommity.Model.CommityActive;
 import com.weiCommity.Model.CommityInfo;
 import com.weiCommity.Model.CommityMember;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,10 @@ public class CommityManageDao extends BaseDao {
             throw e;
         }
         session.close();
-        return info.getCid();
+        if (info != null)
+            return info.getCid();
+
+        return null;
     }
 
     //通过实体 注册一个社团项目
@@ -156,8 +160,18 @@ public class CommityManageDao extends BaseDao {
         return (CommityInfo) BaseDao.selOneFromSQL("org.test.Login.sel_CommityInfoByCName", CName);
     }
 
+    //更新社团信息 以及通知
+    public void editCommityInfo(CommityInfo info) {
+        BaseDao.InEdDeOneIntoSql(thisMapperNamespace + "update_CommityInfo", info);
+    }
     //发布通知
     public void publishNotice(CommityInfo info) {
         BaseDao.InEdDeOneIntoSql(thisMapperNamespace + "update_CommityNotice", info);
     }
+
+    //发布活动
+    public void publishActive(CommityActive active) {
+        BaseDao.InEdDeOneIntoSql(thisMapperNamespace + "insert_CommityActive", active);
+    }
+
 }

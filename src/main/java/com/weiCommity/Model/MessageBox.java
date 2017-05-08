@@ -1,8 +1,8 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /***
  * PackageName com.weiCommity.Model
@@ -13,7 +13,8 @@ import java.time.LocalDate;
 @Component
 public class MessageBox {
     private String MId;
-    private LocalDate MCreateTime;
+    @DateTimeFormat
+    private DateTime MCreateTime;
     private String MSenderId;
     private String MTarId;
     private String MTitle;
@@ -31,11 +32,11 @@ public class MessageBox {
         this.MId = MId;
     }
 
-    public LocalDate getMCreateTime() {
+    public DateTime getMCreateTime() {
         return MCreateTime;
     }
 
-    public void setMCreateTime(LocalDate MCreateTime) {
+    public void setMCreateTime(DateTime MCreateTime) {
         this.MCreateTime = MCreateTime;
     }
 

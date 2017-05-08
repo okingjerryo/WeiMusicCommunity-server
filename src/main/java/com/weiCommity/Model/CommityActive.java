@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /**
  * Created by uryuo on 17/5/1.
@@ -11,13 +10,24 @@ import java.time.LocalDate;
 public class CommityActive {
     private String CAId;
     private String Cid;
-    private LocalDate CAStartTime;
-    private LocalDate CAEndTime;
+
+    private DateTime CAStartTime;
+
+    private DateTime CAEndTime;
     private String CATitle;
     private String CAThings;
     private String CACreatUserId;
     private int CAImportent = 0;
     private String CAImgPath;
+    private String CAImgObj;
+
+    public String getCAImgObj() {
+        return CAImgObj;
+    }
+
+    public void setCAImgObj(String CAImgObj) {
+        this.CAImgObj = CAImgObj;
+    }
 
     public String getCAId() {
         return CAId;
@@ -35,19 +45,19 @@ public class CommityActive {
         Cid = cid;
     }
 
-    public LocalDate getCAStartTime() {
+    public DateTime getCAStartTime() {
         return CAStartTime;
     }
 
-    public void setCAStartTime(LocalDate CAStartTime) {
+    public void setCAStartTime(DateTime CAStartTime) {
         this.CAStartTime = CAStartTime;
     }
 
-    public LocalDate getCAEndTime() {
+    public DateTime getCAEndTime() {
         return CAEndTime;
     }
 
-    public void setCAEndTime(LocalDate CAEndTime) {
+    public void setCAEndTime(DateTime CAEndTime) {
         this.CAEndTime = CAEndTime;
     }
 

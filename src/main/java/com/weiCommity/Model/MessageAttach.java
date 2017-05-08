@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /**
  * 附件实体 相比于数据库的实体 多了一个使用 ISO-8859-1编码的 ImgObj的类
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 public class MessageAttach {
     private String MAId;
     private String MId;
-    private LocalDate MCreateTime;
+    private DateTime MCreateTime;
     private String MAFileName;
     private String MAFilePath;
     private int MAIsReaseved;
@@ -43,11 +42,11 @@ public class MessageAttach {
         this.MId = MId;
     }
 
-    public LocalDate getMCreateTime() {
+    public DateTime getMCreateTime() {
         return MCreateTime;
     }
 
-    public void setMCreateTime(LocalDate MCreateTime) {
+    public void setMCreateTime(DateTime MCreateTime) {
         this.MCreateTime = MCreateTime;
     }
 

@@ -1,17 +1,18 @@
 package com.weiCommity.Service;
 
 import com.weiCommity.Dao.CommityManageDao;
+import com.weiCommity.Model.CommityActive;
 import com.weiCommity.Model.CommityInfo;
 import com.weiCommity.Model.CommityMember;
 import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class CommityManageService {
 
     //通过社团信息实体(名字)查询是否存在当前社团在数据库中 存在的话返回 Cid
     public String isCommmityIn(CommityInfo thisinfo) {
-        String re;
+        String re = "";
         re = commityManageDao.getCidByCName(thisinfo.getCName());
         return re;
     }
@@ -42,6 +43,8 @@ public class CommityManageService {
 
         //注册一个新的Cid
         info.setCid(UUID.randomUUID().toString());
+        //注册一个当前时间
+        info.setCCreateTime(new DateTime(DateTime.now()));
         //图片进存储空间
         String tarBackPath = "CommitySpace/" + info.getCid() + "/" + new File(info.getCHeadImg()).getName();
         File tarPath = new File(StaticVar.getToFilePath() + tarBackPath);
@@ -50,13 +53,15 @@ public class CommityManageService {
         info.setCHeadImg(tarBackPath);
         //入库
         commityManageDao.registInfo(info);
-        re = tarBackPath;
+        re = info.getCid();
         return re;
     }
 
     //注册 将将制定用户根据制定权限注册到社团
     public void registUserIntoCommity(CommityMember member) {
         //注册用户
+        DateTime time = new DateTime(DateTime.now());
+        member.setUJoinTime(new DateTime(DateTime.now()));
         commityManageDao.registUserIntoCommity(member);
         //查询当前社团内用户数
         int MemCount = commityManageDao.getCommityMeMCount(member.getCid());
@@ -126,10 +131,54 @@ public class CommityManageService {
         return re;
     }
 
+
     //发布公告
     public void publishCommityNotices(CommityInfo info) {
         //设置发布时间为当前时间
-        info.setCNoteCTime(LocalDate.now());
+        info.setCNoteCTime(DateTime.now());
         commityManageDao.publishNotice(info);
     }
+
+    //修改社团相关信息 以及公告
+    public void editCommityInfo(CommityInfo info, String lastPath) throws IOException {
+        //检查图像有没有变化
+        if (!(info.getCHeadImg().equals(lastPath))) {
+            //删除之前的图
+            FileUtils.forceDelete(new File(StaticVar.getToFilePath() + lastPath));
+            //存新图
+            String fileName = new File(info.getCHeadImg()).getName();
+            String filePathStr = "CommitySpace/" + info.getCid() + fileName;
+
+            File tarNewFile = new File(StaticVar.getToFilePath() + filePathStr);
+            FileUtils.writeByteArrayToFile(tarNewFile, info.getCImgObj().getBytes(StaticVar.getDecodeFileSet()));
+            info.setCHeadImg(filePathStr);
+
+            commityManageDao.editCommityInfo(info);
+        }
+
+    }
+
+    //发布活动
+    public void publishCommityActivity(CommityActive active) throws IOException {
+        //首先把相关图片存档
+        String fileName = new File(active.getCAImgPath()).getName();
+        String filePathStr = "CommitySpace/" + active.getCid() + "/active/" + fileName;
+
+        if (active.getCAEndTime() == null)
+            throw new JSONException("活动结束时间未设定");
+        if (active.getCAImgPath() != null) {
+            File tarSPath = new File(StaticVar.getToFilePath() + filePathStr);
+            FileUtils.writeByteArrayToFile(tarSPath, active.getCAImgObj().getBytes(StaticVar.getDecodeFileSet()));
+            active.setCAImgPath(filePathStr);
+        }
+
+        active.setCAId(UUID.randomUUID().toString());
+
+        if (active.getCAStartTime() == null)
+            active.setCAStartTime(new DateTime(DateTime.now()));
+
+        commityManageDao.publishActive(active);
+    }
+
+
 }

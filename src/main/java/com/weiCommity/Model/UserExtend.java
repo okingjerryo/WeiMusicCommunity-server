@@ -1,8 +1,7 @@
 package com.weiCommity.Model;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 /**
  * Created by uryuo on 17/4/22.
@@ -45,15 +44,8 @@ public class UserExtend {
         return UBirthday;
     }
 
-    public void setUBirthday(String UBirthday) {
-        String [] re = UBirthday.split("/");
-        int []intDate = new int[3];
-        for (int i=0;i<re.length;i++){
-            intDate[i] = Integer.parseInt(re[i]);
-        }
-
-        LocalDate thisBirthday = LocalDate.of(intDate[0],intDate[1],intDate[2]);
-        this.UBirthday = thisBirthday;
+    public void setUBirthday(LocalDate UBirthday) {
+        this.UBirthday = UBirthday;
     }
 
     public String getUTag() {

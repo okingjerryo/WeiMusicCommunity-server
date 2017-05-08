@@ -1,12 +1,12 @@
 package com.weiCommity.Controller;
 
+import com.alibaba.fastjson.TypeReference;
 import com.weiCommity.Model.Login;
 import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Service.RegistService;
 import com.weiCommity.Util.HttpJson;
-import org.json.HTTP;
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +53,7 @@ public class RegistContoller {
             e.printStackTrace();
             re.setMessage("服务器出错");
             re.setStatusCode(202);
+            re.constractJsonString();
             return new ResponseEntity<HttpJson>(re,HttpStatus.BAD_GATEWAY);
         }
 
@@ -69,6 +69,7 @@ public class RegistContoller {
             re.setClassObject(flag);
         }
 
+        re.constractJsonString();
 
         return new ResponseEntity<HttpJson>(re,HttpStatus.ACCEPTED);
     }
@@ -79,8 +80,8 @@ public class RegistContoller {
     @RequestMapping(value = "freq",produces = "application/json; charset=UTF-8")
     public ResponseEntity<HttpJson> registFreqTyOWorkWithUUid(@RequestBody String jsonString){
         HttpJson re = new HttpJson();
-        HttpJson inObj = new HttpJson(jsonString);
-
+        HttpJson inObj = new HttpJson(jsonString, new TypeReference<List<String>>() {
+        });
         try{
             if (!inObj.getClassName().equals("List<String>:regist-freq"))
                 throw new IOException();
@@ -90,14 +91,17 @@ public class RegistContoller {
             List<Object> list = JsonList.toList();
 
             registService.registFreqTOWByWorkId(thisUUuid,list);
+            re.constractJsonString();
         }catch (IOException e){
 
             re.setStatusCode(250);
             re.setMessage("请求不合法");
+            re.constractJsonString();
             return new ResponseEntity<HttpJson>(re,HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             re.setStatusCode(202);
             re.setMessage("服务器处理出现异常");
+            re.constractJsonString();
             return new ResponseEntity<HttpJson>(re,HttpStatus.BAD_GATEWAY);
         }
         return new ResponseEntity<HttpJson>(re,HttpStatus.OK);
@@ -120,21 +124,23 @@ public class RegistContoller {
             UserExtend userExtend = new UserExtend();
             userExtend.setUUuid(inObj.getPara("UUuid"));
             userExtend.setUHeadImg(inObj.getPara("UHeadImg"));
-            userExtend.setUBirthday(inObj.getPara("UBirthday"));
+            userExtend.setUBirthday(new LocalDate(inObj.getPara("UBirthday")));
             userExtend.setUNackName(inObj.getPara("UNackName"));
             userExtend.setUSex(inObj.getPara("USex"));
             String imgStr = (String) inObj.getClassObject();
             String tarImgPath = registService.registExtandInfo(userExtend,imgStr);
             //返回图像的服务器访问地址
             re.setMessage(tarImgPath);
-
+            re.constractJsonString();
         }catch(IOException e){
             re.setMessage("提交的请求不匹配");
             re.setStatusCode(250);
+            re.constractJsonString();
             return new ResponseEntity<HttpJson>(re,HttpStatus.BAD_REQUEST);
         }catch(Exception e){
             re.setStatusCode(202);
             re.setMessage("服务器处理异常");
+            re.constractJsonString();
             return  new ResponseEntity<HttpJson>(re,HttpStatus.BAD_GATEWAY);
         }
 

@@ -47,10 +47,12 @@ public class LoginController {
                 re.setStatusCode(203);
                 re.setClassName("Message");
                 re.setMessage(reMessage);
+                re.constractJsonString();
             } else if (reMessage.equals("用户不存在，请检查你的用户名")) {
                 re.setStatusCode(203);
                 re.setClassName("Message");
                 re.setMessage(reMessage);
+                re.constractJsonString();
             } else {
                 re.setClassObject(reMessage);
                 re.setClassName(String.class.toString());
@@ -59,6 +61,7 @@ public class LoginController {
         }catch (Exception e){
             re.setStatusCode(250);
             re.setMessage("请求属性异常");
+            re.constractJsonString();
             return  new ResponseEntity<HttpJson>(re,HttpStatus.BAD_REQUEST);
         }
     }

@@ -55,38 +55,51 @@
     </select>
     <insert id="insert_CommityInfo" parameterType="CommityInfo" flushCache="true">
         INSERT INTO CommityInfo (CId, CName, Cintroduce, CTag, CHeadImg, CNMDemand, CMeMCount)
-        VALUES (#{CId},#{CName},#{Cintroduce},#{CTag},#{CHeadImg},#{CNMDemand},0)
+        VALUES (#{Cid},#{CName},#{Cintroduce},#{CTag},#{CHeadImg},#{CNMDemand},0)
     </insert>
     <insert id="insert_CommityMember" parameterType="CommityMember" flushCache="true">
         INSERT INTO CommityMember (CMid, CId, UUuid, Utype)
-        VALUES (#{CMid},#{CId},#{UUuid},#{Utype})
+        VALUES (#{CMid},#{Cid},#{UUuid},#{Utype})
     </insert>
     <select id="sel_CommityMemCount" parameterType="string" resultType="int">
-        SELECT CMeMCount FROM CommityInfo WHERE CId = #{CId}
+        SELECT CMeMCount FROM CommityInfo WHERE CId = #{Cid}
     </select>
     <update id="update_CommmityMeMCount" parameterType="CommityInfo" flushCache="true">
         UPDATE CommityInfo SET CMeMCount = #{CMeMCount}
-        WHERE CId = #{CId}
+        WHERE CId = #{Cid}
     </update>
     <select id="sel_CommityUserByCId" parameterType="string" resultType="CommityMember">
-        SELECT * FROM commitymemview WHERE CId = #{CId}
+        SELECT * FROM commitymemview WHERE CId = #{Cid}
     </select>
     <select id="sel_CommityOneUserByCM" parameterType="CommityMember" resultType="CommityMember">
-        SELECT * FROM CommityMember WHERE CId = #{CId} AND UUuid = #{UUuid}
+        SELECT * FROM CommityMember WHERE CId = #{Cid} AND UUuid = #{UUuid}
     </select>
     <update id="update_CommityMemType" parameterType="CommityMember" flushCache="true">
         UPDATE CommityMember SET Utype = #{Utype} WHERE UUuid = #{UUuid}
     </update>
     <delete id="del_CommityMem" parameterType="CommityMember" flushCache="true">
-        DELETE FROM CommityMember WHERE CId = #{CId} AND UUuid = #{UUuid}
+        DELETE FROM CommityMember WHERE CId = #{Cid} AND UUuid = #{UUuid}
     </delete>
     <select id="sel_CommityInfoByCid" parameterType="string" resultType="CommityInfo">
         SELECT *
         FROM CommityInfo
-        WHERE CId = #{CId}
+        WHERE CId = #{Cid}
     </select>
     <update id="update_CommityNotice" parameterType="CommityInfo" flushCache="true">
         UPDATE CommityInfo SET CNotice = #{CNotice},CNoteCTime = #{CNoteCTime}
-        WHERE CId = #{CId}
+        WHERE CId = #{Cid}
+    </update>
+    <insert id="insert_CommityActive" parameterType="CommityActive" flushCache="true">
+        INSERT INTO CommityActive (CAId, Cid, CAStartTime, CAEndTime, CATitle, CAThings, CACreatUserId, CAImportent, CAImgPath)
+        VALUES
+            (#{CAId}, #{Cid}, #{CAStartTime}, #{CAEndTime}, #{CATitle}, #{CAThings}, #{CACreatUserId}, #{CAImportent},
+             #{CAImgPath})
+    </insert>
+    <update id="update_CommityInfo" parameterType="CommityInfo" flushCache="true">
+        UPDATE CommityInfo
+        SET CName = #{CName},CCreateTime = #{CCreateTime},Cintroduce = #{Cintroduce},CTag = #{CTag},CHeadImg =
+        #{CHeadImg},CIsNMin = #{CIsNMin},CNMDemand = #{CNMDemand},
+        CNotice = #{CNotice},CNoteCTime = #{CNoteCTime}
+        WHERE CId = #{Cid}
     </update>
 </mapper>
