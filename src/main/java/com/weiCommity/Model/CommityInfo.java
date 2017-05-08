@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class CommityInfo {
     private String Cid;
     private String CName;
+
     private DateTime CCreateTime;
     private String Cintroduce;
     private String CTag;
@@ -27,7 +28,7 @@ public class CommityInfo {
     }
 
     public void setCCreateTime(DateTime CCreateTime) {
-        this.CCreateTime = CCreateTime;
+        this.CCreateTime = new DateTime(CCreateTime);
     }
 
     public DateTime getCNoteCTime() {
@@ -35,7 +36,7 @@ public class CommityInfo {
     }
 
     public void setCNoteCTime(DateTime CNoteCTime) {
-        this.CNoteCTime = CNoteCTime;
+        this.CNoteCTime = new DateTime(CNoteCTime);
     }
 
     public String getCImgObj() {

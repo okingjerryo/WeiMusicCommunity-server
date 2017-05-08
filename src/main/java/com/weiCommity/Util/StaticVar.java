@@ -1,5 +1,6 @@
 package com.weiCommity.Util;
 
+import org.joda.time.DateTimeZone;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -12,9 +13,13 @@ import java.io.FileNotFoundException;
 public class StaticVar {
     private static String toFilePath = "";
     private final static String decodeFileSet = "ISO-8859-1";
-
+    private static DateTimeZone ChinaZone = DateTimeZone.forID("Asia/Shanghai");
     public static String getDecodeFileSet() {
         return decodeFileSet;
+    }
+
+    public static DateTimeZone getChinaZone() {
+        return ChinaZone;
     }
 
     public static String getToFilePath() {

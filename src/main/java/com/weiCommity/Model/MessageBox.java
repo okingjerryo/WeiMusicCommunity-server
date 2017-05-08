@@ -37,7 +37,7 @@ public class MessageBox {
     }
 
     public void setMCreateTime(DateTime MCreateTime) {
-        this.MCreateTime = MCreateTime;
+        this.MCreateTime = new DateTime(MCreateTime);
     }
 
     public String getMSenderId() {

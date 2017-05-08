@@ -50,7 +50,7 @@ public class CommityActive {
     }
 
     public void setCAStartTime(DateTime CAStartTime) {
-        this.CAStartTime = CAStartTime;
+        this.CAStartTime = new DateTime(CAStartTime);
     }
 
     public DateTime getCAEndTime() {
@@ -58,7 +58,7 @@ public class CommityActive {
     }
 
     public void setCAEndTime(DateTime CAEndTime) {
-        this.CAEndTime = CAEndTime;
+        this.CAEndTime = new DateTime(CAEndTime);
     }
 
     public String getCATitle() {

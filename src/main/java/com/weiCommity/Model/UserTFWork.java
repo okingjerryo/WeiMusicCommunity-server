@@ -75,7 +75,7 @@ public class UserTFWork {
     }
 
     public void setDelayTime(DateTime delayTime) {
-        this.delayTime = delayTime;
+        this.delayTime = new DateTime(delayTime);
     }
 
     public int getStatus() {

@@ -47,7 +47,7 @@ public class MessageAttach {
     }
 
     public void setMCreateTime(DateTime MCreateTime) {
-        this.MCreateTime = MCreateTime;
+        this.MCreateTime = new DateTime(MCreateTime);
     }
 
     public String getMAFileName() {

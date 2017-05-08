@@ -54,12 +54,12 @@
         SELECT * FROM CommityInfo WHERE CName = #{CName}
     </select>
     <insert id="insert_CommityInfo" parameterType="CommityInfo" flushCache="true">
-        INSERT INTO CommityInfo (CId, CName, Cintroduce, CTag, CHeadImg, CNMDemand, CMeMCount)
-        VALUES (#{Cid},#{CName},#{Cintroduce},#{CTag},#{CHeadImg},#{CNMDemand},0)
+        INSERT INTO CommityInfo (CId, CName, Cintroduce,CCreateTime, CTag, CHeadImg, CNMDemand, CMeMCount)
+        VALUES (#{Cid},#{CName},#{Cintroduce},#{CCreateTime},#{CTag},#{CHeadImg},#{CNMDemand},0)
     </insert>
     <insert id="insert_CommityMember" parameterType="CommityMember" flushCache="true">
-        INSERT INTO CommityMember (CMid, CId, UUuid, Utype)
-        VALUES (#{CMid},#{Cid},#{UUuid},#{Utype})
+        INSERT INTO CommityMember (CMid, CId,UJoinTime, UUuid, Utype)
+        VALUES (#{CMid},#{Cid},#{UJoinTime},#{UUuid},#{Utype})
     </insert>
     <select id="sel_CommityMemCount" parameterType="string" resultType="int">
         SELECT CMeMCount FROM CommityInfo WHERE CId = #{Cid}

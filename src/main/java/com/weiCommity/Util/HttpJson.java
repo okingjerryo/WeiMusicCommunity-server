@@ -85,7 +85,7 @@ public class HttpJson {
             ParserConfig.getGlobalInstance().putDeserializer(LocalDate.class, JodaTimeDeserializer.instance);
             this.classObjectString = jsonObject.getString("classObjectString");
             if (!(classObjectString.equals("") || classObjectString.equals("{}"))) {
-                this.classObject = JSON.parseObject(classObjectString, className, JSON.DEFAULT_PARSER_FEATURE);
+                this.classObject = JSON.parseObject(classObjectString, className);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -45,7 +45,7 @@ public class UserExtend {
     }
 
     public void setUBirthday(LocalDate UBirthday) {
-        this.UBirthday = UBirthday;
+        this.UBirthday = new LocalDate(UBirthday);
     }
 
     public String getUTag() {

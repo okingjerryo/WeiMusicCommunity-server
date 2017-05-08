@@ -134,8 +134,6 @@ public class CommityManageService {
 
     //发布公告
     public void publishCommityNotices(CommityInfo info) {
-        //设置发布时间为当前时间
-        info.setCNoteCTime(DateTime.now());
         commityManageDao.publishNotice(info);
     }
 
@@ -152,9 +150,8 @@ public class CommityManageService {
             File tarNewFile = new File(StaticVar.getToFilePath() + filePathStr);
             FileUtils.writeByteArrayToFile(tarNewFile, info.getCImgObj().getBytes(StaticVar.getDecodeFileSet()));
             info.setCHeadImg(filePathStr);
-
-            commityManageDao.editCommityInfo(info);
         }
+        commityManageDao.editCommityInfo(info);
 
     }
 
