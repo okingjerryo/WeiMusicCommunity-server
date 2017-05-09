@@ -28,7 +28,7 @@ public class CommityInfo {
     }
 
     public void setCCreateTime(DateTime CCreateTime) {
-        this.CCreateTime = new DateTime(CCreateTime);
+        this.CCreateTime = CCreateTime;
     }
 
     public DateTime getCNoteCTime() {
@@ -36,7 +36,7 @@ public class CommityInfo {
     }
 
     public void setCNoteCTime(DateTime CNoteCTime) {
-        this.CNoteCTime = new DateTime(CNoteCTime);
+        this.CNoteCTime = CNoteCTime;
     }
 
     public String getCImgObj() {

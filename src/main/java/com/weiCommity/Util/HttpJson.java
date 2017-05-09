@@ -7,7 +7,6 @@ package com.weiCommity.Util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +48,7 @@ public class HttpJson {
             jsonObject.put("className", className);
             //用中间服务将Object转成String
             //SerializeConfig.getGlobalInstance().put(Timestamp.class, new TimestampSerializer());
-            classObjectString = JSON.toJSONString(classObject, SerializerFeature.WriteDateUseDateFormat);
+            classObjectString = JSON.toJSONString(classObject);
             jsonObject.put("classObjectString", classObjectString);
             jsonString = jsonObject.toString();
         } catch (JSONException e) {

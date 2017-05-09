@@ -73,7 +73,7 @@ public class CommityMember {
     }
 
     public void setUJoinTime(DateTime UJoinTime) {
-        this.UJoinTime = new DateTime(UJoinTime);
+        this.UJoinTime = UJoinTime;
     }
 
     public int getUtype() {

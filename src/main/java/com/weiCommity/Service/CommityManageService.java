@@ -80,33 +80,20 @@ public class CommityManageService {
 
     //更新 制定社团成员的权限 并进行权限检查
     public void setUserTypeIdentityByMUUuid(String UUuid, CommityMember editMem) throws JSONException {
-        try {
 
-            if (editMem.getUtype() < 3)
-                throw new IllegalAccessException("您不具有修改人员权限的权限");
-            //获取到当前用户的修改权限
-            CommityMember thisEditMemCM = commityManageDao.getOneCommityMember(editMem.getCid(), UUuid);
-            //获取要修改用户的原权限
-            CommityMember tarEditMemCM = commityManageDao.getOneCommityMember(editMem.getCid(), editMem.getUUuid());
-            //要修改的人员的自身权限要比自己小
-            if (!(thisEditMemCM.getUtype() > tarEditMemCM.getUtype()))
-                throw new IllegalAccessError("您自身的权限不足，无法修改目标权限");
-            //要修改的人员修改后权限要比自己小
-            if (!(thisEditMemCM.getUtype() > editMem.getUtype()))
-                throw new IllegalAccessException("您将修改的权限高于自身能修改的权限");
 
             //通过dao修改权限
             commityManageDao.setCommmityMemberType(editMem);
-            //不合法的修改权限抛出异常
-        } catch (IllegalAccessException e) {
-            throw new JSONException(e.getMessage());
-        }
 
     }
 
     //删除 制定UUid 的成员
     public void delUserInCommity(CommityMember delMem) {
         commityManageDao.delCommityUser(delMem);
+        //用户数-1
+        int MemCount = commityManageDao.getCommityMeMCount(delMem.getCid());
+        //用户数量增加1
+        commityManageDao.updateCommityMemCount(delMem.getCid(), MemCount - 1);
     }
 
     //======= 社团信息的查看 注意这里面获取的信息全部是单一的，这是面向社团 不是面向用户的服务
@@ -178,4 +165,7 @@ public class CommityManageService {
     }
 
 
+    public CommityMember getOneUserInCommity(String thisCMid) {
+        return commityManageDao.getOneUserInCommityByCMid(thisCMid);
+    }
 }

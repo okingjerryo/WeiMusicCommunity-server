@@ -18,6 +18,12 @@ public class StaticVar {
         return decodeFileSet;
     }
 
+    private static String dateFormat = "yyyy年MM月dd日 HH:mm:ss EE";
+
+    public static String getDateFormat() {
+        return dateFormat;
+    }
+
     public static DateTimeZone getChinaZone() {
         return ChinaZone;
     }

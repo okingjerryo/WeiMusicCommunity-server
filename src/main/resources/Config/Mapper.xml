@@ -102,4 +102,9 @@
         CNotice = #{CNotice},CNoteCTime = #{CNoteCTime}
         WHERE CId = #{Cid}
     </update>
+    <select id="sel_CommityMemByCMId" parameterType="string" resultType="CommityMember">
+        SELECT *
+        FROM commitymemview
+        WHERE CMid = #{CMId}
+    </select>
 </mapper>

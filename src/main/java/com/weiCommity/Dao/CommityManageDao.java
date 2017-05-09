@@ -174,4 +174,7 @@ public class CommityManageDao extends BaseDao {
         BaseDao.InEdDeOneIntoSql(thisMapperNamespace + "insert_CommityActive", active);
     }
 
+    public CommityMember getOneUserInCommityByCMid(String CMId) {
+        return (CommityMember) BaseDao.selOneFromSQL(thisMapperNamespace + "sel_CommityMemByCMId", CMId);
+    }
 }

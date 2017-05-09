@@ -5,6 +5,7 @@ import com.weiCommity.Model.CommityInfo;
 import com.weiCommity.Model.CommityMember;
 import com.weiCommity.Service.CommityManageService;
 import com.weiCommity.Util.HttpJson;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -117,10 +118,10 @@ public class CommityManageController {
     //列出当前所有社团用户以及权限
     @RequestMapping(value = "userInCommity/getALL")
     public ResponseEntity<HttpJson> getCommityAllMem(@RequestBody String jsonString) {
-        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson inObj = new HttpJson(jsonString, CommityMember.class);
         HttpJson re = new HttpJson();
         try {
-            if (inObj.getClassName().equals("CommityMember:CommityMem-get"))
+            if (!inObj.getClassName().equals("CommityMember:CommityMem-get"))
                 throw new JSONException("");
             CommityMember inMem = (CommityMember) inObj.getClassObject();
 
@@ -143,16 +144,18 @@ public class CommityManageController {
     }
 
     //社长副社长对用户权限的修改
-    @RequestMapping(value = "UserInCommity/editType")
+    @RequestMapping(value = "usertype/edit")
     public ResponseEntity<HttpJson> setCommityMemType(@RequestBody String jsonString) {
-        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson inObj = new HttpJson(jsonString, CommityMember.class);
         HttpJson re = new HttpJson();
         try {
-            if (inObj.getClassName().equals("CommityMember:CommityMember-set"))
+            if (!inObj.getClassName().equals("CommityMember:CommityMember-set"))
                 throw new JSONException("请求不合法");
 
             String thisEditUser = inObj.getPara("thisUUid");
+            String thisJoinTime = inObj.getPara("UJoinTime");
             CommityMember member = (CommityMember) inObj.getClassObject();
+            member.setUJoinTime(new DateTime(thisJoinTime));
             manageService.setUserTypeIdentityByMUUuid(thisEditUser, member);
             re.constractJsonString();
         } catch (JSONException e) {
@@ -173,18 +176,14 @@ public class CommityManageController {
     //成员踢出 （暂时只有社长副社长有这个权限）
     @RequestMapping(value = "delCommityUser")
     public ResponseEntity<HttpJson> kickUserOutOfCommity(@RequestBody String jsonString) {
-        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson inObj = new HttpJson(jsonString, CommityMember.class);
         HttpJson re = new HttpJson();
         try {
-            if (inObj.getClassName().equals("CommityMember:CommityMember-kick"))
+            if (!inObj.getClassName().equals("CommityMember:CommityMember-kick"))
                 throw new JSONException("请求不合法");
             String opreationUser = inObj.getPara("UUuid");
             CommityMember delMem = (CommityMember) inObj.getClassObject();
-            //获取当前用户权限等级
-            CommityMember opMem = manageService.getOneUserInCommity(delMem.getCid(), opreationUser);
-            if (opMem.getUtype() < 3)
-                throw new JSONException("权限不足");
-            //权限检查完毕后就可以删除了
+
             manageService.delUserInCommity(delMem);
             re.constractJsonString();
         } catch (JSONException e) {
@@ -202,6 +201,36 @@ public class CommityManageController {
         return new ResponseEntity<>(re, HttpStatus.ACCEPTED);
     }
 
+    //通过CMId获得一条成员信息
+    @RequestMapping(value = "getCMem/CMid")
+    public ResponseEntity<HttpJson> getCommityMemByCMid(@RequestBody String jsonString) {
+        HttpJson re = new HttpJson();
+        HttpJson inObj = new HttpJson(jsonString, CommityMember.class);
+        try {
+            if (!inObj.getClassName().equals("CommityMember:CommityMem-getOne"))
+                throw new JSONException("");
+
+            CommityMember member = (CommityMember) inObj.getClassObject();
+            String thisCMid = member.getCMid();
+            CommityMember reInfo = manageService.getOneUserInCommity(thisCMid);
+            re.setPara("UJoinTime", reInfo.getUJoinTime().toString());
+            re.setClassObject(reInfo);
+        } catch (JSONException e) {
+            re.setStatusCode(250);
+            re.setMessage("请求不合法");
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.OK);
+
+        } catch (Exception e) {
+            re.setStatusCode(203);
+            re.setMessage("服务器出错，请稍后再试");
+            re.constractJsonString();
+            return new ResponseEntity<>(re, HttpStatus.OK);
+        }
+        re.constractJsonString();
+        return new ResponseEntity<>(re, HttpStatus.OK);
+    }
+
     //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）（这里已经有公告了）
     @RequestMapping(value = "commityInfo/get")
     public ResponseEntity<HttpJson> getCommityInfo(@RequestBody String jsonString) {
@@ -212,7 +241,7 @@ public class CommityManageController {
                 throw new JSONException("");
 
             CommityInfo info = (CommityInfo) inObj.getClassObject();
-            CommityInfo reInfo;
+            CommityInfo reInfo = new CommityInfo();
             if (info.getCid() != null)
                 reInfo = manageService.getCommityInfoByCid(info.getCid());
             else if (info.getCName() != null)
@@ -221,6 +250,11 @@ public class CommityManageController {
                 throw new JSONException("缺少必要信息");
 
             re.setClassName("CommityInfo:thisCommityInfo");
+            if (reInfo.getCNoteCTime() != null)
+                re.setPara("CNCreatTime", reInfo.getCNoteCTime().toString());
+            else
+                re.setPara("CNCreatTime", "");
+            re.setPara("CCreatTime", reInfo.getCCreateTime().toString());
             re.setClassObject(reInfo);
             re.constractJsonString();
         } catch (JSONException e) {
@@ -248,7 +282,9 @@ public class CommityManageController {
 
 
             String opUUuid = inObj.getPara("UUuid");
+            String CNCTime = inObj.getPara("CNCTime");
             CommityInfo sender = (CommityInfo) inObj.getClassObject(); //要发布的东西
+            sender.setCNoteCTime(new DateTime(CNCTime));
             CommityMember opMem = manageService.getOneUserInCommity(sender.getCid(), opUUuid);
             if (opMem.getUtype() < 2)
                 throw new JSONException("没有足够的权限");
@@ -312,7 +348,9 @@ public class CommityManageController {
             //权限的检查
             String thisOp = inObj.getPara("UUuid");
             String lastPath = inObj.getPara("lastPath");
+            String CCreatTime = inObj.getPara("CCreatTime");
             CommityInfo info = (CommityInfo) inObj.getClassObject(); //要发布的东西
+            info.setCCreateTime(new DateTime(CCreatTime));
             CommityMember opMem = manageService.getOneUserInCommity(info.getCid(), thisOp);
             if (opMem.getUtype() < 2)
                 throw new JSONException("没有足够的权限");
