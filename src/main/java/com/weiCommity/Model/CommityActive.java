@@ -17,7 +17,6 @@ public class CommityActive {
     private String CATitle;
     private String CAThings;
     private String CACreatUserId;
-    private int CAImportent = 0;
     private String CAImgPath;
     private String CAImgObj;
 
@@ -85,13 +84,6 @@ public class CommityActive {
         this.CACreatUserId = CACreatUserId;
     }
 
-    public int getCAImportent() {
-        return CAImportent;
-    }
-
-    public void setCAImportent(int CAImportent) {
-        this.CAImportent = CAImportent;
-    }
 
     public String getCAImgPath() {
         return CAImgPath;
@@ -100,4 +92,6 @@ public class CommityActive {
     public void setCAImgPath(String CAImgPath) {
         this.CAImgPath = CAImgPath;
     }
+
+
 }

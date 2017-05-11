@@ -1,8 +1,6 @@
 package com.weiCommity.Model;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
@@ -32,12 +30,7 @@ public class Login {
     }
 
     public Login() {
-        this.UUuid = UUuid;
-        this.UPwd = UPwd;
-        this.UAName = UAName;
-        this.UTel = UTel;
-        this.UMail = UMail;
-        this.UAccStatus = UAccStatus;
+        super();
     }
 
     //getter & setter

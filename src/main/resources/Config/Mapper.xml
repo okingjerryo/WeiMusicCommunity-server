@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.test.Login">
     <select id="selLoginWithAccName" parameterType="string" resultType="Login">
         SELECT * FROM UserLogin WHERE UAName = #{thisUserName}
@@ -107,4 +107,18 @@
         FROM commitymemview
         WHERE CMid = #{CMId}
     </select>
+    <select id="sel_getAllWork" resultType="Work">
+        SELECT *
+        FROM Work
+    </select>
+    <insert id="insert_ProjectCreate" parameterType="ProjectInfo" flushCache="true">
+        INSERT INTO ProjectInfo (PId, CId, CreatUUuid, PTitle, PIntroduce, PCreatTime, PState, PType)
+        VALUES (PId = #{PId}, CId = #{CId}, CreatUUuid = #{CreatUUuid}, PTitle = #{PTitle}, PIntroduce = #{PIntroduce},
+        PCreatTime = #{PCreatTime}
+        , PState = #{PState}, PType = #{PType})
+    </insert>
+    <insert id="insert_ProjectWork" parameterType="ProjectWork" flushCache="true">
+        INSERT INTO ProjectWork (PWId, PId, UWid, UJoinTIme)
+        VALUES (PWId = #{PWId}, PId = #{PId}, UWid = #{UWid}, UJoinTIme = #{UJoinTIme})
+    </insert>
 </mapper>

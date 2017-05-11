@@ -1,28 +1,33 @@
 package com.weiCommity.Model;
 
 import org.joda.time.DateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 /***
  * PackageName com.weiCommity.Model
  * 软件信箱类
- * 附加的附件类为 MessageAttach
  * Created by uryuo on 17/5/1.
  */
 @Component
 public class MessageBox {
     private String MId;
-    @DateTimeFormat
     private DateTime MCreateTime;
     private String MSenderId;
     private String MTarId;
-    private String MTitle;
+    private String MTitle; //特殊事件标题是固定的
     private String MThings;
     private int MIsReaded = 0;
-    private int MImportant = 0;
-    private int MCheck = -2;
-    private String MSpcType;
+    private int MCheck = -2;//未读 0 拒绝 -1 已读 1（忽略） 同意 2 普通信件 -2
+    private String MSpcId; //相关联的事件id
+    private int MSenderType = 1;
+
+    public int getMSenderType() {
+        return MSenderType;
+    }
+
+    public void setMSenderType(int MSenderType) {
+        this.MSenderType = MSenderType;
+    }
 
     public String getMId() {
         return MId;
@@ -80,14 +85,6 @@ public class MessageBox {
         this.MIsReaded = MIsReaded;
     }
 
-    public int getMImportant() {
-        return MImportant;
-    }
-
-    public void setMImportant(int MImportant) {
-        this.MImportant = MImportant;
-    }
-
     public int getMCheck() {
         return MCheck;
     }
@@ -96,11 +93,11 @@ public class MessageBox {
         this.MCheck = MCheck;
     }
 
-    public String getMSpcType() {
-        return MSpcType;
+    public String getMSpcId() {
+        return MSpcId;
     }
 
-    public void setMSpcType(String MSpcType) {
-        this.MSpcType = MSpcType;
+    public void setMSpcId(String MSpcId) {
+        this.MSpcId = MSpcId;
     }
 }

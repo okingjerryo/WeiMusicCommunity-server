@@ -1,7 +1,6 @@
 package com.weiCommity.Util.MD5;
 
 import java.security.MessageDigest;
-import java.util.UUID;
 
 /**
  * Created by uryuo on 17/4/14.
@@ -42,8 +41,7 @@ public class MD5String {
     }
 
     public static void main(String args[]){
-        UUID uuid = UUID.randomUUID();
-        System.out.println(uuid.toString());
+
 
     }
 }

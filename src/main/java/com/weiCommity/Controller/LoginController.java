@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by uryuo on 17/4/17.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class LoginController {
     //Controller 也需要使用注入的方式
     private final LoginService loginService;
@@ -25,7 +25,7 @@ public class LoginController {
     }
 
     //登录事件
-    @RequestMapping(value = "/login",produces = "application/json;charset=Utf-8")
+    @RequestMapping(value = "/login", produces = "application/json;charset=Utf-8")
     public ResponseEntity<HttpJson> Login(@RequestBody String getJsonString) throws Exception {
         //username password
         HttpJson inObj = new HttpJson(getJsonString);
@@ -34,7 +34,7 @@ public class LoginController {
         try {
             String reName = inObj.getClassName();
             if (!reName.equals("form:login")) {
-               throw new Exception();
+                throw new Exception();
             }
 
             String username = inObj.getPara("username");
@@ -58,13 +58,11 @@ public class LoginController {
                 re.setClassName(String.class.toString());
             }
             return new ResponseEntity<HttpJson>(re, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             re.setStatusCode(250);
             re.setMessage("请求属性异常");
             re.constractJsonString();
-            return  new ResponseEntity<HttpJson>(re,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<HttpJson>(re, HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

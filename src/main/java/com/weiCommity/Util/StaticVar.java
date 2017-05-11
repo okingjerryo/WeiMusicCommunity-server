@@ -18,6 +18,12 @@ public class StaticVar {
         return decodeFileSet;
     }
 
+    private static final String mapperNameSpace = "org.test.Login.";
+
+    public static String getMapperNameSpace() {
+        return mapperNameSpace;
+    }
+
     private static String dateFormat = "yyyy年MM月dd日 HH:mm:ss EE";
 
     public static String getDateFormat() {
