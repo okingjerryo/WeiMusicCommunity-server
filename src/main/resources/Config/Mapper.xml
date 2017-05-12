@@ -90,10 +90,11 @@
         WHERE CId = #{Cid}
     </update>
     <insert id="insert_CommityActive" parameterType="CommityActive" flushCache="true">
-        INSERT INTO CommityActive (CAId, Cid, CAStartTime, CAEndTime, CATitle, CAThings, CACreatUserId, CAImportent, CAImgPath)
+        INSERT INTO CommityActive (CAId, Cid, CAStartTime, CAEndTime, CATitle, CAThings, CACreatUserId, CAImgPath)
         VALUES
-            (#{CAId}, #{Cid}, #{CAStartTime}, #{CAEndTime}, #{CATitle}, #{CAThings}, #{CACreatUserId}, #{CAImportent},
-             #{CAImgPath})
+            (CAId = #{CAId}, Cid = #{Cid}, CAStartTime = #{CAStartTime}, CAEndTime = #{CAEndTime}, CATitle = #{CATitle},
+             CAThings = #{CAThings},
+             CACreatUserId = #{CACreatUserId}, CAImgPath = #{CAImgPath})
     </insert>
     <update id="update_CommityInfo" parameterType="CommityInfo" flushCache="true">
         UPDATE CommityInfo
@@ -121,4 +122,18 @@
         INSERT INTO ProjectWork (PWId, PId, UWid, UJoinTIme)
         VALUES (PWId = #{PWId}, PId = #{PId}, UWid = #{UWid}, UJoinTIme = #{UJoinTIme})
     </insert>
+    <select id="sel_ProjectDynAfterIn" parameterType="ProjectDynamic" resultType="ProjectDynamic">
+        SELECT *
+        FROM sel_ProjectDynWithNoFile
+        WHERE PDId = #{PDId}
+    </select>
+    <insert id="insert_DynWord" parameterType="string" flushCache="true">
+        INSERT INTO ProjectDynamic (Word)
+        VALUES (Word = #{Word})
+    </insert>
+    <select id="sel_getAllCommityProject" parameterType="ProjectInfo" resultType="ProjectInfo">
+        SELECT *
+        FROM sel_ProjectInfo
+        WHERE CId = #{Cid} AND PState BETWEEN #{startState} AND #{endState}
+    </select>
 </mapper>

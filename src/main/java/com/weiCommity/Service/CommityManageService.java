@@ -132,7 +132,7 @@ public class CommityManageService {
             FileUtils.forceDelete(new File(StaticVar.getToFilePath() + lastPath));
             //存新图
             String fileName = new File(info.getCHeadImg()).getName();
-            String filePathStr = "CommitySpace/" + info.getCid() + fileName;
+            String filePathStr = "CommitySpace/" + info.getCid() + "/" + fileName;
 
             File tarNewFile = new File(StaticVar.getToFilePath() + filePathStr);
             FileUtils.writeByteArrayToFile(tarNewFile, info.getCImgObj().getBytes(StaticVar.getDecodeFileSet()));
