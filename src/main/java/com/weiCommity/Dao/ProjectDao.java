@@ -34,9 +34,12 @@ public class ProjectDao extends BaseDao {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectWork", thisWork);
     }
 
-    public List<Object> getCProjectWithState(ProjectInfo thisCid) {
-        List<Object> re = BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllCommityProject", thisCid);
+    public List<ProjectInfo> getCProjectWithState(ProjectInfo thisCid) {
+        List<ProjectInfo> re = (List<ProjectInfo>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllCommityProject", thisCid);
         return re;
     }
 
+    public ProjectInfo getOnePDetail(ProjectInfo info) {
+        return (ProjectInfo) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_OneProjectDetail", info);
+    }
 }

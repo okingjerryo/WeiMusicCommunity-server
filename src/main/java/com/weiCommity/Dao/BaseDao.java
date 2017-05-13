@@ -55,8 +55,8 @@ public class BaseDao {
         return returnObj;
     }
 
-    public static List<Object> selListFromSQL(String myBatisClass, Object inObj) {
-        List<Object> returnObj;
+    public static List<?> selListFromSQL(String myBatisClass, Object inObj) {
+        List<?> returnObj;
         try {
             session = sqlSessionFactory.openSession();
             returnObj = session.selectList(myBatisClass, inObj);

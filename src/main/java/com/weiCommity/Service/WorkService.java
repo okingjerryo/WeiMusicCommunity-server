@@ -34,5 +34,4 @@ public class WorkService {
         return workEntity.get(FirstSc + SecondSc);
     }
 
-
 }

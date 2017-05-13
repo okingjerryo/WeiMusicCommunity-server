@@ -6,7 +6,6 @@ import com.weiCommity.Model.ProjectWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,12 +38,12 @@ public class ProjectService {
 
 
     public List<ProjectInfo> getAllCommityProject(ProjectInfo thisCid) {
-        List<Object> getRe = projectDao.getCProjectWithState(thisCid);
-        List<ProjectInfo> re = new ArrayList<ProjectInfo>();
-        for (Object project : getRe) {
-            re.add((ProjectInfo) project);
-        }
-        return re;
+        List<ProjectInfo> getRe = projectDao.getCProjectWithState(thisCid);
+
+        return getRe;
     }
 
+    public ProjectInfo getOnePDetail(ProjectInfo info) {
+        return projectDao.getOnePDetail(info);
+    }
 }

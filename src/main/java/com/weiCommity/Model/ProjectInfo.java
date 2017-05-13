@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProjectInfo {
-    private String PId;
-    private String CId;
-    private String CreatUUuid;
-    private DateTime PEndTime;
-    private String PTitle;
-    private String PIntroduce;
-    private DateTime PCreatTime;
-    private int PState;
-    private String PType; //中文记录
+    protected String PId;
+    protected String CId;
+    protected String CreatUUuid;
+    protected DateTime PEndTime;
+    protected String PTitle;
+    protected String PIntroduce;
+    protected DateTime PCreatTime;
+    protected int PState;
+    protected String PType; //中文记录
 
-    private String UNackName;
-    private String StateName;
-    private Integer startState = 0;
-    private Integer endState = 6;
+    protected String UNackName;
+    protected String StateName;
+    protected Integer startState = 0;
+    protected Integer endState = 6;
 
     public Integer getStartState() {
         return startState;

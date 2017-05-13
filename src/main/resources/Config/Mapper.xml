@@ -69,7 +69,7 @@
         WHERE CId = #{Cid}
     </update>
     <select id="sel_CommityUserByCId" parameterType="string" resultType="CommityMember">
-        SELECT * FROM commitymemview WHERE CId = #{Cid}
+        SELECT * FROM sel_commitymemview WHERE CId = #{Cid}
     </select>
     <select id="sel_CommityOneUserByCM" parameterType="CommityMember" resultType="CommityMember">
         SELECT * FROM CommityMember WHERE CId = #{Cid} AND UUuid = #{UUuid}
@@ -105,7 +105,7 @@
     </update>
     <select id="sel_CommityMemByCMId" parameterType="string" resultType="CommityMember">
         SELECT *
-        FROM commitymemview
+        FROM sel_commitymemview
         WHERE CMid = #{CMId}
     </select>
     <select id="sel_getAllWork" resultType="Work">
@@ -135,5 +135,20 @@
         SELECT *
         FROM sel_ProjectInfo
         WHERE CId = #{Cid} AND PState BETWEEN #{startState} AND #{endState}
+    </select>
+    <select id="sel_OneProjectDetail" parameterType="ProjectInfo" resultType="ProjectInfo">
+        SELECT * FROM sel_ProjectInfo WHERE PId = #{PId}
+    </select>
+    <select id="sel_getAllOPProject" parameterType="Login" resultType="ProjectInfoPersonalOriented">
+        SELECT * FROM sel_ProjectInfoPO WHERE UUuid = #{UUuid} AND PState BETWEEN #{startState} AND #{endState}
+    </select>
+    <select id="sel_getAllCommityMemL" parameterType="CommityInfo" resultType="UserExtend">
+        SELECT UNackName,USex,UBIrthday,UTag,USign,UHeadImg,UUuid FROM sel_CommityMemList WHERE CId = #{Cid}
+    </select>
+    <select id="sel_AllUWorkByUuid" parameterType="Login" resultType="UserExtend">
+        SELECT * FROM userworkview WHERE UUuid = #{UUuid}
+    </select>
+    <select id="sel_getPersonalInfoOne" parameterType="Login" resultType="PersonalInfoPersonalOriented">
+        SELECT * FROM sel_PersonalInfoPO WHERE UUuid = #{UUuid}
     </select>
 </mapper>

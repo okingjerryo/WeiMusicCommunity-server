@@ -77,7 +77,7 @@ public class ProjectController {
 
     //获得指定状态的社团全部项目
     @RequestMapping("projectInfo/get")
-    public ResponseEntity<HttpJson> getCommityProjectByState(String jsonString) {
+    public ResponseEntity<HttpJson> getCommityProjectByState(@RequestBody String jsonString) {
         HttpJson re = new HttpJson();
         HttpJson inObj = new HttpJson(jsonString, CommityInfo.class);
 
@@ -109,13 +109,18 @@ public class ProjectController {
 
     //根据Pid查询单个Project的详情
     @RequestMapping("projectDetail/getOne")
-    ResponseEntity<HttpJson> getProjectDetail(String jsonString) {
+    ResponseEntity<HttpJson> getProjectDetail(@RequestBody String jsonString) {
         HttpJson re = new HttpJson();
-        HttpJson inObj = new HttpJson(jsonString, CommityInfo.class);
+        HttpJson inObj = new HttpJson(jsonString, ProjectInfo.class);
 
         try {
-            if (!inObj.getClassName().equals("CommityInfo:getAllProjectInProject"))
+            if (!inObj.getClassName().equals("ProjectInfo:getOnePDetail"))
                 throw new JSONException("");
+
+            ProjectInfo info = (ProjectInfo) inObj.getClassObject();
+
+            ProjectInfo reInfo = projectService.getOnePDetail(info);
+            re.setClassObject(reInfo);
 
         } catch (JSONException e) {
             re.setStatusCode(250);
@@ -131,6 +136,12 @@ public class ProjectController {
         return new ResponseEntity<>(re, HttpStatus.OK);
 
     }
+
+    //使用指定工种向指定项目发送项目加入申请
+//   @RequestMapping("joinProject/application")
+//    ResponseEntity<HttpJson>
+
+
 
     //bean管理
     @Autowired

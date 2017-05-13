@@ -234,41 +234,28 @@ public class CommityManageController {
     //通过社团id 或者 社团名字获取社团信息（都有的话 以Cid为优先）（这里已经有公告了）
     @RequestMapping(value = "commityInfo/get")
     public ResponseEntity<HttpJson> getCommityInfo(@RequestBody String jsonString) {
-        HttpJson inObj = new HttpJson(jsonString, CommityInfo.class);
-        HttpJson re = new HttpJson();
-        try {
-            if (!inObj.getClassName().equals("Commityinfo:CommityInfo-get"))
-                throw new JSONException("");
+        return ControllerFreamwork.excecute(jsonString, CommityInfo.class, "Commityinfo:CommityInfo-get", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                CommityInfo info = (CommityInfo) inObj.getClassObject();
+                CommityInfo reInfo = new CommityInfo();
+                if (info.getCid() != null)
+                    reInfo = manageService.getCommityInfoByCid(info.getCid());
+                else if (info.getCName() != null)
+                    reInfo = manageService.getCommityInfoByCName(info.getCName());
+                else
+                    throw new JSONException("缺少必要信息");
 
-            CommityInfo info = (CommityInfo) inObj.getClassObject();
-            CommityInfo reInfo = new CommityInfo();
-            if (info.getCid() != null)
-                reInfo = manageService.getCommityInfoByCid(info.getCid());
-            else if (info.getCName() != null)
-                reInfo = manageService.getCommityInfoByCName(info.getCName());
-            else
-                throw new JSONException("缺少必要信息");
-
-            re.setClassName("CommityInfo:thisCommityInfo");
-            if (reInfo.getCNoteCTime() != null)
-                re.setPara("CNCreatTime", reInfo.getCNoteCTime().toString());
-            else
-                re.setPara("CNCreatTime", "");
-            re.setPara("CCreatTime", reInfo.getCCreateTime().toString());
-            re.setClassObject(reInfo);
-            re.constractJsonString();
-        } catch (JSONException e) {
-            re.setStatusCode(250);
-            re.setMessage("请求不合法" + e.getMessage());
-            re.constractJsonString();
-            return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            re.setStatusCode(203);
-            re.setMessage("服务器出现异常，请稍后再试");
-            re.constractJsonString();
-            return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
-        }
-        return new ResponseEntity<>(re, HttpStatus.OK);
+                re.setClassName("CommityInfo:thisCommityInfo");
+                if (reInfo.getCNoteCTime() != null)
+                    re.setPara("CNCreatTime", reInfo.getCNoteCTime().toString());
+                else
+                    re.setPara("CNCreatTime", "");
+                re.setPara("CCreatTime", reInfo.getCCreateTime().toString());
+                re.setClassObject(reInfo);
+                return re;
+            }
+        });
     }
 
     //管理层发布公告 注意 要特别注入UUuid 类里面要提供 Cid 新的Notice

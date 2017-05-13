@@ -213,5 +213,8 @@ public class UserInfoManageController {
     }
 
 
+    //通过获得全部常用工种
+
+
 
 }

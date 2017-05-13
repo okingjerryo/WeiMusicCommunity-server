@@ -1,6 +1,6 @@
 package com.weiCommity.Model;
 
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserExtend {
-    private String UUuid;
-    private String UNackName;
-    private String USex;
-    private LocalDate UBirthday;
-    private String UTag;
-    private String USign;
-    private String UHeadImg;
+    protected String UUuid;
+    protected String UNackName;
+    protected String USex;
+    protected DateTime UBirthday;
+    protected String UTag;
+    protected String USign;
+    protected String UHeadImg;
 
     public String getUUuid() {
         return UUuid;
@@ -40,12 +40,12 @@ public class UserExtend {
         this.USex = USex;
     }
 
-    public LocalDate getUBirthday() {
+    public DateTime getUBirthday() {
         return UBirthday;
     }
 
-    public void setUBirthday(LocalDate UBirthday) {
-        this.UBirthday = new LocalDate(UBirthday);
+    public void setUBirthday(DateTime UBirthday) {
+        this.UBirthday = UBirthday;
     }
 
     public String getUTag() {

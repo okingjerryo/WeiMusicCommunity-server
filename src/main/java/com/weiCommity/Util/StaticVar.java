@@ -14,10 +14,12 @@ public class StaticVar {
     private static String toFilePath = "";
     private final static String decodeFileSet = "ISO-8859-1";
     private static DateTimeZone ChinaZone = DateTimeZone.forID("Asia/Shanghai");
+
     public static String getDecodeFileSet() {
         return decodeFileSet;
     }
 
+    private static String dateOnlyFormat = "yyyy-MM-dd";
     private static final String mapperNameSpace = "org.test.Login.";
 
     public static String getMapperNameSpace() {
@@ -28,6 +30,10 @@ public class StaticVar {
 
     public static String getDateFormat() {
         return dateFormat;
+    }
+
+    public static String getDateOnlyFormat() {
+        return dateOnlyFormat;
     }
 
     public static DateTimeZone getChinaZone() {

@@ -5,7 +5,7 @@ import com.weiCommity.Model.Login;
 import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Service.RegistService;
 import com.weiCommity.Util.HttpJson;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -124,7 +124,7 @@ public class RegistContoller {
             UserExtend userExtend = new UserExtend();
             userExtend.setUUuid(inObj.getPara("UUuid"));
             userExtend.setUHeadImg(inObj.getPara("UHeadImg"));
-            userExtend.setUBirthday(new LocalDate(inObj.getPara("UBirthday")));
+            userExtend.setUBirthday(new DateTime(inObj.getPara("UBirthday")));
             userExtend.setUNackName(inObj.getPara("UNackName"));
             userExtend.setUSex(inObj.getPara("USex"));
             String imgStr = (String) inObj.getClassObject();
