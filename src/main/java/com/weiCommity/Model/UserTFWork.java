@@ -17,8 +17,24 @@ public class UserTFWork {
 
     private DateTime delayTime;
     private int status;
+    private String UNackName;
+    private String UHeadImg;
 
+    public String getUNackName() {
+        return UNackName;
+    }
 
+    public void setUNackName(String UNackName) {
+        this.UNackName = UNackName;
+    }
+
+    public String getUHeadImg() {
+        return UHeadImg;
+    }
+
+    public void setUHeadImg(String UHeadImg) {
+        this.UHeadImg = UHeadImg;
+    }
 
     //getter and setter
     public String getUWid() {

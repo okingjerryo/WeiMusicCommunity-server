@@ -3,6 +3,7 @@ package com.weiCommity.Service;
 import com.weiCommity.Dao.ProjectDao;
 import com.weiCommity.Model.ProjectInfo;
 import com.weiCommity.Model.ProjectWork;
+import com.weiCommity.Model.ProjectWorkApplyMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,11 @@ import java.util.UUID;
 @Service
 public class ProjectService {
     final ProjectDao projectDao;
-
+    final MessageBoxService messageBoxService;
     @Autowired
-    public ProjectService(ProjectDao projectDao) {
+    public ProjectService(ProjectDao projectDao, MessageBoxService messageBoxService) {
         this.projectDao = projectDao;
+        this.messageBoxService = messageBoxService;
     }
 
     public String createProject(ProjectInfo info) {
@@ -45,5 +47,52 @@ public class ProjectService {
 
     public ProjectInfo getOnePDetail(ProjectInfo info) {
         return projectDao.getOnePDetail(info);
+    }
+
+    public ProjectWorkApplyMsg addProjectWorkApply(ProjectWork applyWork) {
+        applyWork.setUWid(UUID.randomUUID().toString());
+        //存入申请
+        projectDao.createUserWorkApply(applyWork);
+        //返回一个完整的申请信息视图
+        return projectDao.getProjectWorkMsg(applyWork);
+    }
+
+    public void applyJoinApplicate(ProjectWork checkerWork, String thisMail) {
+        projectDao.applyJoinApplicate(checkerWork);
+        //获得自己的当前条目信息
+        checkerWork = projectDao.getOneProjectWord(checkerWork);
+        //查询其他同样WorkId的成员
+        List<ProjectWork> perventMem = projectDao.getOtherWorkApply(checkerWork);
+        //每个都走拒绝服务
+        for (ProjectWork thisPeople : perventMem) {
+            String thisPeopleMail = messageBoxService.getSpeIdRelativeMail(thisPeople.getPWId());
+            prventJoinApplicate(thisPeople, thisPeopleMail);
+        }
+        //更新当前信息
+        messageBoxService.editBoxCheckNum(thisMail, 1);
+        //回信
+        String things = "您好，很高兴收到您的信息，很高兴的通知您，您的加入申请已通过，欢迎加入我们这个项目中~";
+        messageBoxService.replyMsgByIdAndThing(thisMail, things);
+    }
+
+    public void prventJoinApplicate(ProjectWork checkerWork, String thisMail) {
+        //删除当前条目
+        projectDao.delThisApply(checkerWork);
+        //更新当前信
+        messageBoxService.editBoxCheckNum(thisMail, -1);
+        //回信
+        String things = "您好，很高兴收到您的信息。很遗憾的通知您，因为某些原因 您的加入申请未通过，欢迎选择我们项目的其他工种，或者其他更适合的项目" +
+                "对此给你带来不便还请谅解。";
+        messageBoxService.replyMsgByIdAndThing(thisMail, things);
+    }
+
+    public boolean checkProjectCanDo(ProjectWork checkerWork) {
+        int thisProjectCount = projectDao.checkProjectCanDo(checkerWork);
+        return thisProjectCount == 4;
+    }
+
+    public void setProjectState(ProjectInfo thisInfo, int i) {
+        thisInfo.setPState(i);
+        projectDao.setProjectState(thisInfo);
     }
 }

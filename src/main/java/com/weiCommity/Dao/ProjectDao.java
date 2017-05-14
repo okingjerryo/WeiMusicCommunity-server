@@ -1,10 +1,9 @@
 package com.weiCommity.Dao;
 
-import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Model.ProjectInfo;
 import com.weiCommity.Model.ProjectWork;
+import com.weiCommity.Model.ProjectWorkApplyMsg;
 import com.weiCommity.Util.StaticVar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,16 +14,6 @@ import java.util.List;
  */
 @Repository
 public class ProjectDao extends BaseDao {
-    final ProjectFile file;
-    final ProjectInfo info;
-    final ProjectWork work;
-
-    @Autowired
-    public ProjectDao(ProjectFile file, ProjectInfo info, ProjectWork work) {
-        this.file = file;
-        this.info = info;
-        this.work = work;
-    }
 
     public void createProject(ProjectInfo info) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectCreate", info);
@@ -41,5 +30,37 @@ public class ProjectDao extends BaseDao {
 
     public ProjectInfo getOnePDetail(ProjectInfo info) {
         return (ProjectInfo) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_OneProjectDetail", info);
+    }
+
+    public void createUserWorkApply(ProjectWork applyWork) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectWrokApply", applyWork);
+    }
+
+    public ProjectWorkApplyMsg getProjectWorkMsg(ProjectWork applyWork) {
+        return (ProjectWorkApplyMsg) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectWorkApplyMsg", applyWork);
+    }
+
+    public void applyJoinApplicate(ProjectWork checkerWork) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_applyPJoinApply", checkerWork);
+    }
+
+    public List<ProjectWork> getOtherWorkApply(ProjectWork checkerWork) {
+        return (List<ProjectWork>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_OtherWorkApply", checkerWork);
+    }
+
+    public ProjectWork getOneProjectWord(ProjectWork checkerWork) {
+        return (ProjectWork) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "selOneProjectWork", checkerWork);
+    }
+
+    public void delThisApply(ProjectWork checkerWork) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "del_ProjectMemApply", checkerWork);
+    }
+
+    public int checkProjectCanDo(ProjectWork checkerWork) {
+        return (int) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_checkProjectCanDo", checkerWork);
+    }
+
+    public void setProjectState(ProjectInfo thisInfo) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_ProjectState", thisInfo);
     }
 }

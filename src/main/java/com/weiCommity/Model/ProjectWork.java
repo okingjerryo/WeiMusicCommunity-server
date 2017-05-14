@@ -9,11 +9,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProjectWork {
-    private String PWId;
-    private String PId;
-    private String UUuid;
-    private String UWid;
-    private DateTime UJoinTime;
+    protected String PWId;
+    protected String PId;
+    protected String UUuid;
+    protected String UWid;
+    protected DateTime UJoinTime;
+    protected String WorkSC;
+    protected int UApply = 0;   //0 申请中 1.已同意 拒绝时会删除该条记录
+
+
+    public int getUApply() {
+        return UApply;
+    }
+
+    public void setUApply(int UApply) {
+        this.UApply = UApply;
+    }
+
+    public String getWorkSC() {
+        return WorkSC;
+    }
+
+    public void setWorkSC(String workSC) {
+        WorkSC = workSC;
+    }
 
     public String getPWId() {
         return PWId;

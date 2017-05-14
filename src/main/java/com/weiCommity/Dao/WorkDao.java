@@ -18,7 +18,7 @@ public class WorkDao extends BaseDao {
         List<Work> allWork = new ArrayList<>();
         try {
             session = sqlSessionFactory.openSession();
-            session.selectList(StaticVar.getMapperNameSpace() + "sel_getAllWork");
+            allWork = session.selectList(StaticVar.getMapperNameSpace() + "sel_getAllWork");
         } catch (Exception e) {
             session.close();
             e.printStackTrace();

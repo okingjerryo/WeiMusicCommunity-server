@@ -1,9 +1,6 @@
 package com.weiCommity.Controller;
 
-import com.weiCommity.Model.CommityInfo;
-import com.weiCommity.Model.ProjectDynamic;
-import com.weiCommity.Model.ProjectInfo;
-import com.weiCommity.Model.ProjectWork;
+import com.weiCommity.Model.*;
 import com.weiCommity.Service.*;
 import com.weiCommity.Util.HttpJson;
 import org.joda.time.DateTime;
@@ -42,18 +39,17 @@ public class ProjectController {
             if (!inObj.getClassName().equals("ProjectInfo:Project-create"))
                 throw new JSONException("");
 
-
-            String pCTimeStr = inObj.getPara("pCTimeStr");
             ProjectInfo info = (ProjectInfo) inObj.getClassObject();
-            info.setPCreatTime(new DateTime(pCTimeStr));
+            info.setPCreatTime(DateTime.now());
             //注册
             String thisPid = projectService.createProject(info);
             //2. 注册自己为策划
             ProjectWork thisWork = new ProjectWork();
             thisWork.setPId(thisPid);
             thisWork.setUJoinTime(info.getPCreatTime());
-            thisWork.setUWid(findWorkService.getWorkId("歌曲", "策划"));
-
+            String thisWorkId = findWorkService.getWorkId("歌曲", "策划");
+            UserTFWork thisUWClass = userWorkService.getUWWithUUidandWorkId(info.getCreatUUuid(), thisWorkId);
+            thisWork.setUWid(thisUWClass.getUWid());
             String thisPWId = projectService.setPeopleWorkToProject(thisWork);
             //3.ProjectDy 插入
             ProjectDynamic dynamic = new ProjectDynamic();
@@ -70,8 +66,8 @@ public class ProjectController {
             re.setMessage("服务器出错");
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
-
-
+        re.setStatusCode(400);
+        re.constractJsonString();
         return new ResponseEntity<>(re, HttpStatus.OK);
     }
 
@@ -85,14 +81,14 @@ public class ProjectController {
             if (!inObj.getClassName().equals("CommityInfo:getAllProjectInProject"))
                 throw new JSONException("");
             CommityInfo info = (CommityInfo) inObj.getClassObject();
-            Integer start = Integer.getInteger(inObj.getPara("startState"));
-            Integer end = Integer.getInteger(inObj.getPara("endState"));
+            int start = Integer.parseInt(inObj.getPara("startState"));
+            int end = Integer.parseInt(inObj.getPara("endState"));
             ProjectInfo thisPInfo = new ProjectInfo();
             thisPInfo.setCId(info.getCid());
             thisPInfo.setStartState(start);
             thisPInfo.setEndState(end);
             List<ProjectInfo> allProject = projectService.getAllCommityProject(thisPInfo);
-
+            re.setClassObject(allProject);
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("请求异常");
@@ -138,8 +134,60 @@ public class ProjectController {
     }
 
     //使用指定工种向指定项目发送项目加入申请
-//   @RequestMapping("joinProject/application")
-//    ResponseEntity<HttpJson>
+    @RequestMapping("joinProject/application")
+    ResponseEntity<HttpJson> projectAddapplication(@RequestBody String jsonString) {
+        return ControllerFreamwork.excecute(jsonString, ProjectWork.class, "ProjectWork:applicateJoinProject", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                //1.从数据库取出当前的UWid
+                ProjectWork applyWork = (ProjectWork) inObj.getClassObject();
+                //UWid get
+                UserTFWork applyUWork = userWorkService.getUserWorkByProjectWork(applyWork);
+                //2.置当前用户状态为申请中
+                applyWork.setUWid(applyUWork.getUWid());
+                //返回一个从数据库读出的ProjectWorkApplyMsg视图
+                ProjectWorkApplyMsg applyMsg = projectService.addProjectWorkApply(applyWork);
+                //3.书写Mail并发送给策划
+                messageBoxService.sendApplyToProjectCreater(applyMsg);
+                return re;
+            }
+        });
+    }
+
+    //策划工种对指定请求进行审核 传回来时候注意要给予PWId
+    @RequestMapping("joinProject/check")
+    ResponseEntity<HttpJson> checkJoinApply(@RequestBody String jsonnString) {
+        return ControllerFreamwork.excecute(jsonnString, ProjectWork.class, "ProjectWork:joinCheck", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+
+                //需要的参数
+                String checkStr = inObj.getPara("checkResult");
+                String thisMail = inObj.getPara("mailMid");
+                ProjectWork CheckerWork = (ProjectWork) inObj.getClassObject();
+                //成功
+                if (checkStr.equals("true")) {
+                    //置状态为同意
+                    projectService.applyJoinApplicate(CheckerWork, thisMail);
+
+                    //查看加入的人数是否满足需求
+                    boolean canStart = projectService.checkProjectCanDo(CheckerWork);
+                    if (canStart) {
+                        //设置项目状态为待传文件
+                        ProjectInfo thisInfo = new ProjectInfo();
+                        thisInfo.setPId(CheckerWork.getPId());
+                        projectService.setProjectState(thisInfo, 1);
+                    }
+                } else { //失败 给每一个人发邮件
+                    projectService.prventJoinApplicate(CheckerWork, thisMail);
+                }
+                return re;
+            }
+        });
+    }
+
+
+
 
 
 

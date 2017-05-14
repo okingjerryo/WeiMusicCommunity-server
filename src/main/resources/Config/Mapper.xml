@@ -114,27 +114,26 @@
     </select>
     <insert id="insert_ProjectCreate" parameterType="ProjectInfo" flushCache="true">
         INSERT INTO ProjectInfo (PId, CId, CreatUUuid, PTitle, PIntroduce, PCreatTime, PState, PType)
-        VALUES (PId = #{PId}, CId = #{CId}, CreatUUuid = #{CreatUUuid}, PTitle = #{PTitle}, PIntroduce = #{PIntroduce},
-        PCreatTime = #{PCreatTime}
-        , PState = #{PState}, PType = #{PType})
+        VALUES (#{PId},#{CId},#{CreatUUuid},#{PTitle},#{PIntroduce},#{PCreatTime},#{PState},#{PType})
     </insert>
     <insert id="insert_ProjectWork" parameterType="ProjectWork" flushCache="true">
-        INSERT INTO ProjectWork (PWId, PId, UWid, UJoinTIme)
-        VALUES (PWId = #{PWId}, PId = #{PId}, UWid = #{UWid}, UJoinTIme = #{UJoinTIme})
+        INSERT INTO ProjectWork (PWId, PId, UWid, UJoinTime)
+        VALUES (#{PWId},#{PId},#{UWid},#{UJoinTime})
     </insert>
     <select id="sel_ProjectDynAfterIn" parameterType="ProjectDynamic" resultType="ProjectDynamic">
         SELECT *
         FROM sel_ProjectDynWithNoFile
         WHERE PDId = #{PDId}
     </select>
-    <insert id="insert_DynWord" parameterType="string" flushCache="true">
-        INSERT INTO ProjectDynamic (Word)
-        VALUES (Word = #{Word})
-    </insert>
+    <update id="insert_DynWord" parameterType="ProjectDynamic" flushCache="true">
+        UPDATE ProjectDynamic
+        SET Word = #{Word}
+        WHERE PDId = #{PDId}
+    </update>
     <select id="sel_getAllCommityProject" parameterType="ProjectInfo" resultType="ProjectInfo">
         SELECT *
         FROM sel_ProjectInfo
-        WHERE CId = #{Cid} AND PState BETWEEN #{startState} AND #{endState}
+        WHERE CId = #{CId} AND PState BETWEEN #{startState} AND #{endState}
     </select>
     <select id="sel_OneProjectDetail" parameterType="ProjectInfo" resultType="ProjectInfo">
         SELECT * FROM sel_ProjectInfo WHERE PId = #{PId}
@@ -150,5 +149,71 @@
     </select>
     <select id="sel_getPersonalInfoOne" parameterType="Login" resultType="PersonalInfoPersonalOriented">
         SELECT * FROM sel_PersonalInfoPO WHERE UUuid = #{UUuid}
+    </select>
+    <select id="sel_UserWorkbyProjectWork" parameterType="ProjectWork" resultType="UserTFWork">
+        SELECT * FROM userworkview WHERE UUuid = #{UUuid} AND WorkSC = #{WorkSC}
+    </select>
+    <insert id="insert_ProjectWrokApply" parameterType="ProjectWork" flushCache="true">
+        INSERT INTO ProjectWork(PWId, PId, UWid)
+        VALUES (#{PWId},#{PId},#{UWid})
+    </insert>
+    <select id="sel_ProjectWorkApplyMsg" parameterType="ProjectWork" resultType="ProjectWorkApplyMsg">
+        SELECT * FROM sel_ProjectWorkApplicateMsg WHERE PWId = #{PWId}
+    </select>
+    <insert id="insert_ProjectWorkApply" parameterType="MessageBox" flushCache="true">
+        INSERT INTO MessageBox (MId, MCreateTime, MSenderId, MTarId, MTitle, MThings, MIsReaded, MCheck, MSpcId,
+        MSenderType)
+        VALUES
+        (#{MId},#{MCreateTime},#{MSenderId},#{MTarId},#{MTitle},#{MThings},#{MIsReaded},#{MCheck},#{MSpcId},#{MSenderType})
+    </insert>
+    <update id="update_applyPJoinApply" parameterType="ProjectWork" flushCache="true">
+        UPDATE ProjectWork
+        SET UApply = 1
+        WHERE PWId = #{PWId}
+    </update>
+    <select id="selOneProjectWork" parameterType="ProjectWork" resultType="ProjectWork">
+        SELECT PWId,PId,UWid,UJoinTime,UApply,WorkSC FROM sel_ProjectWorkApplicateMsg WHERE PWId = #{PWId}
+    </select>
+    <select id="sel_OtherWorkApply" parameterType="ProjectWork" resultType="ProjectWork">
+        SELECT * FROM sel_ProjectWorkApplicateMsg WHERE PId = #{PId} AND WorkSC = #{WorkSC} AND PWId != #{PWId}
+    </select>
+    <select id="sel_MsgByRelativeId" parameterType="string" resultType="MessageBox">
+        SELECT * FROM MessageBox WHERE MSenderId = #{thisRelativeId}
+    </select>
+    <delete id="del_ProjectMemApply" parameterType="ProjectWork" flushCache="true">
+        DELETE FROM ProjectWork WHERE PWId = #{PWId}
+    </delete>
+    <update id="update_MsgCheck" parameterType="MessageBox" flushCache="true">
+        UPDATE MessageBox
+        SET MCheck = #{MCheck}
+        WHERE MId = #{MId}
+    </update>
+    <select id="sel_getOneMail" parameterType="MessageBox" resultType="MessageBox">
+        SELECT * FROM MessageBox WHERE MId = #{MId}
+    </select>
+    <insert id="insert_SendMessage" parameterType="MessageBox" flushCache="true">
+        INSERT INTO MessageBox (MId, MCreateTime, MSenderId, MTarId, MTitle, MThings, MIsReaded, MCheck, MSpcId,
+        MSenderType)
+        VALUES
+        (#{MId},#{MCreateTime},#{MSenderId},#{MTarId},#{MTitle},#{MThings},#{MIsReaded},#{MCheck},#{MSpcId},#{MSenderType})
+    </insert>
+    <select id="sel_checkProjectCanDo" parameterType="ProjectWork" resultType="int">
+        SELECT count(*) FROM ProjectWork WHERE PId = #{PId} AND UApply = 1
+    </select>
+    <update id="update_ProjectState" parameterType="ProjectInfo" flushCache="true">
+        UPDATE ProjectInfo SET PState = #{PState} WHERE PId = #{PId}
+    </update>
+    <insert id="insert_Dyn" parameterType="ProjectDynamic" flushCache="true">
+        INSERT INTO ProjectDynamic (PDId, Time, PWId, PFId, PDType)
+        VALUES(#{PDId},#{Time},#{PWId},#{PFId},#{PDType})
+    </insert>
+    <select id="sel_UserWorkByUUidandWid" parameterType="UserTFWork" resultType="UserTFWork">
+        SELECT * FROM UserWork WHERE UUuid = #{UUuid} AND WorkId = #{WorkId}
+    </select>
+    <select id="sel_CommityInfoPO" parameterType="Login" resultType="CommityInfoPersonalOriented">
+        SELECT * FROM sel_CommityInfoPO WHERE UUuid = #{UUuid}
+    </select>
+    <select id="sel_getAllMailPO" parameterType="Login" resultType="MessageBox">
+        SELECT * FROM MessageBox WHERE MTarId = #{UUuid} AND MIsReaded = 0
     </select>
 </mapper>

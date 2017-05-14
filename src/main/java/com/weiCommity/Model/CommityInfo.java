@@ -9,19 +9,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CommityInfo {
-    private String Cid;
-    private String CName;
+    protected String Cid;
+    protected String CName;
 
-    private DateTime CCreateTime;
-    private String Cintroduce;
-    private String CTag;
-    private String CHeadImg;
-    private int CIsNMin;
-    private String CNMDemand;
-    private int CMeMCount;
-    private String CNotice;
-    private String CImgObj;
-    private DateTime CNoteCTime;
+    protected DateTime CCreateTime;
+    protected String Cintroduce;
+    protected String CTag;
+    protected String CHeadImg;
+    protected int CIsNMin;
+    protected String CNMDemand;
+    protected int CMeMCount;
+    protected String CNotice;
+    protected String CImgObj;
+    protected DateTime CNoteCTime;
 
     public DateTime getCCreateTime() {
         return CCreateTime;

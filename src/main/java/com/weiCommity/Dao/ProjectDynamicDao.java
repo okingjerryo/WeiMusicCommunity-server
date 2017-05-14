@@ -15,7 +15,11 @@ public class ProjectDynamicDao extends BaseDao {
         return (ProjectDynamic) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectDynAfterIn", dynamic);
     }
 
-    public void setDynWord(String dyWord) {
+    public void setDynWord(ProjectDynamic dyWord) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_DynWord", dyWord);
+    }
+
+    public void insertDynamic(ProjectDynamic dynamic) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_Dyn", dynamic);
     }
 }

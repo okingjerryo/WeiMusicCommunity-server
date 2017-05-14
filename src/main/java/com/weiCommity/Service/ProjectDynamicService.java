@@ -2,6 +2,7 @@ package com.weiCommity.Service;
 
 import com.weiCommity.Dao.ProjectDynamicDao;
 import com.weiCommity.Model.ProjectDynamic;
+import com.weiCommity.Util.StaticVar;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class ProjectDynamicService {
         dynamic.setPDId(UUID.randomUUID().toString());
         dynamic.setTime(DateTime.now());
         //插入 然后执行文字更新
+        dynamicDao.insertDynamic(dynamic);
         ProjectDynamic inputDyn = getProjectDyWithNOFile(dynamic);
         constrctPDyWithNOFile(inputDyn);
     }
@@ -27,9 +29,10 @@ public class ProjectDynamicService {
 
     //组装动态字段进入数据库
     private void constrctPDyWithNOFile(ProjectDynamic inputDyn) {
-        String DyWord = "在" + inputDyn.getTime() + " ," + inputDyn.getWorkSC() + inputDyn.getUNackName() +
-                inputDyn.getPDType() + "了项目" + inputDyn.getPTitle();
-        dynamicDao.setDynWord(DyWord);
+        String DyWord = "在" + inputDyn.getTime().toString(StaticVar.getDateFormat()) + " ," + inputDyn.getWorkSC() + inputDyn.getUNackName() +
+                inputDyn.getPDType() + "了项目:" + inputDyn.getPTitle();
+        inputDyn.setWord(DyWord);
+        dynamicDao.setDynWord(inputDyn);
     }
 
 

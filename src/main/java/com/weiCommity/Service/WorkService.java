@@ -31,6 +31,8 @@ public class WorkService {
     }
 
     public String getWorkId(String FirstSc, String SecondSc) {
+        if (workEntity.size() == 0)
+            constractFromBase();
         return workEntity.get(FirstSc + SecondSc);
     }
 

@@ -1,10 +1,7 @@
 package com.weiCommity.Service;
 
 import com.weiCommity.Dao.PersonOrientDao;
-import com.weiCommity.Model.Login;
-import com.weiCommity.Model.PersonalInfoPersonalOriented;
-import com.weiCommity.Model.ProjectInfoPersonalOriented;
-import com.weiCommity.Model.UserExtend;
+import com.weiCommity.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +32,13 @@ public class PersonOrientedService {
 
     public PersonalInfoPersonalOriented getPersonalInfoOne(Login thisUser) {
         return personOrientDao.getPersonalInfoOne(thisUser);
+    }
+
+    public List<CommityInfoPersonalOriented> getAllCommityPO(Login thisUser) {
+        return personOrientDao.getAllCommityInfoPO(thisUser);
+    }
+
+    public List<MessageBox> getAllMailPO(Login thisUser) {
+        return personOrientDao.getAllMailPO(thisUser);
     }
 }
