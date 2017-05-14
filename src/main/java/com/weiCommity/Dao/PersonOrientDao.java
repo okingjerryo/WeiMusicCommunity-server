@@ -32,4 +32,8 @@ public class PersonOrientDao extends BaseDao {
     public List<MessageBox> getAllMailPO(Login thisUser) {
         return (List<MessageBox>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllMailPO", thisUser);
     }
+
+    public List<ProjectInfoPersonalOriented> getAllProjectPO(Login login) {
+        return (List<ProjectInfoPersonalOriented>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_AllProjectInfoPO", login);
+    }
 }

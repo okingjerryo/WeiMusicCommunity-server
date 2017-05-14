@@ -216,4 +216,9 @@
     <select id="sel_getAllMailPO" parameterType="Login" resultType="MessageBox">
         SELECT * FROM MessageBox WHERE MTarId = #{UUuid} AND MIsReaded = 0
     </select>
+    <select id="sel_AllProjectInfoPO" parameterType="Login" resultType="ProjectInfoPersonalOriented">
+        SELECT *
+        FROM sel_ProjectInfoPO
+        WHERE UUuid = #{UUuid} AND PState BETWEEN 1 AND 4
+    </select>
 </mapper>

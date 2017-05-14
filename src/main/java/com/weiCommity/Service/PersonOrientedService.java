@@ -41,4 +41,8 @@ public class PersonOrientedService {
     public List<MessageBox> getAllMailPO(Login thisUser) {
         return personOrientDao.getAllMailPO(thisUser);
     }
+
+    public List<ProjectInfoPersonalOriented> getAllProjectDoing(Login login) {
+        return personOrientDao.getAllProjectPO(login);
+    }
 }

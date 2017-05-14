@@ -2,7 +2,9 @@ package com.weiCommity.Controller;
 
 
 import com.weiCommity.Model.Login;
+import com.weiCommity.Model.ProjectInfoPersonalOriented;
 import com.weiCommity.Service.LoginService;
+import com.weiCommity.Service.PersonOrientedService;
 import com.weiCommity.Util.HttpJson;
 import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
@@ -32,10 +34,11 @@ import java.util.List;
 
 public class WebController {
     final LoginService loginService;
-
+    final PersonOrientedService personOrientedService;
     @Autowired
-    public WebController(LoginService loginService) {
+    public WebController(LoginService loginService, PersonOrientedService personOrientedService) {
         this.loginService = loginService;
+        this.personOrientedService = personOrientedService;
     }
 
     @RequestMapping(value = "api/loginWeb")
@@ -61,20 +64,34 @@ public class WebController {
         String result = "";
         try {
             result = loginService.LoginWithStyle(login.getUAName(), login.getUPwd(), "A");
+            if (result.length() != 36) {
+                result = loginService.LoginWithStyle(login.getUAName(), login.getUPwd(), "M");
+                if (result.length() != 36)
+                    result = loginService.LoginWithStyle(login.getUAName(), login.getUPwd(), "T");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (result.length() == 36) {
-            List<Login> send = new ArrayList<>();
-            for (Integer i = 0; i < 3; i++) {
-                Login thisl = new Login();
-                thisl.setUAName(i.toString() + "啦啦啦啦");
-                send.add(thisl);
-            }
+//            List<Login> send = new ArrayList<>();
+//            for (Integer i = 0; i < 3; i++) {
+//                Login thisl = new Login();
+//                thisl.setUAName(i.toString() + "啦啦啦啦");
+//                send.add(thisl);
+//            }
+//
+//            HttpSession session = request.getSession();
+//            session.setAttribute("user", result);
+//            model.addAttribute("list", send);
+            Login thisUser = new Login();
+            thisUser.setUUuid(result);
+            //获得全部要显示的list
+            List<ProjectInfoPersonalOriented> list = personOrientedService.getAllProject(thisUser);
 
             HttpSession session = request.getSession();
             session.setAttribute("user", result);
-            model.addAttribute("list", send);
+            model.addAttribute("list", list);
             return "index";
         } else
             return "signin";

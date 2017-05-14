@@ -15,6 +15,15 @@ public class UserExtend {
     protected String UTag;
     protected String USign;
     protected String UHeadImg;
+    protected String UImgObj;
+
+    public String getUImgObj() {
+        return UImgObj;
+    }
+
+    public void setUImgObj(String UImgObj) {
+        this.UImgObj = UImgObj;
+    }
 
     public String getUUuid() {
         return UUuid;

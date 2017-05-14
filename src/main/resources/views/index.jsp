@@ -281,7 +281,7 @@
         </aside>
         <section class="main-conten">
             <div class="site-overlay"></div>
-            <div class="show"><h3>${user}</h3></div>
+
             <div class="show">
                 <c:forEach items="${list}" var="item">
                     ${item.UAName}<br>
