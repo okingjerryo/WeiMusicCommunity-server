@@ -1,11 +1,14 @@
 package com.weiCommity.Model;
 
+import com.weiCommity.Util.StaticVar;
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 /**
  * PackageName com.weiCommity.Model
  * Created by uryuo on 17/5/12.
  */
+@Component
 public class ProjectInfoPersonalOriented extends ProjectInfo {
     private String thisUUuid;
     private DateTime UJoinTime;
@@ -13,6 +16,47 @@ public class ProjectInfoPersonalOriented extends ProjectInfo {
     private String WordId;
     private String WorkFC;
     private String WorkSC;
+    private String UJoinTimeStr;
+    private String StateName;
+    private String PWId;
+
+    public String getPWId() {
+        return PWId;
+    }
+
+    public void setPWId(String PWId) {
+        this.PWId = PWId;
+    }
+
+    public String getWorkSC() {
+        return WorkSC;
+    }
+
+    public void setWorkSC(String workSC) {
+        WorkSC = workSC;
+    }
+
+    @Override
+    public String getStateName() {
+        return StateName;
+    }
+
+    @Override
+    public void setStateName(String stateName) {
+        StateName = stateName;
+    }
+
+    public String getUJoinTimeStr() {
+        return UJoinTimeStr;
+    }
+
+    public void setUJoinTimeStr(String UJoinTimeStr) {
+        this.UJoinTimeStr = UJoinTimeStr;
+    }
+
+    public void setUJoinTimeStr() {
+        this.UJoinTimeStr = UJoinTime.toString(StaticVar.getDateFormat());
+    }
 
     public String getThisUUuid() {
         return thisUUuid;
@@ -43,7 +87,7 @@ public class ProjectInfoPersonalOriented extends ProjectInfo {
     }
 
     public void setWordId(String wordId) {
-        WordId = wordId;
+        this.WordId = wordId;
     }
 
     public String getWorkFC() {
@@ -51,14 +95,8 @@ public class ProjectInfoPersonalOriented extends ProjectInfo {
     }
 
     public void setWorkFC(String workFC) {
-        WorkFC = workFC;
+        this.WorkFC = workFC;
     }
 
-    public String getWorkSC() {
-        return WorkSC;
-    }
 
-    public void setWorkSC(String workSC) {
-        WorkSC = workSC;
-    }
 }

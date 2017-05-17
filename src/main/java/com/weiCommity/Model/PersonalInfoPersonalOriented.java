@@ -1,24 +1,25 @@
 package com.weiCommity.Model;
 
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 /**
  * PackageName com.weiCommity.Model
  * Created by uryuo on 17/5/12.
  */
+@Component
 public class PersonalInfoPersonalOriented extends UserExtend {
 
-    private String UANmae;
+    private String UAName;
     private String UTel;
     private String UMail;
 
-
-    public String getUANmae() {
-        return UANmae;
+    public String getUAName() {
+        return UAName;
     }
 
-    public void setUANmae(String UANmae) {
-        this.UANmae = UANmae;
+    public void setUAName(String UAName) {
+        this.UAName = UAName;
     }
 
     public String getUTel() {
@@ -55,7 +56,7 @@ public class PersonalInfoPersonalOriented extends UserExtend {
         this.USex = gender;
         this.UTel = phone;
         this.UBirthday = UBirthday;
-        this.UANmae = UANmae;
+        this.UAName = UANmae;
         this.UMail = UMail;
     }
 

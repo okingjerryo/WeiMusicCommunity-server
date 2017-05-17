@@ -1,9 +1,12 @@
 package com.weiCommity.Model;
 
+import org.springframework.stereotype.Component;
+
 /**
  * PackageName com.weiCommity.Model
  * Created by uryuo on 17/5/14.
  */
+@Component
 public class CommityInfoPersonalOriented extends CommityInfo {
     private String CMid;
     private String UUuid;

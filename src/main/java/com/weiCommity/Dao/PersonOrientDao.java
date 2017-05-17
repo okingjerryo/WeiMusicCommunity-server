@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class PersonOrientDao extends BaseDao {
 
-    public List<ProjectInfoPersonalOriented> getAllOPProject(Login thisLogin) {
+    public List<ProjectInfoPersonalOriented> getAllOPProject(ProjectInfoPersonalOriented thisLogin) {
         return (List<ProjectInfoPersonalOriented>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllOPProject", thisLogin);
     }
 

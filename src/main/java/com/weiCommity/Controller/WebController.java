@@ -2,12 +2,13 @@ package com.weiCommity.Controller;
 
 
 import com.weiCommity.Model.Login;
+import com.weiCommity.Model.ProjectDynamic;
+import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Model.ProjectInfoPersonalOriented;
 import com.weiCommity.Service.LoginService;
 import com.weiCommity.Service.PersonOrientedService;
+import com.weiCommity.Service.ProjectService;
 import com.weiCommity.Util.HttpJson;
-import com.weiCommity.Util.StaticVar;
-import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -35,10 +35,14 @@ import java.util.List;
 public class WebController {
     final LoginService loginService;
     final PersonOrientedService personOrientedService;
+    final ProjectService projectService;
+    final ProjectDynamic projectDynamic;
     @Autowired
-    public WebController(LoginService loginService, PersonOrientedService personOrientedService) {
+    public WebController(LoginService loginService, PersonOrientedService personOrientedService, ProjectService projectService, ProjectDynamic projectDynamic) {
         this.loginService = loginService;
         this.personOrientedService = personOrientedService;
+        this.projectService = projectService;
+        this.projectDynamic = projectDynamic;
     }
 
     @RequestMapping(value = "api/loginWeb")
@@ -84,13 +88,18 @@ public class WebController {
 //            HttpSession session = request.getSession();
 //            session.setAttribute("user", result);
 //            model.addAttribute("list", send);
-            Login thisUser = new Login();
-            thisUser.setUUuid(result);
+            ProjectInfoPersonalOriented thisUser = new ProjectInfoPersonalOriented();
+            thisUser.setThisUUuid(result);
+            thisUser.setStartState(0);
+            thisUser.setEndState(4);
             //获得全部要显示的list
             List<ProjectInfoPersonalOriented> list = personOrientedService.getAllProject(thisUser);
-
+            for (ProjectInfoPersonalOriented elem : list) {
+                elem.setUJoinTimeStr();
+            }
             HttpSession session = request.getSession();
             session.setAttribute("user", result);
+            session.setAttribute("list", list);
             model.addAttribute("list", list);
             return "index";
         } else
@@ -129,13 +138,27 @@ public class WebController {
         }
     }
 
+    //准备上传
+
+    @RequestMapping(value = "api/Upload")
+    public String jumptoUpload(ProjectFile pfile, ModelMap model, HttpServletRequest request) {
+        model.addAttribute("thisPWId", pfile.getPWId());
+        return "file";
+    }
     //上传进程
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    String fileUpload(MultipartFile file) {
+    String fileUpload(MultipartFile file, ProjectFile pTarFile) {
         try {
-            FileUtils.writeByteArrayToFile(new File(StaticVar.getToFilePath() + "CommonSpace/testUpload/" + file.getOriginalFilename()),
-                    file.getBytes());
+            //decode
+            pTarFile.setPFNotice(new String(pTarFile.getPFNotice().getBytes("iso-8859-1"), "UTF-8"));
+            String realFileName = new String(file.getOriginalFilename().getBytes("iso-8859-1"), "UTF-8");
+            //Service
+//            FileUtils.writeByteArrayToFile(new File(StaticVar.getToFilePath() + "CommonSpace/testUpload/" + realFileName),
+//                    file.getBytes());
+            String PFId = projectService.addFiletoUWid(realFileName, pTarFile, file);
+            //动态生成更新字段
+
             return "ok";
         } catch (IOException e) {
             e.printStackTrace();

@@ -3,9 +3,11 @@ package com.weiCommity.Service;
 import com.weiCommity.Dao.LoginDao;
 import com.weiCommity.Dao.RegistDao;
 import com.weiCommity.Model.Login;
+import com.weiCommity.Model.PersonalInfoPersonalOriented;
 import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Model.UserTFWork;
 import com.weiCommity.Util.HttpJson;
+import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,16 +51,16 @@ public class UserInfoManage {
         return re;
     }
 
-    public String editUserExtend(UserExtend userExtend,String lastImgPath,File newFileName) throws Exception {
+    public String editUserExtend(PersonalInfoPersonalOriented userExtend, String lastImgPath, File newFileName) throws Exception {
         String tarImg = lastImgPath;
         //传的文件出现变化则更新文件信息
         if (!lastImgPath.equals(newFileName.getPath())) {
-            File lastImg = ResourceUtils.getFile("classpath:/fileSpace/" + lastImgPath);
-            FileUtils.forceDelete(lastImg);
-             tarImg = "UserSpace" + userExtend.getUUuid() + newFileName.getName();
+            File lastImg = ResourceUtils.getFile(StaticVar.getToFilePath() + lastImgPath);
+            //FileUtils.forceDelete(lastImg);
+            tarImg = "UserSpace" + "/" + userExtend.getUUuid() + "/" + newFileName.getName();
 
-            File newImg = ResourceUtils.getFile("classpath:/fileSpace/"+tarImg);
-            FileUtils.writeByteArrayToFile(newImg,userExtend.getUHeadImg().getBytes("ISO-8859-1"));
+            File newImg = ResourceUtils.getFile(StaticVar.getToFilePath() + tarImg);
+            FileUtils.writeByteArrayToFile(newImg, userExtend.getUImgObj().getBytes("ISO-8859-1"));
         }
         userExtend.setUHeadImg(tarImg);
         registDao.editUserExtend(userExtend);

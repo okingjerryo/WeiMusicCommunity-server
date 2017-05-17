@@ -5502,7 +5502,6 @@ button.close {
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border: 1px solid #999;
-    border: 1px solid rgba(0, 0, 0, .2);
     border-radius: 6px;
     outline: 0;
     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
@@ -5527,6 +5526,7 @@ button.close {
 }
 .modal-header {
     min-height: 16.43px;
+    background:#48cdd2;
     padding: 15px;
     border-bottom: 1px solid #e5e5e5
 }
@@ -5535,11 +5535,12 @@ button.close {
 }
 .modal-title {
     margin: 0;
+    color: white;
     line-height: 1.42857143
 }
 .modal-body {
     position: relative;
-    padding: 15px
+    padding: 20px;
 }
 .modal-footer {
     padding: 15px;

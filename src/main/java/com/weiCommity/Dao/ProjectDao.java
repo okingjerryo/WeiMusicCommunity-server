@@ -1,5 +1,6 @@
 package com.weiCommity.Dao;
 
+import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Model.ProjectInfo;
 import com.weiCommity.Model.ProjectWork;
 import com.weiCommity.Model.ProjectWorkApplyMsg;
@@ -62,5 +63,21 @@ public class ProjectDao extends BaseDao {
 
     public void setProjectState(ProjectInfo thisInfo) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_ProjectState", thisInfo);
+    }
+
+    public int getPersonExistFile(ProjectFile pTarFile) {
+        return (int) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_getExistFileCount", pTarFile);
+    }
+
+    public ProjectFile getOldestFile(ProjectFile file) {
+        return (ProjectFile) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_getFileOldest", file);
+    }
+
+    public void delOldest(ProjectFile oldest) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "del_oldestFile", oldest);
+    }
+
+    public void saveProjectFile(ProjectFile pTarFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectFile", pTarFile);
     }
 }

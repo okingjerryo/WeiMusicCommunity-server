@@ -25,10 +25,10 @@ public class PersonOrientedController {
     //列出所有与自己相关的状态区间的项目
     @RequestMapping("project/get")
     ResponseEntity<HttpJson> getAllPersonalProject(@RequestBody String jsonString) {
-        return ControllerFreamwork.excecute(jsonString, Login.class, "", new ControllerFreamwork.ControllerFuntion() {
+        return ControllerFreamwork.excecute(jsonString, Login.class, "ProjectInfoPersonalOriented:getAllPersonalProject", new ControllerFreamwork.ControllerFuntion() {
             @Override
             public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) {
-                Login thisLogin = (Login) inObj.getClassObject();
+                ProjectInfoPersonalOriented thisLogin = (ProjectInfoPersonalOriented) inObj.getClassObject();
                 List<ProjectInfoPersonalOriented> reProject = personOrientedService.getAllProject(thisLogin);
                 re.setClassObject(reProject);
                 return re;

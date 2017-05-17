@@ -16,14 +16,9 @@ import java.util.List;
  */
 @Repository
 public class CommityManageDao extends BaseDao {
-
+    @Autowired
     private CommityInfo info;
     private final String thisMapperNamespace = "org.test.Login.";
-
-    @Autowired
-    public CommityManageDao(CommityInfo info) {
-        this.info = info;
-    }
 
 
     //通过社团名字获取社团的Cid

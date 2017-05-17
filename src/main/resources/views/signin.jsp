@@ -148,7 +148,7 @@
                 <header class="panel-heading">登录</header>
                 <div class="bg-white user pd-md">
                     <h6><strong>欢迎.</strong>登录音乐微协作</h6>
-                    <form role="form" id="login" action="http://localhost:8080/api/loginPage" method="POST">
+                    <form role="form" id="login" action="/api/loginPage" method="POST">
                         <input type="text" name="UAName" class="form-control mg-b-sm" placeholder="Username" autofocus>
                         <input type="password" name="UPwd" class="form-control" placeholder="Password">
                         <label class="checkbox pull-left">

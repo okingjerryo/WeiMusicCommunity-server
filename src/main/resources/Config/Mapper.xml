@@ -138,8 +138,11 @@
     <select id="sel_OneProjectDetail" parameterType="ProjectInfo" resultType="ProjectInfo">
         SELECT * FROM sel_ProjectInfo WHERE PId = #{PId}
     </select>
-    <select id="sel_getAllOPProject" parameterType="Login" resultType="ProjectInfoPersonalOriented">
-        SELECT * FROM sel_ProjectInfoPO WHERE UUuid = #{UUuid} AND PState BETWEEN #{startState} AND #{endState}
+    <select id="sel_getAllOPProject" parameterType="ProjectInfoPersonalOriented"
+            resultType="ProjectInfoPersonalOriented">
+        SELECT *
+        FROM sel_ProjectInfoPO
+        WHERE UUuid = #{thisUUuid} AND PState BETWEEN #{startState} AND #{endState}
     </select>
     <select id="sel_getAllCommityMemL" parameterType="CommityInfo" resultType="UserExtend">
         SELECT UNackName,USex,UBIrthday,UTag,USign,UHeadImg,UUuid FROM sel_CommityMemList WHERE CId = #{Cid}
@@ -221,4 +224,33 @@
         FROM sel_ProjectInfoPO
         WHERE UUuid = #{UUuid} AND PState BETWEEN 1 AND 4
     </select>
+    <update id="update_UserInfoPO_UE" parameterType="PersonalInfoPersonalOriented" flushCache="true">
+        UPDATE UserExtend
+        SET UNackName = #{UNackName}, USex = #{USex}, UBirthday = #{UBirthday}, USign = #{USign}, UHeadImg = #{UHeadImg}
+        WHERE UUuid = #{UUuid}
+    </update>
+    <update id="update_UserInfoPO_LS" parameterType="PersonalInfoPersonalOriented" flushCache="true">
+        UPDATE UserLogin
+        SET UAName = #{UAName}, UTel = #{UTel}, UMail = #{UMail}
+        WHERE UUuid = #{UUuid}
+    </update>
+    <select id="sel_getExistFileCount" parameterType="ProjectFile" resultType="int">
+        SELECT count(*)
+        FROM ProjectFile
+        WHERE PWId = #{PWId}
+    </select>
+    <select id="sel_getFileOldest" parameterType="ProjectFile" resultType="ProjectFile">
+        SELECT *
+        FROM ProjectFile
+        WHERE PWId = #{PWId}
+        ORDER BY PFCreateTime ASC
+    </select>
+    <delete id="del_oldestFile" parameterType="ProjectFile">
+        DELETE FROM ProjectFile
+        WHERE PFId = #{PFId}
+    </delete>
+    <insert id="insert_ProjectFile" parameterType="ProjectFile" flushCache="true">
+        INSERT INTO ProjectFile (PFId, PFPath, PWId, PFCreateTime, PFNotice)
+        VALUES (#{PFId}, #{PFPath}, #{PWId}, #{PFCreateTime}, #{PFNotice})
+    </insert>
 </mapper>

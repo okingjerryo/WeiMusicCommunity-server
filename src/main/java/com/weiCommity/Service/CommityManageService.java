@@ -23,12 +23,10 @@ import java.util.UUID;
  */
 @Service
 public class CommityManageService {
-    private final CommityManageDao commityManageDao;
-
     @Autowired
-    public CommityManageService(CommityManageDao commityManageDao) {
-        this.commityManageDao = commityManageDao;
-    }
+    private CommityManageDao commityManageDao;
+
+
 
     //通过社团信息实体(名字)查询是否存在当前社团在数据库中 存在的话返回 Cid
     public String isCommmityIn(CommityInfo thisinfo) {

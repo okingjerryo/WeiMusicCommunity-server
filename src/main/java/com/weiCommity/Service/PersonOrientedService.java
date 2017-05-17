@@ -16,7 +16,7 @@ public class PersonOrientedService {
     final PersonOrientDao personOrientDao;
 
     //获得全部与自己相关的制定区间的Project
-    public List<ProjectInfoPersonalOriented> getAllProject(Login thisLogin) {
+    public List<ProjectInfoPersonalOriented> getAllProject(ProjectInfoPersonalOriented thisLogin) {
         return personOrientDao.getAllOPProject(thisLogin);
     }
 

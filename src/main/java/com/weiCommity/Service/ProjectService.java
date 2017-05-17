@@ -1,12 +1,19 @@
 package com.weiCommity.Service;
 
 import com.weiCommity.Dao.ProjectDao;
+import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Model.ProjectInfo;
 import com.weiCommity.Model.ProjectWork;
 import com.weiCommity.Model.ProjectWorkApplyMsg;
+import com.weiCommity.Util.StaticVar;
+import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,5 +101,32 @@ public class ProjectService {
     public void setProjectState(ProjectInfo thisInfo, int i) {
         thisInfo.setPState(i);
         projectDao.setProjectState(thisInfo);
+    }
+
+    public void delFileOldest(ProjectFile file) throws IOException {
+        //1.查出最老的文件路径
+        ProjectFile oldest = projectDao.getOldestFile(file);
+        //2.删除当前文件
+        FileUtils.forceDelete(new File(StaticVar.getToFilePath() + oldest.getPFPath()));
+        //3 数据库删除这个记录
+        projectDao.delOldest(oldest);
+    }
+
+    public String addFiletoUWid(String realFileName, ProjectFile pTarFile, MultipartFile file) throws IOException {
+        //查询看所有文件数量是否为5
+        int exsitFCount = projectDao.getPersonExistFile(pTarFile);
+        if (exsitFCount == 5)
+            //清除最久的文件
+            delFileOldest(pTarFile);
+
+        //文件插入
+        String tarPath = "ProjectSpace/" + pTarFile.getPWId() + "/" + realFileName;
+        FileUtils.writeByteArrayToFile(new File(StaticVar.getToFilePath() + tarPath), file.getBytes());
+        pTarFile.setPFCreateTime(DateTime.now());
+        String rePFId = UUID.randomUUID().toString();
+        pTarFile.setPFId(rePFId);
+        pTarFile.setPFPath(tarPath);
+        projectDao.saveProjectFile(pTarFile);
+        return rePFId;
     }
 }

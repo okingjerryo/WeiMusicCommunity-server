@@ -122,7 +122,11 @@
         /* ]]> */
     </script>
 </head>
-
+<script>
+    function trans(id) {
+        $("#thisPWid").val(id);
+    }
+</script>
 <body>
 <div class="app" data-sidebar="locked">
     <header class="header header-fixed navbar">
@@ -131,7 +135,7 @@
             <a href="index.html" class="navbar-brand">
                 <i class="fa fa-stop mg-r-sm"></i>
                 <span class="heading-font">
-                    音乐微协作<b>后台管理</b>
+                    音乐微协作<b>项目文件上传平台</b>
                     </span>
             </a>
         </div>
@@ -144,9 +148,8 @@
                 <li>
                     <a href="javascript:">
                         <div class="pd-t-sm">
-                            gerald@morris.com
-                            <br>
-                            <small class="text-muted">4.2 MB of 51.25 GB used</small>
+                            ${user}
+
                         </div>
                         <div class="progress progress-xs no-radius no-margin mg-b-sm">
                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
@@ -158,7 +161,7 @@
 
                 <li class="divider"></li>
                 <li>
-                    <a href="signin.html">Logout</a>
+                    <a href="/signin">Logout</a>
                 </li>
             </ul>
         </li>
@@ -279,19 +282,106 @@
         <aside class="chat-sidebar canvas-right pull-right">
 
         </aside>
-        <section class="main-conten">
-            <div class="site-overlay"></div>
+        <%--<section class="main-conten">--%>
+        <%--<div class="site-overlay"></div>--%>
 
-            <div class="show">
-                <c:forEach items="${list}" var="item">
-                    ${item.UAName}<br>
-                </c:forEach>
+        <%--<div class="show">--%>
+        <%--<c:forEach items="${list}" var="item">--%>
+        <%--${item.UAName}<br>--%>
+        <%--</c:forEach>--%>
+        <%--</div>--%>
+
+        <%--</section>--%>
+        <section class="main-content">
+            <div class="site-overlay"></div>
+            <div class="col-lg-12">
+                <section class="panel">
+                    <div class="panel-heading">我当前的项目</div>
+                    <div class="panel-body no-padding">
+                        <table class="table table-hover no-margin">
+                            <thead>
+                            <tr>
+
+                                <th>加入时间</th>
+                                <th>项目名称</th>
+                                <th>当前阶段</th>
+                                <th>担任角色</th>
+                                <th>上传文件</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${list}" var="elem">
+                                <form action="/api/Upload">
+                                    <tr>
+
+                                        <td>${elem.UJoinTimeStr}</td>
+                                        <td>${elem.PTitle}</td>
+                                        <td>${elem.stateName}</td>
+                                        <td>${elem.workSC}</td>
+                                        <td>
+                                            <a href="#" data-toggle="modal"
+                                               data-target="#updateDig"
+                                               onclick="trans('${elem.PWId}')">
+                                                <button class="btn btn-info btn-block" type="submit">上传</button>
+                                            </a></td>
+
+                                    </tr>
+
+
+                                    <input style="display: none" name="PWId" value="${elem.PWId}"/>
+                                </form>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
 
+            <div class="col-md-6">
+                <section class="panel">
+
+                </section>
+            </div>
+            <div class="col-md-12">
+                <section class="panel">
+
+                </section>
+            </div>
         </section>
     </section>
 </div>
 
+<div class="modal fadeIn" id="updateDig" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">文件上传</h4>
+            </div>
+            <form action="/upload" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="upload">
+                        <textarea name="PFNotice" placeholder="文件简介："
+                                  style="margin-top: 0px;margin-bottom:10px;width: 100%;border: solid 1px #1ec3c8;height: 42px;"
+                                  title="文件简介"></textarea>
+                        <input style="display: none;" id="thisPWid" name="PWId">
+                        <input type="file" name="file"><br/>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">上传文件</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="../assat/vendor/jquery-1.11.1.min.js"></script>
 <script src="../assat/bootstrap/js/bootstrap.js"></script>

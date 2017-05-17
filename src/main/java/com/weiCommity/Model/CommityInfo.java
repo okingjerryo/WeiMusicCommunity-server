@@ -1,13 +1,11 @@
 package com.weiCommity.Model;
 
 import org.joda.time.DateTime;
-import org.springframework.stereotype.Component;
 
 /**
  * 社团信息实体，用于存常用需要的舒团信息
  * Created by uryuo on 17/5/1.
  */
-@Component
 public class CommityInfo {
     protected String Cid;
     protected String CName;

@@ -1,15 +1,13 @@
 package com.weiCommity.Dao;
 
 
-import com.ctc.wstx.sw.EncodingXmlWriter;
+import com.weiCommity.Model.PersonalInfoPersonalOriented;
 import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Model.UserTFWork;
+import com.weiCommity.Util.StaticVar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.validation.constraints.Min;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -59,10 +57,11 @@ public class RegistDao extends BaseDao {
         return userExtend;
     }
     //UserExtend 信息存入库
-    public void editUserExtend(UserExtend userExtend){
+    public void editUserExtend(PersonalInfoPersonalOriented userExtend) {
         try{
             session= sqlSessionFactory.openSession();
-            session.selectOne("",userExtend);
+            session.selectOne(StaticVar.getMapperNameSpace() + "update_UserInfoPO_UE", userExtend);
+            session.selectOne(StaticVar.getMapperNameSpace() + "update_UserInfoPO_LS", userExtend);
 
         }catch (Exception e){
             session.close();

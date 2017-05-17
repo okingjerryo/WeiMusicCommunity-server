@@ -2,10 +2,11 @@ package com.weiCommity.Controller;
 
 import com.alibaba.fastjson.TypeReference;
 import com.weiCommity.Model.Login;
-import com.weiCommity.Model.UserExtend;
+import com.weiCommity.Model.PersonalInfoPersonalOriented;
 import com.weiCommity.Model.UserTFWork;
 import com.weiCommity.Service.UserInfoManage;
 import com.weiCommity.Util.HttpJson;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,16 +129,17 @@ public class UserInfoManageController {
     @RequestMapping(value = "userExtend/edit")
     public ResponseEntity<HttpJson> editUserExtendInfo(@RequestBody String jsonString){
         HttpJson re = new HttpJson();
-        HttpJson inObj = new HttpJson(jsonString, UserExtend.class);
+        HttpJson inObj = new HttpJson(jsonString, PersonalInfoPersonalOriented.class);
 
         try{
-            if (!inObj.getClassName().equals("UserExtend:UserExtend-edit"))
+            if (!inObj.getClassName().equals("PersonalInfoPO:UserExtend-edit"))
                 throw new JSONException("");
-            String lastImgPath = inObj.getPara("lastImgPath");
-            UserExtend userExtend = (UserExtend) inObj.getClassObject();
-            String thisImgName = inObj.getPara("thisImgName");
-            File thisImg = new File(thisImgName);
-            String thisImgPath = userInfoManage.editUserExtend(userExtend,lastImgPath,thisImg);
+            String lastImgPath = inObj.getPara("lastPath");
+            String bitthday = inObj.getPara("birthday");
+            PersonalInfoPersonalOriented personalInfo = (PersonalInfoPersonalOriented) inObj.getClassObject();
+            personalInfo.setUBirthday(new DateTime(bitthday));
+            File thisImg = new File(personalInfo.getUHeadImg());
+            String thisImgPath = userInfoManage.editUserExtend(personalInfo, lastImgPath, thisImg);
         }catch (JSONException e){
             re.setMessage("您的请求不合法");
             re.setStatusCode(250);
