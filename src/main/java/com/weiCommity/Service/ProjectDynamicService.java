@@ -2,6 +2,7 @@ package com.weiCommity.Service;
 
 import com.weiCommity.Dao.ProjectDynamicDao;
 import com.weiCommity.Model.ProjectDynamic;
+import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Util.StaticVar;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,27 @@ public class ProjectDynamicService {
     @Autowired
     public ProjectDynamicService(ProjectDynamicDao dynamicDao) {
         this.dynamicDao = dynamicDao;
+    }
+
+    public void setProjectFileDynamic(ProjectFile pTarFile) {
+        //dynmic 插入
+        ProjectDynamic projectDynamic = new ProjectDynamic();
+        projectDynamic.setTime(DateTime.now());
+        projectDynamic.setPDId(UUID.randomUUID().toString());
+        projectDynamic.setPWId(pTarFile.getPWId());
+        projectDynamic.setPDType("更新");
+        projectDynamic.setPFId(pTarFile.getPFId());
+        dynamicDao.insertDynamic(projectDynamic);
+        //获取当前视图
+        ProjectDynamic afterDyn = dynamicDao.getProjectDynWFAfterInView(projectDynamic);
+        //构造word
+        constrctPDyWithFile(afterDyn);
+    }
+
+    private void constrctPDyWithFile(ProjectDynamic inputDyn) {
+        String DyWord = "在" + inputDyn.getTime().toString(StaticVar.getDateFormat()) + " ," + inputDyn.getWorkSC() + inputDyn.getUNackName() +
+                inputDyn.getPDType() + "了项目:" + inputDyn.getPTitle() + "的文件，并备注了：" + inputDyn.getPFNotice();
+        inputDyn.setWord(DyWord);
+        dynamicDao.setDynWord(inputDyn);
     }
 }

@@ -16,7 +16,24 @@ public class ProjectWork {
     protected DateTime UJoinTime;
     protected String WorkSC;
     protected int UApply = 0;   //0 申请中 1.已同意 拒绝时会删除该条记录
+    protected int PWIsComplete;
+    protected String StateName;
 
+    public String getStateName() {
+        return StateName;
+    }
+
+    public void setStateName(String stateName) {
+        StateName = stateName;
+    }
+
+    public int getPWIsComplete() {
+        return PWIsComplete;
+    }
+
+    public void setPWIsComplete(int PWIsComplete) {
+        this.PWIsComplete = PWIsComplete;
+    }
 
     public int getUApply() {
         return UApply;

@@ -1,14 +1,13 @@
 package com.weiCommity.Controller;
 
 
-import com.weiCommity.Model.Login;
-import com.weiCommity.Model.ProjectDynamic;
-import com.weiCommity.Model.ProjectFile;
-import com.weiCommity.Model.ProjectInfoPersonalOriented;
+import com.weiCommity.Model.*;
 import com.weiCommity.Service.LoginService;
 import com.weiCommity.Service.PersonOrientedService;
+import com.weiCommity.Service.ProjectDynamicService;
 import com.weiCommity.Service.ProjectService;
 import com.weiCommity.Util.HttpJson;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,12 +36,14 @@ public class WebController {
     final PersonOrientedService personOrientedService;
     final ProjectService projectService;
     final ProjectDynamic projectDynamic;
+    final ProjectDynamicService dynamicService;
     @Autowired
-    public WebController(LoginService loginService, PersonOrientedService personOrientedService, ProjectService projectService, ProjectDynamic projectDynamic) {
+    public WebController(LoginService loginService, PersonOrientedService personOrientedService, ProjectService projectService, ProjectDynamic projectDynamic, ProjectDynamicService dynamicService) {
         this.loginService = loginService;
         this.personOrientedService = personOrientedService;
         this.projectService = projectService;
         this.projectDynamic = projectDynamic;
+        this.dynamicService = dynamicService;
     }
 
     @RequestMapping(value = "api/loginWeb")
@@ -153,16 +154,54 @@ public class WebController {
             //decode
             pTarFile.setPFNotice(new String(pTarFile.getPFNotice().getBytes("iso-8859-1"), "UTF-8"));
             String realFileName = new String(file.getOriginalFilename().getBytes("iso-8859-1"), "UTF-8");
+            String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1);
+            String savaFileStr = DateTime.now().toString() + "." + suffix;
             //Service
 //            FileUtils.writeByteArrayToFile(new File(StaticVar.getToFilePath() + "CommonSpace/testUpload/" + realFileName),
 //                    file.getBytes());
-            String PFId = projectService.addFiletoUWid(realFileName, pTarFile, file);
+            String PFId = projectService.addFiletoUWid(savaFileStr, pTarFile, file);
+            pTarFile.setPFId(PFId);
             //动态生成更新字段
-
+            dynamicService.setProjectFileDynamic(pTarFile);
             return "ok";
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "error";
+    }
+
+    @RequestMapping("api/download")
+    public String getDownloadFile(ProjectWork pw, ModelMap model, HttpServletRequest request) {
+        //查出这个PWId对应的工种
+        ProjectWorkApplyMsg thisWork = projectService.getProjectWorkDetail(pw);
+        List<ProjectFile> reFile = new ArrayList<ProjectFile>();
+        switch (thisWork.getWorkSC()) {
+            case "策划":
+                //直接获取全部文件
+                reFile = projectService.getAllPFileComplet(thisWork);
+                break;
+            case "歌手":
+                thisWork.setWorkSC("策划");
+                reFile = projectService.getPFileWithWork(thisWork);
+                break;
+            case "后期":
+                thisWork.setWorkSC("歌手");
+                reFile = projectService.getPFileWithWork(thisWork);
+                thisWork.setWorkSC("策划");
+                reFile.addAll(projectService.getPFileWithWork(thisWork));
+                break;
+            case "美工":
+                thisWork.setWorkSC("后期");
+                reFile = projectService.getPFileWithWork(thisWork);
+                break;
+            default:
+                break;
+        }
+
+        //设置request基本信息
+        model.addAttribute("pName", thisWork.getPTitle());
+        model.addAttribute("pState", thisWork.getStateName());
+        model.addAttribute("fileList", reFile);
+        return "download";
     }
 }

@@ -20,6 +20,24 @@ public class ProjectDynamic {
     private String WorkSC;
     private String UNackName;
     private String PTitle;
+    private String PFNotice;
+    private String PFPath;
+
+    public String getPFPath() {
+        return PFPath;
+    }
+
+    public void setPFPath(String PFPath) {
+        this.PFPath = PFPath;
+    }
+
+    public String getPFNotice() {
+        return PFNotice;
+    }
+
+    public void setPFNotice(String PFNotice) {
+        this.PFNotice = PFNotice;
+    }
 
     public String getWorkSC() {
         return WorkSC;

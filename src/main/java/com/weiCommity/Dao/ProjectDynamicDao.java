@@ -22,4 +22,8 @@ public class ProjectDynamicDao extends BaseDao {
     public void insertDynamic(ProjectDynamic dynamic) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_Dyn", dynamic);
     }
+
+    public ProjectDynamic getProjectDynWFAfterInView(ProjectDynamic projectDynamic) {
+        return (ProjectDynamic) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProejectDynWFAfterIn", projectDynamic);
+    }
 }

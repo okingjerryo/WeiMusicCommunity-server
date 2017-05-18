@@ -1,5 +1,6 @@
 package com.weiCommity.Service;
 
+import com.weiCommity.Dao.BaseDao;
 import com.weiCommity.Dao.ProjectDao;
 import com.weiCommity.Model.ProjectFile;
 import com.weiCommity.Model.ProjectInfo;
@@ -128,5 +129,25 @@ public class ProjectService {
         pTarFile.setPFPath(tarPath);
         projectDao.saveProjectFile(pTarFile);
         return rePFId;
+    }
+
+    public ProjectWork getPersonalPW(ProjectWork work) {
+        return projectDao.getPersonalPW(work);
+    }
+
+    public List<ProjectFile> getAllPFile(ProjectWork projectWork) {
+        return projectDao.getAllPFile(projectWork);
+    }
+
+    public ProjectWorkApplyMsg getProjectWorkDetail(ProjectWork pw) {
+        return projectDao.getProjectWorkMsg(pw);
+    }
+
+    public List<ProjectFile> getAllPFileComplet(ProjectWorkApplyMsg thisWork) {
+        return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_AllPComplateFile", thisWork);
+    }
+
+    public List<ProjectFile> getPFileWithWork(ProjectWorkApplyMsg thisWork) {
+        return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectFileWithWork", thisWork);
     }
 }

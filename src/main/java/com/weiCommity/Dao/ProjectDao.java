@@ -70,7 +70,8 @@ public class ProjectDao extends BaseDao {
     }
 
     public ProjectFile getOldestFile(ProjectFile file) {
-        return (ProjectFile) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_getFileOldest", file);
+        List<ProjectFile> files = (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getFileOldest", file);
+        return files.get(0);
     }
 
     public void delOldest(ProjectFile oldest) {
@@ -79,5 +80,13 @@ public class ProjectDao extends BaseDao {
 
     public void saveProjectFile(ProjectFile pTarFile) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectFile", pTarFile);
+    }
+
+    public ProjectWork getPersonalPW(ProjectWork work) {
+        return (ProjectWork) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_PersonalPW", work);
+    }
+
+    public List<ProjectFile> getAllPFile(ProjectWork projectWork) {
+        return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllProjectFile", projectWork);
     }
 }

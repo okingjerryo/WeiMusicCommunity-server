@@ -253,4 +253,34 @@
         INSERT INTO ProjectFile (PFId, PFPath, PWId, PFCreateTime, PFNotice)
         VALUES (#{PFId}, #{PFPath}, #{PWId}, #{PFCreateTime}, #{PFNotice})
     </insert>
+    <select id="sel_ProejectDynWFAfterIn" parameterType="ProjectDynamic" resultType="ProjectDynamic">
+        SELECT *
+        FROM sel_ProjectDynWithFile
+        WHERE PDId = #{PDId}
+    </select>
+    <select id="sel_PersonalPW" parameterType="ProjectWork" resultType="ProjectWork">
+        SELECT (PWId, PId, UWid, UJoinTIme, WorkSC)
+        FROM sel_ProjectWorkApplicateMsg
+        WHERE PId = #{PId} AND UUuid = #{UUuid}
+    </select>
+    <select id="sel_getAllProjectFile" parameterType="ProjectWork" resultType="ProjectFile">
+        SELECT *
+        FROM ProjectFile
+        WHERE PWId = #{PWId}
+    </select>
+    <select id="sel_FReviewNoDealCount" parameterType="ProjectFile" resultType="int">
+        SELECT count(*)
+        FROM ProjectFileReview
+        WHERE RPIsRepair = 0 AND PFId = #{PFId}
+    </select>
+    <select id="sel_AllPComplateFile" parameterType="ProjectWorkApplyMsg" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PId = #{PId} AND PWIsComplete = 1 AND PFIsUseComplete = 1
+    </select>
+    <select id="sel_ProjectFileWithWork" parameterType="ProjectWorkApplyMsg" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PId = #{PId} AND PWIsComplete = 1 AND PFIsUseComplete = 1 AND WorkSC = #{WorkSC}
+    </select>
 </mapper>

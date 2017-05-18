@@ -296,45 +296,32 @@
             <div class="site-overlay"></div>
             <div class="col-lg-12">
                 <section class="panel">
-                    <div class="panel-heading">我当前的项目</div>
+                    <div class="panel-heading">当前的项目:${pName} 当前阶段：${pState} 能下载的文件</div>
                     <div class="panel-body no-padding">
                         <table class="table table-hover no-margin">
                             <thead>
                             <tr>
 
-                                <th>加入时间</th>
-                                <th>项目名称</th>
-                                <th>当前阶段</th>
-                                <th>担任角色</th>
-                                <th>上传文件</th>
-                                <th>下载文件</th>
+                                <th>发布时间</th>
+                                <th>发布角色</th>
+                                <th>文件备注</th>
+                                <th>预览&下载</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${list}" var="elem">
-                                <form action="/api/download">
-                                    <tr>
+                            <c:forEach items="${fileList}" var="elem">
+                                <tr>
 
-                                        <td>${elem.UJoinTimeStr}</td>
-                                        <td>${elem.PTitle}</td>
-                                        <td>${elem.stateName}</td>
-                                        <td>${elem.workSC}</td>
-                                        <td>
-                                            <a href="#" data-toggle="modal"
-                                               data-target="#updateDig"
-                                               onclick="trans('${elem.PWId}')">
-                                                <button class="btn btn-info btn-block">上传</button>
-                                            </a></td>
-
-                                        <td>
-                                            <button class="btn btn-info btn-block" type="submit">下载</button>
-                                        </td>
-                                    </tr>
+                                    <td>${elem.PFCreateTime}</td>
+                                    <td>${elem.workSC}</td>
+                                    <td>${elem.PFNotice}</td>
+                                    <td>
+                                        <a href="/fileSpace/${elem.PFPath}">
+                                            <button class="btn btn-info btn-block">预览&下载</button>
+                                        </a></td>
+                                </tr>
 
 
-                                    <input style="display: none" name="PWId" value="${elem.PWId}"/>
-                                    <input style="display: none" name="PState" value="${elem.stateName}"/>
-                                </form>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -356,37 +343,6 @@
     </section>
 </div>
 
-<div class="modal fadeIn" id="updateDig" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">文件上传</h4>
-            </div>
-            <form action="/upload" enctype="multipart/form-data" method="post">
-                <div class="modal-body">
-                    <div class="upload">
-                        <textarea name="PFNotice" placeholder="文件简介："
-                                  style="margin-top: 0px;margin-bottom:10px;width: 100%;border: solid 1px #1ec3c8;height: 42px;"
-                                  title="文件简介"></textarea>
-                        <input style="display: none;" id="thisPWid" name="PWId">
-                        <input type="file" accept="audio/*" name="file"><br/>
-
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary">上传文件</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script src="../assat/vendor/jquery-1.11.1.min.js"></script>
 <script src="../assat/bootstrap/js/bootstrap.js"></script>

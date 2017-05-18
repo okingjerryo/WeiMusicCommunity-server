@@ -14,6 +14,69 @@ public class ProjectFile {
     private String PWId;
     private DateTime PFCreateTime;
     private String PFNotice;
+    private String PFName;
+    private String WorkId;
+    private boolean isARapir;
+    private String PId;
+    private int PWIsComplete;
+    private String WorkSC;
+    private int PFIsUseComplete;
+
+    public int getPFIsUseComplete() {
+        return PFIsUseComplete;
+    }
+
+    public void setPFIsUseComplete(int PFIsUseComplete) {
+        this.PFIsUseComplete = PFIsUseComplete;
+    }
+
+    public String getWorkSC() {
+        return WorkSC;
+    }
+
+    public void setWorkSC(String workSC) {
+        WorkSC = workSC;
+    }
+
+    public String getPId() {
+        return PId;
+    }
+
+    public void setPId(String PId) {
+        this.PId = PId;
+    }
+
+    public int getPWIsComplete() {
+        return PWIsComplete;
+    }
+
+    public void setPWIsComplete(int PWIsComplete) {
+        this.PWIsComplete = PWIsComplete;
+    }
+
+    public String getWorkId() {
+        return WorkId;
+    }
+
+    public void setWorkId(String workId) {
+        WorkId = workId;
+    }
+
+    public String getPFName() {
+        return PFName;
+    }
+
+    public void setPFName(String PFName) {
+        this.PFName = PFName;
+    }
+
+    public boolean isARapir() {
+        return isARapir;
+    }
+
+    public void setARapir(boolean ARapir) {
+        isARapir = ARapir;
+    }
 
     public String getPFId() {
         return PFId;

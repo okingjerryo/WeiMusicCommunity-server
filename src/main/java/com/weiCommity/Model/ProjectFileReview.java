@@ -10,13 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectFileReview {
     private String PRId;
-    private DateTime PWFileTime;
+    private String PWFileTime;
     private String PFId;
     private String PRTitle;
     private String PRThing;
     private int PRIsDeal;
     private DateTime PRDealTime;
     private String RPWId;
+    private int RPIsRepair;
+
+    public int getRPIsRepair() {
+        return RPIsRepair;
+    }
+
+    public void setRPIsRepair(int RPIsRepair) {
+        this.RPIsRepair = RPIsRepair;
+    }
 
     private String UNackName;
 
@@ -36,11 +45,11 @@ public class ProjectFileReview {
         this.PRId = PRId;
     }
 
-    public DateTime getPWFileTime() {
+    public String getPWFileTime() {
         return PWFileTime;
     }
 
-    public void setPWFileTime(DateTime PWFileTime) {
+    public void setPWFileTime(String PWFileTime) {
         this.PWFileTime = PWFileTime;
     }
 

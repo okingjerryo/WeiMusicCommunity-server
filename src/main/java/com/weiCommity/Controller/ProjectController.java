@@ -28,6 +28,7 @@ public class ProjectController {
     final MessageBoxService messageBoxService;
     final WorkService findWorkService;
     final ProjectDynamicService projectDynamicService;
+    final FileReviewService fileReviewService;
 
     //策划用户创建一个工程
     @RequestMapping("Project/create")
@@ -186,6 +187,60 @@ public class ProjectController {
         });
     }
 
+    //根据UUid+Pid 返回这个人的ProjectWOrk
+    @RequestMapping("projectwork/get")
+    ResponseEntity<HttpJson> getPersonalPWId(@RequestBody String jsonString) {
+        return ControllerFreamwork.excecute(jsonString, ProjectWork.class, "ProjectWork:getPersonalPWork", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                ProjectWork work = (ProjectWork) inObj.getClassObject();
+                ProjectWork reWork = projectService.getPersonalPW(work);
+                re.setClassObject(reWork);
+                return re;
+            }
+        });
+    }
+
+    //通过PWId 获取这个人全部历史文件
+    @RequestMapping("AllFile/get")
+    ResponseEntity<HttpJson> getAllFile(@RequestBody String jsonString) {
+        return ControllerFreamwork.excecute(jsonString, ProjectWork.class, "ProjectWork:getAllUserProjectFile", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                ProjectWork projectWork = (ProjectWork) inObj.getClassObject();
+                List<ProjectFile> allFile = projectService.getAllPFile(projectWork);
+                //组装name 和状态
+                for (ProjectFile thisFile : allFile) {
+                    String thisPath = thisFile.getPFPath();
+                    String name = thisPath.substring(thisPath.lastIndexOf("/") + 1, thisPath.lastIndexOf("."));
+                    thisFile.setPFName(name);
+
+                    //查状态
+                    boolean fileflag = fileReviewService.getThisFileIsReadytoEnd(thisFile);
+                    thisFile.setARapir(fileflag);
+                }
+                re.setClassObject(allFile);
+                return re;
+            }
+        });
+    }
+
+    //获得文件的详细信息
+//    @RequestMapping("oneFileDetail/get"){
+//
+//    }
+
+    //返回自己可以访问的PWid（策划 全部 其他 自己的上一层）
+
+    //完成自己的阶段
+
+
+    //策划审核 同意进入下一阶段 以及不同意
+
+    //策划终审 最后更新积分
+
+
+
 
 
 
@@ -194,11 +249,12 @@ public class ProjectController {
     //bean管理
     @Autowired
     public ProjectController(ProjectService projectService,
-                             UserWorkService workService, MessageBoxService messageBoxService, WorkService findWorkService, ProjectDynamicService projectDynamicService) {
+                             UserWorkService workService, MessageBoxService messageBoxService, WorkService findWorkService, ProjectDynamicService projectDynamicService, FileReviewService fileReviewService) {
         this.projectService = projectService;
         this.userWorkService = workService;
         this.messageBoxService = messageBoxService;
         this.findWorkService = findWorkService;
         this.projectDynamicService = projectDynamicService;
+        this.fileReviewService = fileReviewService;
     }
 }
