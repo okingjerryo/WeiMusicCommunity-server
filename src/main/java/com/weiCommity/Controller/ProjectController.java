@@ -30,43 +30,54 @@ public class ProjectController {
     final ProjectDynamicService projectDynamicService;
     final FileReviewService fileReviewService;
 
-    //策划用户创建一个工程
+    //策划用户创建一个工程 注意本Controller编写时还为使用Controller框架
+    //指定servlet请求地址
     @RequestMapping("Project/create")
     public ResponseEntity<HttpJson> createNewCProject(@RequestBody String jsonString) {
+        //定义传入和输出数据
         HttpJson re = new HttpJson();
         HttpJson inObj = new HttpJson(jsonString, ProjectInfo.class);
 
         try {
+            //请求不符合就抛出异常
             if (!inObj.getClassName().equals("ProjectInfo:Project-create"))
                 throw new JSONException("");
-
+            //将客户端提交的项目信息Bean从Json中取出
             ProjectInfo info = (ProjectInfo) inObj.getClassObject();
             info.setPCreatTime(DateTime.now());
-            //注册
+            //1.注册项目
             String thisPid = projectService.createProject(info);
             //2. 注册自己为策划
             ProjectWork thisWork = new ProjectWork();
             thisWork.setPId(thisPid);
             thisWork.setUJoinTime(info.getPCreatTime());
+            //通过数据库Work表把选定工种的WorkId查出来
             String thisWorkId = findWorkService.getWorkId("歌曲", "策划");
+            //通过Uid和WorkId从数据库查询到这个用户的UWId 这个是成员类必须的字段
             UserTFWork thisUWClass = userWorkService.getUWWithUUidandWorkId(info.getCreatUUuid(), thisWorkId);
             thisWork.setUWid(thisUWClass.getUWid());
+            //项目表插入当前用户为策划
             String thisPWId = projectService.setPeopleWorkToProject(thisWork);
-            //3.ProjectDy 插入
+            //3.ProjectDy 动态生成项目动态 并插入
+            //设置当前的项目动态类型为创建
             ProjectDynamic dynamic = new ProjectDynamic();
             dynamic.setPDType("创建");
             dynamic.setPWId(thisPWId);
+            //将项目动态插入数据库
             projectDynamicService.setProjectDynWithNOFile(dynamic);
+
         } catch (JSONException e) {
             re.setStatusCode(250);
             re.setMessage("请求不合法");
             re.constractJsonString();
             return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        //在服务器处理数据时发生了意外错误
         } catch (Exception e) {
             re.setStatusCode(203);
             re.setMessage("服务器出错");
             return new ResponseEntity<>(re, HttpStatus.BAD_GATEWAY);
         }
+        //组装返回状态 因为只需要让客户端知道插入成功即可，所以只设置了返回码为400 成功
         re.setStatusCode(400);
         re.constractJsonString();
         return new ResponseEntity<>(re, HttpStatus.OK);

@@ -26,9 +26,12 @@ public class BaseDao {
     static SqlSession session;
     //初始init
     BaseDao() {
+        //判断SessionFactory是否初始化过，初始化过后就不重复初始化，保证系统的运行效率。
         if (!isInit) {
             try {
+                //读入Mybatis配置文件
                 inputStream = Resources.getResourceAsStream(resource);
+                //通过配置文件构建sql数据工厂
                 sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
                 System.out.println("getConnectionSuccful");
                 isInit = true;
@@ -45,8 +48,11 @@ public class BaseDao {
     static Object selOneFromSQL(String myBatisClass, Object inObj) {
         Object returnObj;
         try {
+            //从数据工厂生成一个会话记录
             session = sqlSessionFactory.openSession();
+            //从MyBatisMapper查询出一条记录返回
             returnObj = session.selectOne(myBatisClass, inObj);
+            //如果中间出错，及时把会话关闭然后将错误抛出
         } catch (Exception e) {
             session.close();
             throw e;
@@ -56,6 +62,7 @@ public class BaseDao {
     }
 
     public static List<?> selListFromSQL(String myBatisClass, Object inObj) {
+        //这里的?是个站位符，其具体的类会在编译器得到，也就是在被继承的子类调用时得到
         List<?> returnObj;
         try {
             session = sqlSessionFactory.openSession();

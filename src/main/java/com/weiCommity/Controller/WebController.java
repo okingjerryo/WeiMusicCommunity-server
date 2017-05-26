@@ -156,9 +156,6 @@ public class WebController {
             String realFileName = new String(file.getOriginalFilename().getBytes("iso-8859-1"), "UTF-8");
             String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1);
             String savaFileStr = DateTime.now().toString() + "." + suffix;
-            //Service
-//            FileUtils.writeByteArrayToFile(new File(StaticVar.getToFilePath() + "CommonSpace/testUpload/" + realFileName),
-//                    file.getBytes());
             String PFId = projectService.addFiletoUWid(savaFileStr, pTarFile, file);
             pTarFile.setPFId(PFId);
             //动态生成更新字段

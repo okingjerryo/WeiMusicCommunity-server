@@ -135,7 +135,7 @@
             <a href="index.html" class="navbar-brand">
                 <i class="fa fa-stop mg-r-sm"></i>
                 <span class="heading-font">
-                    音乐微协作<b>项目文件上传平台</b>
+                    <b>音乐微协作</b>项目文件上传
                     </span>
             </a>
         </div>

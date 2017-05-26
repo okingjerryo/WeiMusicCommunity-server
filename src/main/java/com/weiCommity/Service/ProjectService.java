@@ -31,14 +31,16 @@ public class ProjectService {
         this.projectDao = projectDao;
         this.messageBoxService = messageBoxService;
     }
-
+    //创建社团项目到数据库
     public String createProject(ProjectInfo info) {
+        //动态生成新的UUid
         String Pid = UUID.randomUUID().toString();
         info.setPId(Pid);
+        //调用Dao层将新数据存储进去
         projectDao.createProject(info);
         return Pid;
     }
-
+    //将该用户注册为策划角色
     public String setPeopleWorkToProject(ProjectWork thisWork) {
         String PWId = UUID.randomUUID().toString();
         thisWork.setPWId(PWId);

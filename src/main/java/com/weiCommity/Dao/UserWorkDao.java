@@ -25,7 +25,7 @@ public class UserWorkDao extends BaseDao {
     public UserWorkDao(UserTFWork userWork) {
         this.userWork = userWork;
     }
-
+    //将用户的工种详细信息查出
     public UserTFWork getUserWorkByWorkIdandUUid(UserTFWork work) {
         return (UserTFWork) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_UserWorkByUUidandWid", work);
     }

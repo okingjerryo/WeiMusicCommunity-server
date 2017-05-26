@@ -63,8 +63,10 @@ public class HttpJson {
 
     public boolean resolveJsonString() throws JSONException {
         boolean re = false;
+        //初始化一个新的org.json类，并将传入的jsonString解析出来
         jsonObject = new JSONObject(jsonString);
         try{
+            //将HttpJson所需的成员变量取出
             this.statusCode = jsonObject.getInt("statusCode");
             this.Message = jsonObject.getString("message");
             this.className = jsonObject.getString("className");
@@ -80,9 +82,13 @@ public class HttpJson {
     public boolean resolveJsonString(Class className) {
         boolean re = false;
         try {
+            //先调用不带参数的方法解析HttpJson的内部成员变量
             re = resolveJsonString();
+            //将对于JodaTime的逆序列化支持加载进来
             ParserConfig.getGlobalInstance().putDeserializer(LocalDate.class, JodaTimeDeserializer.instance);
+            //将附加传递的classObjectString 先从org.json中解析出来
             this.classObjectString = jsonObject.getString("classObjectString");
+            //确认有类传过来才执行类解析
             if (!(classObjectString.equals("") || classObjectString.equals("{}"))) {
                 this.classObject = JSON.parseObject(classObjectString, className);
             }
@@ -95,7 +101,7 @@ public class HttpJson {
     }
 
     public boolean resolveJsonStrngTR(TypeReference typeReference) {
-
+        //本方法与(2)方法逻辑相似，只是在逆序列话时采用的是TypeHolder进行的List<?>类型的解析
         try {
             resolveJsonString();
             ParserConfig.getGlobalInstance().putDeserializer(LocalDate.class, JodaTimeDeserializer.instance);

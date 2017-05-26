@@ -15,11 +15,11 @@ import java.util.List;
  */
 @Repository
 public class ProjectDao extends BaseDao {
-
+    //项目信息进入数据库
     public void createProject(ProjectInfo info) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectCreate", info);
     }
-
+    //注册项目角色
     public void insertProjectWork(ProjectWork thisWork) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_ProjectWork", thisWork);
     }

@@ -112,6 +112,7 @@
         SELECT *
         FROM Work
     </select>
+    <!--添加项目信息到数据库-->
     <insert id="insert_ProjectCreate" parameterType="ProjectInfo" flushCache="true">
         INSERT INTO ProjectInfo (PId, CId, CreatUUuid, PTitle, PIntroduce, PCreatTime, PState, PType)
         VALUES (#{PId},#{CId},#{CreatUUuid},#{PTitle},#{PIntroduce},#{PCreatTime},#{PState},#{PType})
@@ -120,11 +121,13 @@
         INSERT INTO ProjectWork (PWId, PId, UWid, UJoinTime)
         VALUES (#{PWId},#{PId},#{UWid},#{UJoinTime})
     </insert>
+    <!--通过视图将组装动态需要的信息返回给Service-->
     <select id="sel_ProjectDynAfterIn" parameterType="ProjectDynamic" resultType="ProjectDynamic">
         SELECT *
         FROM sel_ProjectDynWithNoFile
         WHERE PDId = #{PDId}
     </select>
+    <!--将组装好的项目动态文字更新到数据表中-->
     <update id="insert_DynWord" parameterType="ProjectDynamic" flushCache="true">
         UPDATE ProjectDynamic
         SET Word = #{Word}
@@ -206,10 +209,12 @@
     <update id="update_ProjectState" parameterType="ProjectInfo" flushCache="true">
         UPDATE ProjectInfo SET PState = #{PState} WHERE PId = #{PId}
     </update>
+    <!--插入一条项目动态信息-->
     <insert id="insert_Dyn" parameterType="ProjectDynamic" flushCache="true">
         INSERT INTO ProjectDynamic (PDId, Time, PWId, PFId, PDType)
         VALUES(#{PDId},#{Time},#{PWId},#{PFId},#{PDType})
     </insert>
+    <!--查询当前用户的UWork记录-->
     <select id="sel_UserWorkByUUidandWid" parameterType="UserTFWork" resultType="UserTFWork">
         SELECT * FROM UserWork WHERE UUuid = #{UUuid} AND WorkId = #{WorkId}
     </select>
@@ -245,7 +250,7 @@
         WHERE PWId = #{PWId}
         ORDER BY PFCreateTime ASC
     </select>
-    <delete id="del_oldestFile" parameterType="ProjectFile">
+    <delete id="del_oldestFile" parameterType="ProjectFile" flushCache="true">
         DELETE FROM ProjectFile
         WHERE PFId = #{PFId}
     </delete>

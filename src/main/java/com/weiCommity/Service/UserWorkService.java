@@ -24,8 +24,10 @@ public class UserWorkService {
         return workDao.getUserWorkByProjectWork(applyWodk);
     }
 
+    //将用户的UWid从数据库中查询出来
     public UserTFWork getUWWithUUidandWorkId(String creatUUuid, String thisWorkId) {
         UserTFWork work = new UserTFWork();
+        //将查询需要的字段组装好
         work.setWorkId(thisWorkId);
         work.setUUuid(creatUUuid);
         return workDao.getUserWorkByWorkIdandUUid(work);
