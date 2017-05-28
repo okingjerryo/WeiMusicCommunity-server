@@ -37,6 +37,7 @@ public class PersonOrientedController {
     }
 
     //通过获得全部常用工种
+    @RequestMapping("UserTFWork/get")
     public ResponseEntity<HttpJson> getAllUserWorkByUUuid(@RequestBody String jsonString) {
         return ControllerFreamwork.excecute(jsonString, Login.class, "Login:getAllUWByUuid", new ControllerFreamwork.ControllerFuntion() {
             @Override

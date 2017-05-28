@@ -15,5 +15,5 @@ public class ProjectFileReviewController {
 
     //删除指定评论号的评论
 
-    //将评论的状态置为已
+    //将评论的状态置为已经评论
 }
