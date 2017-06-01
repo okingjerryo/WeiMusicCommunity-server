@@ -18,6 +18,15 @@ public class ProjectWork {
     protected int UApply = 0;   //0 申请中 1.已同意 拒绝时会删除该条记录
     protected int PWIsComplete;
     protected String StateName;
+    protected int thisWorkStateId;
+
+    public int getThisWorkStateId() {
+        return thisWorkStateId;
+    }
+
+    public void setThisWorkStateId(int thisWorkStateId) {
+        this.thisWorkStateId = thisWorkStateId;
+    }
 
     public String getStateName() {
         return StateName;

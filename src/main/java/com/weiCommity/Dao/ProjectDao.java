@@ -1,9 +1,6 @@
 package com.weiCommity.Dao;
 
-import com.weiCommity.Model.ProjectFile;
-import com.weiCommity.Model.ProjectInfo;
-import com.weiCommity.Model.ProjectWork;
-import com.weiCommity.Model.ProjectWorkApplyMsg;
+import com.weiCommity.Model.*;
 import com.weiCommity.Util.StaticVar;
 import org.springframework.stereotype.Repository;
 
@@ -88,5 +85,13 @@ public class ProjectDao extends BaseDao {
 
     public List<ProjectFile> getAllPFile(ProjectWork projectWork) {
         return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllProjectFile", projectWork);
+    }
+
+    public List<ProjectWorkDetail> getAllProjectWork(ProjectInfo thisInfo) {
+        return (List<ProjectWorkDetail>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllProjectWork", thisInfo);
+    }
+
+    public void editProjectInfo(ProjectInfo thisInfo) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_ProjectInfo", thisInfo);
     }
 }

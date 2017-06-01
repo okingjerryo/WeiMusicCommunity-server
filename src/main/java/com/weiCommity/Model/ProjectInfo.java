@@ -19,11 +19,20 @@ public class ProjectInfo {
     protected DateTime PCreatTime;
     protected int PState;
     protected String PType; //中文记录
+    protected String PLrc;
 
     protected String UNackName;
     protected String StateName;
     protected Integer startState = 0;
     protected Integer endState = 6;
+
+    public String getPLrc() {
+        return PLrc;
+    }
+
+    public void setPLrc(String PLrc) {
+        this.PLrc = PLrc;
+    }
 
     public Integer getStartState() {
         return startState;

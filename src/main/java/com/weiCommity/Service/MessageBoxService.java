@@ -50,6 +50,7 @@ public class MessageBoxService {
         MessageBox editMsg = new MessageBox();
         editMsg.setMId(thisMail);
         editMsg.setMCheck(i);
+        editMsg.setMIsReaded(1);
         messageBoxDao.editMessageCheck(editMsg);
     }
 

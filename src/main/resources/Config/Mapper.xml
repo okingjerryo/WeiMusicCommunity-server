@@ -191,7 +191,7 @@
     </delete>
     <update id="update_MsgCheck" parameterType="MessageBox" flushCache="true">
         UPDATE MessageBox
-        SET MCheck = #{MCheck}
+        SET MCheck = #{MCheck}, MIsReaded = #{MIsReaded}
         WHERE MId = #{MId}
     </update>
     <select id="sel_getOneMail" parameterType="MessageBox" resultType="MessageBox">
@@ -221,8 +221,8 @@
     <select id="sel_CommityInfoPO" parameterType="Login" resultType="CommityInfoPersonalOriented">
         SELECT * FROM sel_CommityInfoPO WHERE UUuid = #{UUuid}
     </select>
-    <select id="sel_getAllMailPO" parameterType="Login" resultType="MessageBox">
-        SELECT * FROM MessageBox WHERE MTarId = #{UUuid} AND MIsReaded = 0
+    <select id="sel_getAllMailPO" parameterType="MessageBox" resultType="MessageBox">
+        SELECT * FROM sel_MailBoxProject WHERE MTarId = #{MTarId} AND MIsReaded = 0 AND MSenderType = #{MSenderType}
     </select>
     <select id="sel_AllProjectInfoPO" parameterType="Login" resultType="ProjectInfoPersonalOriented">
         SELECT *
@@ -287,5 +287,18 @@
         SELECT *
         FROM sel_ProjectFileDetail
         WHERE PId = #{PId} AND PWIsComplete = 1 AND PFIsUseComplete = 1 AND WorkSC = #{WorkSC}
+    </select>
+    <select id="sel_getAllProjectWork" parameterType="ProjectInfo" resultType="ProjectWorkDetail">
+        SELECT * FROM sel_projectWorkDetail WHERE PId = #{PId}
+    </select>
+    <select id="sel_getAllPersonalTFWork" parameterType="string" resultType="UserTFWork">
+        SELECT * FROM userworkview WHERE UUuid = #{thisUUid}
+    </select>
+    <update id="update_ProjectInfo" parameterType="ProjectInfo" flushCache="true">
+        UPDATE ProjectInfo SET PIntroduce = #{PIntroduce},PTitle = #{PTitle} WHERE PId = #{PId}
+    </update>
+
+    <select id="sel_messageTime" parameterType="MessageBox" resultType="MessageBox">
+        SELECT * FROM MessageBox WHERE MId = #{MId}
     </select>
 </mapper>

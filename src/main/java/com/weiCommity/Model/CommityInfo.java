@@ -20,6 +20,15 @@ public class CommityInfo {
     protected String CNotice;
     protected String CImgObj;
     protected DateTime CNoteCTime;
+    protected String PLrc;
+
+    public String getPLrc() {
+        return PLrc;
+    }
+
+    public void setPLrc(String PLrc) {
+        this.PLrc = PLrc;
+    }
 
     public DateTime getCCreateTime() {
         return CCreateTime;

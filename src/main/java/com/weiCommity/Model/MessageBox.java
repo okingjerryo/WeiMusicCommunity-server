@@ -20,6 +20,15 @@ public class MessageBox {
     private int MCheck = -2;//未读 0 拒绝 -1 已读 1（忽略） 同意 2 普通信件 -2
     private String MSpcId; //相关联的事件id
     private int MSenderType = 1;
+    private String SenderName;
+
+    public String getSenderName() {
+        return SenderName;
+    }
+
+    public void setSenderName(String senderName) {
+        SenderName = senderName;
+    }
 
     public int getMSenderType() {
         return MSenderType;

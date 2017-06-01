@@ -43,7 +43,7 @@ public class LoginController {
 
             String reMessage = loginService.LoginWithStyle(username, password, style);
 
-            if (reMessage.equals("用户名或密码错误，请检查你的登录信息")) {
+            if (reMessage.equals("密码错误，请检查你的密码")) {
                 re.setStatusCode(203);
                 re.setClassName("Message");
                 re.setMessage(reMessage);
@@ -56,6 +56,7 @@ public class LoginController {
             } else {
                 re.setClassObject(reMessage);
                 re.setClassName(String.class.toString());
+                re.constractJsonString();
             }
             return new ResponseEntity<HttpJson>(re, HttpStatus.OK);
         } catch (Exception e) {

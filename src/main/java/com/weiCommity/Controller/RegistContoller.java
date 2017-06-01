@@ -6,7 +6,6 @@ import com.weiCommity.Model.UserExtend;
 import com.weiCommity.Service.RegistService;
 import com.weiCommity.Util.HttpJson;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,11 +84,8 @@ public class RegistContoller {
         try{
             if (!inObj.getClassName().equals("List<String>:regist-freq"))
                 throw new IOException();
+            List<String> list = (List<String>) inObj.getClassObject();
             String thisUUuid = inObj.getPara("UUuid");
-
-            JSONArray JsonList = (JSONArray) inObj.getClassObject();
-            List<Object> list = JsonList.toList();
-
             registService.registFreqTOWByWorkId(thisUUuid,list);
             re.constractJsonString();
         }catch (IOException e){
@@ -114,20 +110,25 @@ public class RegistContoller {
      * @param jsonString
      * @return 状态
      */
-    @RequestMapping(value = "/uextend",produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "uextend", produces = "application/json; charset=UTF-8")
     public ResponseEntity<HttpJson> registExtendingInformation(@RequestBody String jsonString){
         HttpJson re = new HttpJson();
-        HttpJson inObj = new HttpJson(jsonString);
+        HttpJson inObj = new HttpJson(jsonString, String.class);
         try{
             if (!inObj.getClassName().equals("String[ISO-8859-1]:regist-userExtend"))
                 throw new IOException();
             UserExtend userExtend = new UserExtend();
             userExtend.setUUuid(inObj.getPara("UUuid"));
-            userExtend.setUHeadImg(inObj.getPara("UHeadImg"));
+            if (!inObj.getPara("UHeadImg").equals("null")) {
+                userExtend.setUHeadImg(inObj.getPara("UHeadImg"));
+            }
             userExtend.setUBirthday(new DateTime(inObj.getPara("UBirthday")));
             userExtend.setUNackName(inObj.getPara("UNackName"));
             userExtend.setUSex(inObj.getPara("USex"));
-            String imgStr = (String) inObj.getClassObject();
+            String imgStr = "";
+            if (userExtend.getUHeadImg() != null) {
+                imgStr = (String) inObj.getClassObject();
+            }
             String tarImgPath = registService.registExtandInfo(userExtend,imgStr);
             //返回图像的服务器访问地址
             re.setMessage(tarImgPath);

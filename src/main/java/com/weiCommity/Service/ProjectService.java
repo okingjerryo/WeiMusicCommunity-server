@@ -2,10 +2,7 @@ package com.weiCommity.Service;
 
 import com.weiCommity.Dao.BaseDao;
 import com.weiCommity.Dao.ProjectDao;
-import com.weiCommity.Model.ProjectFile;
-import com.weiCommity.Model.ProjectInfo;
-import com.weiCommity.Model.ProjectWork;
-import com.weiCommity.Model.ProjectWorkApplyMsg;
+import com.weiCommity.Model.*;
 import com.weiCommity.Util.StaticVar;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -60,7 +57,7 @@ public class ProjectService {
     }
 
     public ProjectWorkApplyMsg addProjectWorkApply(ProjectWork applyWork) {
-        applyWork.setUWid(UUID.randomUUID().toString());
+        applyWork.setPWId(UUID.randomUUID().toString());
         //存入申请
         projectDao.createUserWorkApply(applyWork);
         //返回一个完整的申请信息视图
@@ -151,5 +148,13 @@ public class ProjectService {
 
     public List<ProjectFile> getPFileWithWork(ProjectWorkApplyMsg thisWork) {
         return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectFileWithWork", thisWork);
+    }
+
+    public List<ProjectWorkDetail> getAllProjectWork(ProjectInfo thisInfo) {
+        return projectDao.getAllProjectWork(thisInfo);
+    }
+
+    public void editProjectInfo(ProjectInfo thisInfo) {
+        projectDao.editProjectInfo(thisInfo);
     }
 }

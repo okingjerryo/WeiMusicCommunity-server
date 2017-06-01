@@ -10,8 +10,17 @@ import org.springframework.stereotype.Component;
 public class CommityInfoPersonalOriented extends CommityInfo {
     private String CMid;
     private String UUuid;
-    private String Utype;
+    private int Utype;
     private String UJoinTime;
+    private String UTypeName;
+
+    public String getUTypeName() {
+        return UTypeName;
+    }
+
+    public void setUTypeName(String UTypeName) {
+        this.UTypeName = UTypeName;
+    }
 
     public String getCMid() {
         return CMid;
@@ -29,11 +38,11 @@ public class CommityInfoPersonalOriented extends CommityInfo {
         this.UUuid = UUuid;
     }
 
-    public String getUtype() {
+    public int getUtype() {
         return Utype;
     }
 
-    public void setUtype(String utype) {
+    public void setUtype(int utype) {
         Utype = utype;
     }
 

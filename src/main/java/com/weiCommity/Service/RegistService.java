@@ -22,11 +22,13 @@ import java.util.UUID;
 public class RegistService {
     private final LoginDao loginDao;
     private final RegistDao registDao;
+    private final WorkService workService;
 
     @Autowired
-    public RegistService(LoginDao loginDao, RegistDao registDao) {
+    public RegistService(LoginDao loginDao, RegistDao registDao, WorkService workService) {
         this.loginDao = loginDao;
         this.registDao = registDao;
+        this.workService = workService;
     }
 
     //注册账户名
@@ -61,13 +63,14 @@ public class RegistService {
     }
 
     //用相关类注册常用工种
-    public void registFreqTOWByWorkId(String UUuid,List<Object> insertID) throws Exception {
+    public void registFreqTOWByWorkId(String UUuid, List<String> insertID) throws Exception {
 
-        for (Object thisWId : insertID) {
+        for (String thisWId : insertID) {
             UserTFWork thisTF = new UserTFWork();
             thisTF.setIsFreq(1);
             thisTF.setUUuid(UUuid);
-            thisTF.setWorkId((String) thisWId);
+            thisWId = workService.getWorkId(thisWId.substring(0, 2), thisWId.substring(2, 4));
+            thisTF.setWorkId(thisWId);
             thisTF.setUWid(UUID.randomUUID().toString());
             registDao.insertWTByUUuid(thisTF);
         }
@@ -81,7 +84,7 @@ public class RegistService {
         String imgPath;
         File tarPath;
         //检测是否传了空值
-        if (userExtend.getUHeadImg().isEmpty()){
+        if (userExtend.getUHeadImg() == null) {
             imgPath = "CommonSpace/default_personal_image.png";
 
         }

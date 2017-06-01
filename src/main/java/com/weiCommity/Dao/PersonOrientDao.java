@@ -29,11 +29,15 @@ public class PersonOrientDao extends BaseDao {
         return (List<CommityInfoPersonalOriented>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_CommityInfoPO", thisUser);
     }
 
-    public List<MessageBox> getAllMailPO(Login thisUser) {
+    public List<MessageBox> getAllMailPPO(MessageBox thisUser) {
         return (List<MessageBox>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllMailPO", thisUser);
     }
 
     public List<ProjectInfoPersonalOriented> getAllProjectPO(Login login) {
         return (List<ProjectInfoPersonalOriented>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_AllProjectInfoPO", login);
+    }
+
+    public List<UserTFWork> getAllUTFWork(String thisUUid) {
+        return (List<UserTFWork>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllPersonalTFWork", thisUUid);
     }
 }

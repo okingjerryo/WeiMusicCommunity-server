@@ -19,6 +19,24 @@ public class ProjectInfoPersonalOriented extends ProjectInfo {
     private String UJoinTimeStr;
     private String StateName;
     private String PWId;
+    private int PWIsComplete;
+    private int thisWorkStateId;
+
+    public int getPWIsComplete() {
+        return PWIsComplete;
+    }
+
+    public void setPWIsComplete(int PWIsComplete) {
+        this.PWIsComplete = PWIsComplete;
+    }
+
+    public int getThisWorkStateId() {
+        return thisWorkStateId;
+    }
+
+    public void setThisWorkStateId(int thisWorkStateId) {
+        this.thisWorkStateId = thisWorkStateId;
+    }
 
     public String getPWId() {
         return PWId;

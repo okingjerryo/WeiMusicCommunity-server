@@ -38,11 +38,15 @@ public class PersonOrientedService {
         return personOrientDao.getAllCommityInfoPO(thisUser);
     }
 
-    public List<MessageBox> getAllMailPO(Login thisUser) {
-        return personOrientDao.getAllMailPO(thisUser);
+    public List<MessageBox> getAllMailPPO(MessageBox thisUser) {
+        return personOrientDao.getAllMailPPO(thisUser);
     }
 
     public List<ProjectInfoPersonalOriented> getAllProjectDoing(Login login) {
         return personOrientDao.getAllProjectPO(login);
+    }
+
+    public List<UserTFWork> getAllUTFWork(String thisUUid) {
+        return personOrientDao.getAllUTFWork(thisUUid);
     }
 }

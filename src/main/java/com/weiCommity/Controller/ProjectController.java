@@ -56,6 +56,7 @@ public class ProjectController {
             //通过Uid和WorkId从数据库查询到这个用户的UWId 这个是成员类必须的字段
             UserTFWork thisUWClass = userWorkService.getUWWithUUidandWorkId(info.getCreatUUuid(), thisWorkId);
             thisWork.setUWid(thisUWClass.getUWid());
+            thisWork.setUApply(1);
             //项目表插入当前用户为策划
             String thisPWId = projectService.setPeopleWorkToProject(thisWork);
             //3.ProjectDy 动态生成项目动态 并插入
@@ -129,6 +130,7 @@ public class ProjectController {
 
             ProjectInfo reInfo = projectService.getOnePDetail(info);
             re.setClassObject(reInfo);
+            re.setPara("creatTime", reInfo.getPCreatTime().toString());
 
         } catch (JSONException e) {
             re.setStatusCode(250);
@@ -157,6 +159,7 @@ public class ProjectController {
                 UserTFWork applyUWork = userWorkService.getUserWorkByProjectWork(applyWork);
                 //2.置当前用户状态为申请中
                 applyWork.setUWid(applyUWork.getUWid());
+                applyWork.setUJoinTime(new DateTime());
                 //返回一个从数据库读出的ProjectWorkApplyMsg视图
                 ProjectWorkApplyMsg applyMsg = projectService.addProjectWorkApply(applyWork);
                 //3.书写Mail并发送给策划
@@ -182,6 +185,7 @@ public class ProjectController {
                     //置状态为同意
                     projectService.applyJoinApplicate(CheckerWork, thisMail);
 
+                    CheckerWork = projectService.getProjectWorkDetail(CheckerWork);
                     //查看加入的人数是否满足需求
                     boolean canStart = projectService.checkProjectCanDo(CheckerWork);
                     if (canStart) {
@@ -236,12 +240,39 @@ public class ProjectController {
         });
     }
 
-    //获得文件的详细信息
-//    @RequestMapping("oneFileDetail/get"){
-//
-//    }
+    //根据Pid返回一个项目的成员清单
+    @RequestMapping("AllProjectWork/get")
+    ResponseEntity<HttpJson> getAllProjectWork(@RequestBody String jsonString) {
+        return ControllerFreamwork.excecute(jsonString, ProjectInfo.class, "ProjectInfo:getAllProjectWrok", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                ProjectInfo thisInfo = (ProjectInfo) inObj.getClassObject();
+                List<ProjectWorkDetail> reList = projectService.getAllProjectWork(thisInfo);
+                re.setClassObject(reList);
+                return re;
+            }
+        });
+    }
 
-    //返回自己可以访问的PWid（策划 全部 其他 自己的上一层）
+    //对已有的可以修改的信息进行更新
+    @RequestMapping("ProjectInfo/edit")
+    ResponseEntity<HttpJson> editProjectInfo(@RequestBody String jsonString) {
+//       return ControllerFreamwork.execute(jsonString,ProjectInfo.class,"ProjectInfo:editProjectInfo", new ControllerFreamwork.ControllerFuntion() {
+//           @Override
+//           public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+//               return null;
+//           }
+//       })
+        return ControllerFreamwork.excecute(jsonString, ProjectInfo.class, "ProjectInfo:editProjectInfo", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                ProjectInfo thisInfo = (ProjectInfo) inObj.getClassObject();
+                projectService.editProjectInfo(thisInfo);
+                return re;
+            }
+        });
+    }
+    // 返回自己可以访问的PWid（策划 全部 其他 自己的上一层）
 
     //完成自己的阶段
 
