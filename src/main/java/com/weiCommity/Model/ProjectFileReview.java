@@ -19,6 +19,34 @@ public class ProjectFileReview {
     private String RPWId;
     private int RPIsRepair;
 
+    private String WorkSC;
+    private String FIlePWid;
+    private String thisUserPWId;
+
+    public String getWorkSC() {
+        return WorkSC;
+    }
+
+    public void setWorkSC(String workSC) {
+        WorkSC = workSC;
+    }
+
+    public String getFIlePWid() {
+        return FIlePWid;
+    }
+
+    public void setFIlePWid(String FIlePWid) {
+        this.FIlePWid = FIlePWid;
+    }
+
+    public String getThisUserPWId() {
+        return thisUserPWId;
+    }
+
+    public void setThisUserPWId(String thisUserPWId) {
+        this.thisUserPWId = thisUserPWId;
+    }
+
     public int getRPIsRepair() {
         return RPIsRepair;
     }

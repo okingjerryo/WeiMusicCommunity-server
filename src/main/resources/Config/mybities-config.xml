@@ -23,21 +23,28 @@
         <setting name="localCacheScope" value="SESSION"/>
         <setting name="jdbcTypeForNull" value="OTHER"/>
         <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+        <setting name="callSettersOnNulls" value="true"/>
     </settings>
     <!-- 缩短Mapper类中对 例如com.Weicommity.Model.xxx的冗余 为 xxx-->
     <typeAliases>
         <package name="com.weiCommity.Model"/>
     </typeAliases>
-
+    <!-- typeHoder -->
+    <typeHandlers>
+        <typeHandler handler="com.weiCommity.Util.JodaDateTypeHolder"/>
+        <typeHandler handler="com.weiCommity.Util.DateTimeTypeHoldler"/>
+        <typeHandler handler="com.weiCommity.Util.JodaTimeTypeHoldler"/>
+    </typeHandlers>
     <!-- 连接用 模板-->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://?useUnicode=true&amp;characterEncoding=utf8"/>
-                <property name="username" value=""/>
-                <property name="password" value=""/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/WeiCommity?useUnicode=true&amp;characterEncoding=utf8"/>
+                <property name="username" value="connect"/>
+                <property name="password" value="jerry245782679"/>
             </dataSource>
         </environment>
         <environment id="production">

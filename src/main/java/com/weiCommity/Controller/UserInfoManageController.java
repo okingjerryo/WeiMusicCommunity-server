@@ -103,7 +103,7 @@ public class UserInfoManageController {
         HttpJson re = new HttpJson();
         HttpJson inObj = new HttpJson(jsonString);
         try {
-            if (inObj.getClassName().equals("form:userExtend-get"))
+            if (!inObj.getClassName().equals("form:userExtend-get"))
                 throw new JSONException("");
 
             String UUuid = inObj.getPara("UUuid");

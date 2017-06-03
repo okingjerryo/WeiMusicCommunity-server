@@ -71,4 +71,14 @@ public class MessageBoxService {
 
         messageBoxDao.sendMessage(reply);
     }
+
+    public void sendMail(MessageBox messageBox) {
+        messageBox.setMId(UUID.randomUUID().toString());
+        messageBox.setMCreateTime(new DateTime());
+        messageBoxDao.sendMessage(messageBox);
+    }
+
+    public void setMailisReaded(MessageBox message) {
+        messageBoxDao.setMailIsReaded(message);
+    }
 }

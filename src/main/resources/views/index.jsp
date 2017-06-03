@@ -312,7 +312,7 @@
                             </thead>
                             <tbody>
                             <c:forEach items="${list}" var="elem">
-                                <form action="/api/download">
+                                <form action="/api/download" method="post">
                                     <tr>
 
                                         <td>${elem.UJoinTimeStr}</td>

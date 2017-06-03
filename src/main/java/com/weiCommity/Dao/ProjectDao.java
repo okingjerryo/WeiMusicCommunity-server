@@ -94,4 +94,72 @@ public class ProjectDao extends BaseDao {
     public void editProjectInfo(ProjectInfo thisInfo) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_ProjectInfo", thisInfo);
     }
+
+    public ProjectInfo getProjectInfoOne(ProjectInfo project) {
+        return (ProjectInfo) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectInfoOne", project);
+    }
+
+    public ProjectWork getProjectWorkOne(ProjectWork projectWork) {
+        return (ProjectWork) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectWorkOne", projectWork);
+    }
+
+    public void updateLrc(ProjectInfo info) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_projectLrc", info);
+    }
+
+    public void setProjectFile(ProjectFile thisFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_projectFileComplete", thisFile);
+    }
+
+    public ProjectWorkDetail getPWorkWithWorkSC(ProjectWorkDetail detail) {
+        return (ProjectWorkDetail) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_PWorkWithAWorkSC", detail);
+    }
+
+    public ProjectWorkDetail getOneDetailPFid(ProjectWorkDetail thisFile) {
+        return (ProjectWorkDetail) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_oneDetailPFid", thisFile);
+    }
+
+    public void setPWrokComplete(ProjectWorkDetail ceDetail) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_ProjectWork", ceDetail);
+    }
+
+    public List<ProjectFile> getMyWorkFile(ProjectWork work) {
+        return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_AllMyProjectFile", work);
+    }
+
+    public void setFileApply(ProjectFile upDateFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_projectStateComplete", upDateFile);
+    }
+
+    public ProjectWork getProjectWorkByPWId(ProjectWork thisWork) {
+        return (ProjectWork) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectWorkOneByPWId", thisWork);
+    }
+
+    public List<ProjectFile> getAllPCeFile(ProjectInfoPersonalOriented thisInfo) {
+        return (List<ProjectFile>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_AllCePFile", thisInfo);
+    }
+
+    public ProjectFile getProjectFileWithPFID(ProjectFile thisFile) {
+        return (ProjectFile) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_projectFileDetail", thisFile);
+    }
+
+    public void updatePWByPFDetail(ProjectFile thisFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_PWByPFDetail", thisFile);
+    }
+
+    public ProjectFile getOnePFDetailOne(ProjectFile thisPeFile) {
+        return (ProjectFile) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_ProjectFileDetailOne", thisPeFile);
+    }
+
+    public void setProjectFileCancal(ProjectFile thisPeFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_setProjectFileCancal", thisPeFile);
+    }
+
+    public ProjectFile getPFByWorkandPid(ProjectFile thisStateFile) {
+        return (ProjectFile) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_getProjectFileByPidandWorkSC", thisStateFile);
+    }
+
+    public void setProjectFileCancal2(ProjectFile thisPeFile) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_setProjectFileCancal2", thisPeFile);
+    }
 }

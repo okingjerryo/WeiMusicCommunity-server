@@ -37,4 +37,8 @@ public class MessageBoxDao {
     public void sendMessage(MessageBox reply) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_SendMessage", reply);
     }
+
+    public void setMailIsReaded(MessageBox message) {
+        BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_setMailIsReaded", message);
+    }
 }

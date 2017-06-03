@@ -157,4 +157,79 @@ public class ProjectService {
     public void editProjectInfo(ProjectInfo thisInfo) {
         projectDao.editProjectInfo(thisInfo);
     }
+
+    public ProjectInfo getProjectInfoOne(ProjectInfo project) {
+        return projectDao.getProjectInfoOne(project);
+    }
+
+    public ProjectWork getProjectWorkOne(ProjectWork projectWork) {
+        return projectDao.getProjectWorkOne(projectWork);
+    }
+
+    public void updateLrc(ProjectInfo info) {
+        projectDao.updateLrc(info);
+    }
+
+    public void setFileComplete(ProjectFile thisFile) {
+        projectDao.setProjectFile(thisFile);
+    }
+
+    public ProjectWorkDetail getProjectWorkWithWorkSC(ProjectWorkDetail detail) {
+        return projectDao.getPWorkWithWorkSC(detail);
+    }
+
+    public ProjectWorkDetail getOnePDetailByPFid(ProjectWorkDetail thisFile) {
+        return projectDao.getOneDetailPFid(thisFile);
+    }
+
+    public void setPWorkComplete(ProjectWorkDetail ceDetail) {
+        projectDao.setPWrokComplete(ceDetail);
+    }
+
+    public List<ProjectFile> getMyWorkFile(ProjectWork work) {
+        return projectDao.getMyWorkFile(work);
+    }
+
+    public void setFileApply(ProjectFile upDateFile) {
+        upDateFile.setPFIsUseComplete(1);
+        projectDao.setFileApply(upDateFile);
+    }
+
+    public ProjectWork getProjectWorkByPWId(ProjectWork thisWork) {
+        return projectDao.getProjectWorkByPWId(thisWork);
+    }
+
+    public List<ProjectFile> getAllProjectCeFile(ProjectInfoPersonalOriented thisInfo) {
+        return projectDao.getAllPCeFile(thisInfo);
+    }
+
+
+    //返回ProjectId
+    public String setPFStateComplete(boolean b, String mSpcId) {
+        ProjectFile thisFile = new ProjectFile();
+        thisFile.setPFId(mSpcId);
+        if (b) {
+            thisFile = projectDao.getProjectFileWithPFID(thisFile);
+            thisFile.setPWIsComplete(1);
+            projectDao.updatePWByPFDetail(thisFile);
+            return thisFile.getPId();
+        } else {
+            thisFile.setPFIsUseComplete(0);
+            projectDao.setFileApply(thisFile);
+        }
+        return "";
+    }
+
+    public ProjectFile getProjectFileDetailOne(ProjectFile thisPeFile) {
+        return projectDao.getOnePFDetailOne(thisPeFile);
+    }
+
+    public void setProjectFileCancal(ProjectFile thisPeFile) {
+        projectDao.setProjectFileCancal(thisPeFile);
+        projectDao.setProjectFileCancal2(thisPeFile);
+    }
+
+    public ProjectFile getPFByWorkandPid(ProjectFile thisStateFile) {
+        return projectDao.getPFByWorkandPid(thisStateFile);
+    }
 }

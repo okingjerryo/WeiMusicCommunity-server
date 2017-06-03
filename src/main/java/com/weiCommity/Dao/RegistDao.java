@@ -47,7 +47,7 @@ public class RegistDao extends BaseDao {
     public UserExtend getUserExtendByUUuid(String thisUUid){
         try {
             session = sqlSessionFactory.openSession();
-            userExtend = session.selectOne("",thisUUid);
+            userExtend = session.selectOne(StaticVar.getMapperNameSpace() + "sel_getUserExtendByUUid", thisUUid);
 
         }catch (Exception e){
             session.close();

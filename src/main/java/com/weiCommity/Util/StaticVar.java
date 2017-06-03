@@ -14,7 +14,7 @@ public class StaticVar {
     private static String toFilePath = "";
     private final static String decodeFileSet = "ISO-8859-1";
     private static DateTimeZone ChinaZone = DateTimeZone.forID("Asia/Shanghai");
-
+    private static String dateSmallFormat = "yy-MM-dd HH:mm:ss";
     public static String getDecodeFileSet() {
         return decodeFileSet;
     }
@@ -38,6 +38,10 @@ public class StaticVar {
 
     public static DateTimeZone getChinaZone() {
         return ChinaZone;
+    }
+
+    public static String getDateSmallFormat() {
+        return dateSmallFormat;
     }
 
     public static String getToFilePath() {
