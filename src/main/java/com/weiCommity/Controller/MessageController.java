@@ -33,6 +33,8 @@ public class MessageController {
         });
     }
 
+    //设置当前信息为已读
+
     @Autowired
     public MessageController(MessageService messageService) {
         this.messageService = messageService;

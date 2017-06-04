@@ -232,4 +232,8 @@ public class ProjectService {
     public ProjectFile getPFByWorkandPid(ProjectFile thisStateFile) {
         return projectDao.getPFByWorkandPid(thisStateFile);
     }
+
+    public CommityMember getMemByCidAndUUid(CommityMember member) {
+        return projectDao.getMemByCidAndUuid(member);
+    }
 }

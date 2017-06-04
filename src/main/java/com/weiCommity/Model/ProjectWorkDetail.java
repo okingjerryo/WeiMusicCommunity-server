@@ -12,6 +12,15 @@ public class ProjectWorkDetail extends ProjectWork {
     private int WorkBonus;
     private String UHeadImg;
     private String UNackName;
+    private String CId;
+
+    public String getCId() {
+        return CId;
+    }
+
+    public void setCId(String CId) {
+        this.CId = CId;
+    }
 
     @Override
     public String getWorkSC() {

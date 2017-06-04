@@ -40,4 +40,16 @@ public class PersonOrientDao extends BaseDao {
     public List<UserTFWork> getAllUTFWork(String thisUUid) {
         return (List<UserTFWork>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllPersonalTFWork", thisUUid);
     }
+
+    public List<CommityMember> getAllCommityMemPO(CommityMember member) {
+        return (List<CommityMember>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllCommityMem", member);
+    }
+
+    public List<MessageBox> getAllCommityMsg(CommityMember elem) {
+        return (List<MessageBox>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllCommityMsg", elem);
+    }
+
+    public List<MessageBox> getAllPersonalMessage(MessageBox messageBox) {
+        return (List<MessageBox>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_PersonalMessage", messageBox);
+    }
 }

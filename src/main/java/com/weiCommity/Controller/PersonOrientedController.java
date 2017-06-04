@@ -158,6 +158,46 @@ public class PersonOrientedController {
         });
     }
 
+    //列出自己社团可能可以的社团全部信息
+    @RequestMapping("personalAllCommityMessage/get")
+    public ResponseEntity<HttpJson> getAllCommityMessage(@RequestBody String jsonString) {
+        return ControllerFreamwork.execute(jsonString, "form:getAllCommity", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                String thisUUid = inObj.getPara("UUid");
+                //获取这个人全部的CommityMem信息
+                CommityMember member = new CommityMember();
+                member.setUUuid(thisUUid);
+                List<CommityMember> myCommityList = personOrientedService.getAllCommityMemPO(member);
+                List<MessageBox> messageBoxes = new ArrayList<>();
+                for (CommityMember elem : myCommityList) {
+                    //如果这个人是管理员以上就将这个社团的信息邮件全部给过去
+                    if (elem.getUtype() > 1) {
+                        List<MessageBox> thisCMes = personOrientedService.getAllCommityMsg(elem);
+                        messageBoxes.addAll(thisCMes);
+                    }
+                }
+                re.setClassObject(messageBoxes);
+                return re;
+            }
+        });
+    }
+
+    //列出自己全部未读的个人信息
+    @RequestMapping("personalMegPO/get")
+    public ResponseEntity<HttpJson> getAllPersonalMessage(@RequestBody String jsonString) {
+        return ControllerFreamwork.execute(jsonString, "form:getAllPersonalMsg", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                String thisUUid = inObj.getPara("UUid");
+                MessageBox messageBox = new MessageBox();
+                messageBox.setMTarId(thisUUid);
+                List<MessageBox> list = personOrientedService.getAllPersonalMsg(messageBox);
+                inObj.setClassObject(list);
+                return re;
+            }
+        });
+    }
     @Autowired
     public PersonOrientedController(PersonOrientedService personOrientedService) {
         this.personOrientedService = personOrientedService;

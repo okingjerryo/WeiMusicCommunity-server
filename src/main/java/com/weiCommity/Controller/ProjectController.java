@@ -31,6 +31,7 @@ public class ProjectController {
     final ProjectDynamicService projectDynamicService;
     final FileReviewService fileReviewService;
     final ProjectFileReviewService projectFileReviewService;
+    final BonusService bonusService;
 
     //策划用户创建一个工程 注意本Controller编写时还为使用Controller框架
     //指定servlet请求地址
@@ -532,6 +533,49 @@ public class ProjectController {
         });
     }
 
+    //完成项目
+    //设置美工状态
+    //设置项目状态
+    //社团积分相加
+    @RequestMapping("SteteComplete/set")
+    ResponseEntity<HttpJson> StateComplete(@RequestBody String jsonString) {
+        return ControllerFreamwork.execute(jsonString, "form:StateComplete", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                String Pid = inObj.getPara("Pid");
+                //美工完成
+                ProjectFile detail = new ProjectFile();
+                detail.setPId(Pid);
+                detail.setWorkSC("美工");
+                detail = projectService.getPFByWorkandPid(detail);
+                //把美工也设置为完成
+                String pId = projectService.setPFStateComplete(true, detail.getPFId());
+                ProjectInfo thisInfo = new ProjectInfo();
+                thisInfo.setPId(pId);
+                thisInfo = projectService.getProjectInfoOne(thisInfo);
+                projectService.setProjectState(thisInfo, 6);
+                //社团积分相加
+                List<ProjectWorkDetail> list = projectService.getAllProjectWork(thisInfo);
+                for (ProjectWorkDetail elem : list) {
+                    //查CMid
+                    CommityMember member = new CommityMember();
+                    member.setUUuid(elem.getUUuid());
+                    member.setCid(elem.getCId());
+                    member = projectService.getMemByCidAndUUid(member);
+                    //获得当前积分
+                    ProjectBonus bonus = new ProjectBonus();
+                    bonus.setCMid(member.getCMid());
+                    bonus = bonusService.getBonusByCMid(bonus);
+                    //更新积分
+                    int thisScore = bonus.getCBonus();
+                    bonus.setCBonus(thisScore + elem.getWorkBonus());
+                    bonusService.setBonus(bonus);
+                }
+                return re;
+            }
+        });
+    }
+
     private String getNextWorkSCByMailTitle(String mTitle) {
         if (mTitle.contains("歌手"))
             return "后期";
@@ -543,7 +587,7 @@ public class ProjectController {
     //bean管理
     @Autowired
     public ProjectController(ProjectService projectService,
-                             UserWorkService workService, MessageBoxService messageBoxService, WorkService findWorkService, ProjectDynamicService projectDynamicService, FileReviewService fileReviewService, ProjectFileReviewService projectFileReviewService) {
+                             UserWorkService workService, MessageBoxService messageBoxService, WorkService findWorkService, ProjectDynamicService projectDynamicService, FileReviewService fileReviewService, ProjectFileReviewService projectFileReviewService, BonusService bonusService) {
         this.projectService = projectService;
         this.userWorkService = workService;
         this.messageBoxService = messageBoxService;
@@ -551,5 +595,6 @@ public class ProjectController {
         this.projectDynamicService = projectDynamicService;
         this.fileReviewService = fileReviewService;
         this.projectFileReviewService = projectFileReviewService;
+        this.bonusService = bonusService;
     }
 }

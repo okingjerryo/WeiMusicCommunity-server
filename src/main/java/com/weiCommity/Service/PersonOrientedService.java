@@ -49,4 +49,16 @@ public class PersonOrientedService {
     public List<UserTFWork> getAllUTFWork(String thisUUid) {
         return personOrientDao.getAllUTFWork(thisUUid);
     }
+
+    public List<CommityMember> getAllCommityMemPO(CommityMember member) {
+        return personOrientDao.getAllCommityMemPO(member);
+    }
+
+    public List<MessageBox> getAllCommityMsg(CommityMember elem) {
+        return personOrientDao.getAllCommityMsg(elem);
+    }
+
+    public List<MessageBox> getAllPersonalMsg(MessageBox messageBox) {
+        return personOrientDao.getAllPersonalMessage(messageBox);
+    }
 }

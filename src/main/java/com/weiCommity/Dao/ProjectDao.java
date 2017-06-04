@@ -162,4 +162,8 @@ public class ProjectDao extends BaseDao {
     public void setProjectFileCancal2(ProjectFile thisPeFile) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "update_setProjectFileCancal2", thisPeFile);
     }
+
+    public CommityMember getMemByCidAndUuid(CommityMember member) {
+        return (CommityMember) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_CommityMemByCU", member);
+    }
 }
