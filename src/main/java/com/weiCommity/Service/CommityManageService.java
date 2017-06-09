@@ -166,4 +166,10 @@ public class CommityManageService {
     public CommityMember getOneUserInCommity(String thisCMid) {
         return commityManageDao.getOneUserInCommityByCMid(thisCMid);
     }
+
+    public void addPeopleCount(String cid) {
+        int MemCount = commityManageDao.getCommityMeMCount(cid);
+        //用户数量增加1
+        commityManageDao.updateCommityMemCount(cid, MemCount + 1);
+    }
 }

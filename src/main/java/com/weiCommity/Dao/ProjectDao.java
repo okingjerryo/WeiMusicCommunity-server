@@ -166,4 +166,8 @@ public class ProjectDao extends BaseDao {
     public CommityMember getMemByCidAndUuid(CommityMember member) {
         return (CommityMember) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_CommityMemByCU", member);
     }
+
+    public List<String> getAllPDyn(String pid) {
+        return (List<String>) BaseDao.selListFromSQL(StaticVar.getMapperNameSpace() + "sel_getAllPDyn", pid);
+    }
 }

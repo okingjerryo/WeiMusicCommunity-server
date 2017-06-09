@@ -61,4 +61,8 @@ public class CommityService {
         newMem.setCBId(UUID.randomUUID().toString());
         commityDao.insertCBMem(newMem);
     }
+
+    public boolean isMemExist(CommityMember member) {
+        return commityDao.getCommityMemWithCidandUUid(member) == null;
+    }
 }

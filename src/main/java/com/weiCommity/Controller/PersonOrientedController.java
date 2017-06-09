@@ -192,8 +192,9 @@ public class PersonOrientedController {
                 String thisUUid = inObj.getPara("UUid");
                 MessageBox messageBox = new MessageBox();
                 messageBox.setMTarId(thisUUid);
-                List<MessageBox> list = personOrientedService.getAllPersonalMsg(messageBox);
-                inObj.setClassObject(list);
+                List<MessageBox> list = new ArrayList<>();
+                list = personOrientedService.getAllPersonalMsg(messageBox);
+                re.setClassObject(list);
                 return re;
             }
         });

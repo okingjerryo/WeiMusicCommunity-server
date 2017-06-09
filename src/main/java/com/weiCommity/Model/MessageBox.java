@@ -21,6 +21,15 @@ public class MessageBox {
     private String MSpcId; //相关联的事件id
     private int MSenderType = 1;
     private String SenderName;
+    private String SenderNameC;
+
+    public String getSenderNameC() {
+        return SenderNameC;
+    }
+
+    public void setSenderNameC(String senderNameC) {
+        SenderNameC = senderNameC;
+    }
 
     public String getSenderName() {
         return SenderName;

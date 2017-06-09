@@ -576,6 +576,23 @@ public class ProjectController {
         });
     }
 
+    @RequestMapping("getAllDynWord")
+    ResponseEntity<HttpJson> getAllProjectDyn(@RequestBody String jsonString) {
+        return ControllerFreamwork.execute(jsonString, "form:getAllPDyWord", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                String Pid = inObj.getPara("Pid");
+                List<String> dynList = projectService.getAllPDyn(Pid);
+                String ReStr = "";
+                for (String elem : dynList) {
+                    ReStr += elem + "\n";
+                }
+                re.setPara("reStr", ReStr);
+                return re;
+            }
+        });
+    }
+
     private String getNextWorkSCByMailTitle(String mTitle) {
         if (mTitle.contains("歌手"))
             return "后期";
@@ -583,6 +600,7 @@ public class ProjectController {
             return "美工";
         return null;
     }
+
 
     //bean管理
     @Autowired

@@ -95,9 +95,14 @@ public class WebController {
             thisUser.setEndState(4);
             //获得全部要显示的list
             List<ProjectInfoPersonalOriented> list = personOrientedService.getAllProject(thisUser);
+            thisUser.setStartState(6);
+            thisUser.setEndState(6);
+            List<ProjectInfoPersonalOriented> list1 = personOrientedService.getAllProject(thisUser);
+            list.addAll(list1);
             for (ProjectInfoPersonalOriented elem : list) {
                 elem.setUJoinTimeStr();
             }
+
             HttpSession session = request.getSession();
             session.setAttribute("user", result);
             session.setAttribute("list", list);
@@ -164,7 +169,7 @@ public class WebController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "error";
+        return "error:您没有在该阶段上传的权限";
     }
 
     @RequestMapping("api/download")

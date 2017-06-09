@@ -236,4 +236,8 @@ public class ProjectService {
     public CommityMember getMemByCidAndUUid(CommityMember member) {
         return projectDao.getMemByCidAndUuid(member);
     }
+
+    public List<String> getAllPDyn(String pid) {
+        return projectDao.getAllPDyn(pid);
+    }
 }

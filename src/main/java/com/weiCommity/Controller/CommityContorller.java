@@ -1,6 +1,7 @@
 package com.weiCommity.Controller;
 
 import com.weiCommity.Model.*;
+import com.weiCommity.Service.CommityManageService;
 import com.weiCommity.Service.CommityService;
 import com.weiCommity.Service.MessageBoxService;
 import com.weiCommity.Util.HttpJson;
@@ -21,7 +22,7 @@ import java.util.List;
 public class CommityContorller {
     final CommityService commityService;
     final MessageBoxService messageBoxService;
-
+    final CommityManageService commityManageService;
     @RequestMapping("getAllMemList")
     public ResponseEntity<HttpJson> getAllCommityMem(@RequestBody String jsonString) {
         return ControllerFreamwork.excecute(jsonString, CommityInfo.class, "CommityInfo:getAllMemList", new ControllerFreamwork.ControllerFuntion() {
@@ -42,6 +43,7 @@ public class CommityContorller {
             @Override
             public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
                 String findStr = inObj.getPara("search");
+                findStr = "%" + findStr + "%";
                 List<CommityInfo> lists = commityService.searchCommity(findStr);
                 re.setClassObject(lists);
                 return re;
@@ -83,6 +85,7 @@ public class CommityContorller {
             public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
                 MessageBox messageBox = (MessageBox) inObj.getClassObject();
                 String applyStr = inObj.getPara("check");
+                messageBoxService.setMailisReaded(messageBox);
                 CommityMember member = new CommityMember();
                 member.setCMid(messageBox.getMSpcId());
                 member = commityService.getCommityMem(member);
@@ -94,6 +97,8 @@ public class CommityContorller {
                     ProjectBonus newMem = new ProjectBonus();
                     newMem.setCMid(member.getCMid());
                     commityService.insertNewCBMem(newMem);
+                    //人数+1
+                    commityManageService.addPeopleCount(member.getCid());
                     //发信
                     MessageBox box = new MessageBox();
                     box.setMTarId(messageBox.getMSenderId());
@@ -117,10 +122,26 @@ public class CommityContorller {
                 return re;
             }
         });
+
+    }
+
+    //查看当前人是否存在
+    @RequestMapping("isMemIn")
+    public ResponseEntity<HttpJson> isExistMem(@RequestBody String jsonString) {
+        return ControllerFreamwork.excecute(jsonString, CommityMember.class, "CommityMember:isMemberExist", new ControllerFreamwork.ControllerFuntion() {
+            @Override
+            public HttpJson thisControllerDoing(HttpJson inObj, HttpJson re) throws Exception {
+                CommityMember member = (CommityMember) inObj.getClassObject();
+                boolean flag = commityService.isMemExist(member);
+                re.setClassObject(flag);
+                return re;
+            }
+        });
     }
     @Autowired
-    public CommityContorller(CommityService commityService, MessageBoxService messageBoxService) {
+    public CommityContorller(CommityService commityService, MessageBoxService messageBoxService, CommityManageService commityManageService) {
         this.commityService = commityService;
         this.messageBoxService = messageBoxService;
+        this.commityManageService = commityManageService;
     }
 }

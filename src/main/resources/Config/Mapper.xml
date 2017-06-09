@@ -69,7 +69,9 @@
         WHERE CId = #{Cid}
     </update>
     <select id="sel_CommityUserByCId" parameterType="string" resultType="CommityMember">
-        SELECT * FROM sel_commitymemview WHERE CId = #{Cid}
+        SELECT *
+        FROM sel_commitymemview
+        WHERE CId = #{Cid} and Utype != 0
     </select>
     <select id="sel_CommityOneUserByCM" parameterType="CommityMember" resultType="CommityMember">
         SELECT * FROM CommityMember WHERE CId = #{Cid} AND UUuid = #{UUuid}
@@ -148,7 +150,16 @@
         WHERE UUuid = #{thisUUuid} AND PState BETWEEN #{startState} AND #{endState}
     </select>
     <select id="sel_getAllCommityMemL" parameterType="CommityInfo" resultType="UserExtend">
-        SELECT UNackName,USex,UBIrthday,UTag,USign,UHeadImg,UUuid FROM sel_CommityMemList WHERE CId = #{Cid}
+        SELECT
+            UNackName,
+            USex,
+            UBIrthday,
+            UTag,
+            USign,
+            UHeadImg,
+            UUuid
+        FROM sel_CommityMemList
+        WHERE CId = #{Cid} AND Utype != 0
     </select>
     <select id="sel_AllUWorkByUuid" parameterType="Login" resultType="UserExtend">
         SELECT * FROM userworkview WHERE UUuid = #{UUuid}
@@ -264,7 +275,7 @@
         WHERE PDId = #{PDId}
     </select>
     <select id="sel_PersonalPW" parameterType="ProjectWork" resultType="ProjectWork">
-        SELECT (PWId, PId, UWid, UJoinTIme, WorkSC)
+        SELECT *
         FROM sel_ProjectWorkApplicateMsg
         WHERE PId = #{PId} AND UUuid = #{UUuid}
     </select>
@@ -272,6 +283,7 @@
         SELECT *
         FROM ProjectFile
         WHERE PWId = #{PWId}
+        ORDER BY PFCreateTime DESC
     </select>
     <select id="sel_FReviewNoDealCount" parameterType="ProjectFile" resultType="int">
         SELECT count(*)
@@ -300,5 +312,206 @@
 
     <select id="sel_messageTime" parameterType="MessageBox" resultType="MessageBox">
         SELECT * FROM MessageBox WHERE MId = #{MId}
+    </select>
+    <select id="sel_ProjectInfoOne" parameterType="ProjectInfo" resultType="ProjectInfo">
+        SELECT *
+        FROM ProjectInfo
+        WHERE PId = #{PId};
+    </select>
+    <select id="sel_ProjectWorkOne" parameterType="ProjectWork" resultType="ProjectWork">
+        SELECT *
+        FROM sel_ProjectWorkApplicateMsg
+        WHERE PId = #{PId} AND UUuid = #{UUuid}
+    </select>
+    <update id="update_projectLrc" parameterType="ProjectInfo" flushCache="true">
+        UPDATE ProjectInfo
+        SET PLrc = #{PLrc}
+        WHERE PId = #{PId}
+    </update>
+    <update id="update_projectFileComplete" parameterType="ProjectFile" flushCache="true">
+        UPDATE ProjectFile
+        SET PFIsUseComplete = 1
+        WHERE PFId = #{PFId}
+    </update>
+    <select id="sel_PWorkWithAWorkSC" parameterType="ProjectWorkDetail" resultType="ProjectWorkDetail">
+        SELECT *
+        FROM sel_projectWorkDetail
+        WHERE WorkSC = #{WorkSC} AND PId = #{PId}
+    </select>
+    <select id="sel_oneDetailPFid" parameterType="ProjectWorkDetail" resultType="ProjectWorkDetail">
+        SELECT *
+        FROM sel_projectWorkDetail
+        WHERE PId = #{PId} AND WorkSC = #{WorkSC}
+    </select>
+    <select id="update_ProjectWork" parameterType="ProjectWorkDetail" flushCache="true">
+        UPDATE ProjectWork
+        SET PWIsComplete = 1
+        WHERE PWId = #{PWId}
+    </select>
+    <select id="sel_AllMyProjectFile" parameterType="ProjectWork" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PId = #{PId} AND WorkSC = #{WorkSC}
+    </select>
+    <select id="sel_ProjectFReviewCount" parameterType="ProjectFile" resultType="int">
+        SELECT count(*)
+        FROM ProjectFileReview
+        WHERE PFId = #{PFId}
+    </select>
+    <select id="sel_ProjectFRDealCount" parameterType="ProjectFile" resultType="int">
+        SELECT count(*)
+        FROM ProjectFileReview
+        WHERE PFId = #{PFId} AND PRIsDeal = 1
+    </select>
+    <update id="update_projectStateComplete" parameterType="ProjectFile" flushCache="true">
+        UPDATE ProjectFile
+        SET PFIsUseComplete = #{PFIsUseComplete}
+        WHERE PFId = #{PFId}
+    </update>
+    <select id="sel_ProjectWorkOneByPWId" parameterType="ProjectWork" resultType="ProjectWork">
+        SELECT *
+        FROM sel_projectWorkDetail
+        WHERE PWId = #{PWId}
+    </select>
+    <select id="sel_AllCePFile" parameterType="ProjectInfoPersonalOriented" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PId = #{PId} AND PFIsUseComplete = 1
+    </select>
+    <select id="sel_projectFileDetail" parameterType="ProjectFile" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PFId = #{PFId}
+    </select>
+    <update id="update_PWByPFDetail" parameterType="ProjectFile" flushCache="true">
+        UPDATE sel_ProjectFileDetail
+        SET PWIsComplete = #{PWIsComplete}
+        WHERE PFId = #{PFId}
+    </update>
+    <update id="update_setMailIsReaded" parameterType="MessageBox" flushCache="true">
+        UPDATE MessageBox
+        SET MIsReaded = 1
+        WHERE MId = #{MId}
+    </update>
+    <select id="sel_getUserExtendByUUid" parameterType="string" resultType="UserExtend">
+        SELECT *
+        FROM UserExtend
+        WHERE UUuid = #{UUuid}
+    </select>
+    <insert id="insert_newCommentFile" parameterType="ProjectFileReview" flushCache="true">
+        INSERT INTO ProjectFileReview (PRId, PWFileTime, PFId, PRTitle, PRThing, RPWId)
+        VALUES (#{PRId}, #{PWFileTime}, #{PFId}, #{PRTitle}, #{PRThing}, #{RPWId})
+    </insert>
+    <select id="sel_ProjectFileDetailOne" parameterType="ProjectFile" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PFId = #{PFId}
+    </select>
+    <update id="update_setProjectFileCancal" parameterType="ProjectFile" flushCache="true">
+        UPDATE sel_ProjectFileDetail
+        SET PWIsComplete = 0
+        WHERE PFId = #{PFId}
+    </update>
+    <select id="sel_getProjectFileByPidandWorkSC" parameterType="ProjectFile" resultType="ProjectFile">
+        SELECT *
+        FROM sel_ProjectFileDetail
+        WHERE PId = #{PId} AND WorkSC = #{WorkSC}
+    </select>
+    <update id="update_setProjectFileCancal2" parameterType="ProjectFile" flushCache="true">
+        UPDATE sel_ProjectFileDetail
+        SET PFIsUseComplete = 0
+        WHERE PFId = #{PFId}
+    </update>
+    <select id="sel_getAllCommentpFid" parameterType="ProjectFile" resultType="ProjectFileReview">
+        SELECT *
+        FROM ProjectFileReview
+        WHERE PFId = #{PFId}
+    </select>
+    <update id="update_noProblem" parameterType="ProjectFileReview" flushCache="true">
+        UPDATE ProjectFileReview
+        SET PRIsDeal = 1, PRDealTime = #{PRDealTime}
+        WHERE PRId = #{PRId}
+    </update>
+    <delete id="del_Comment" parameterType="ProjectFileReview" flushCache="true">
+        DELETE FROM ProjectFileReview
+        WHERE PRId = #{PRId}
+    </delete>
+    <select id="sel_getAllCommityBonus" parameterType="ProjectInfo" resultType="ProjectBonus">
+        SELECT *
+        FROM sel_CommityBonus
+        WHERE CId = #{CId}
+    </select>
+    <select id="sel_searchCommity" parameterType="String" resultType="CommityInfo">
+        SELECT *
+        FROM CommityInfo
+        WHERE CName LIKE #{findStr}
+
+    </select>
+    <insert id="insert_CommiytMemApply" parameterType="CommityMember" flushCache="true">
+        INSERT INTO CommityMember (CMid, CId, UUuid, UJoinTime)
+        VALUES (#{CMid}, #{Cid}, #{UUuid}, #{UJoinTime})
+    </insert>
+    <select id="sel_CMemApplyMsg" parameterType="CommityMember" resultType="CommityMember">
+        SELECT *
+        FROM sel_CommityApplyMsg
+        WHERE CMid = #{CMid}
+    </select>
+    <select id="sel_getAllCommityMem" parameterType="CommityMember" resultType="CommityMember">
+        SELECT *
+        FROM CommityMember
+        WHERE UUuid = #{UUuid}
+    </select>
+    <select id="sel_getAllCommityMsg" parameterType="CommityMember" resultType="MessageBox">
+        SELECT *
+        FROM sel_CommityMessage
+        WHERE MTarId = #{Cid} AND MIsReaded = 0 AND MSenderType = 2
+    </select>
+    <select id="sel_PersonalMessage" parameterType="MessageBox" resultType="MessageBox">
+        SELECT *
+        FROM sel_PersonalMessage
+        WHERE MTarId = #{MTarId} AND MIsReaded = 0 AND MSenderType = 1
+    </select>
+    <delete id="del_CommityMemApply" parameterType="CommityMember" flushCache="false">
+        DELETE FROM CommityMember
+        WHERE CMid = #{CMid}
+    </delete>
+    <select id="sel_CommityMem" parameterType="CommityMember" resultType="CommityMember">
+        SELECT *
+        FROM CommityMember
+        WHERE CMid = #{CMid}
+    </select>
+    <update id="update_CMState" parameterType="CommityMember" flushCache="true">
+        UPDATE CommityMember
+        SET Utype = #{Utype}
+        WHERE CMid = #{CMid}
+    </update>
+    <insert id="insert_CBMem" parameterType="ProjectBonus" flushCache="true">
+        INSERT INTO CommityBonus (CBId, CMid)
+        VALUES (#{CBId}, #{CMid})
+    </insert>
+    <select id="sel_CommityMemByCU" parameterType="CommityMember" resultType="CommityMember">
+        SELECT *
+        FROM CommityMember
+        WHERE CId = #{Cid} AND UUuid = #{UUuid}
+    </select>
+    <select id="sel_getBonusByCmid" parameterType="ProjectBonus" resultType="ProjectBonus">
+        SELECT *
+        FROM CommityBonus
+        WHERE CMid = #{CMid}
+    </select>
+    <update id="update_setBonus" parameterType="ProjectBonus">
+        UPDATE CommityBonus
+        SET CBonus = #{CBonus}
+        WHERE CBId = #{CBId}
+    </update>
+    <select id="sel_getCommityMemWithCidandUUid" parameterType="CommityMember" resultType="CommityMember">
+        SELECT *
+        FROM CommityMember
+        WHERE CId = #{Cid} AND UUuid = #{UUuid}
+    </select>
+    <select id="sel_getAllPDyn" resultType="string" parameterType="string">
+        SELECT Word
+        FROM sel_getAllProjectDyn
+        WHERE PId = #{pid}
     </select>
 </mapper>

@@ -47,4 +47,8 @@ public class CommityDao extends BaseDao {
     public void insertCBMem(ProjectBonus newMem) {
         BaseDao.InEdDeOneIntoSql(StaticVar.getMapperNameSpace() + "insert_CBMem", newMem);
     }
+
+    public CommityMember getCommityMemWithCidandUUid(CommityMember member) {
+        return (CommityMember) BaseDao.selOneFromSQL(StaticVar.getMapperNameSpace() + "sel_getCommityMemWithCidandUUid", member);
+    }
 }
